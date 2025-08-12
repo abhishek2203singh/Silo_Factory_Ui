@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-lg-3 col-md-5">
+    <div class="card border-0 box-shadow mb-4">
+      <img class="card-img-top w-100" [src]="imgurl+data?.vendor_profile_photo" alt="Request user">
+      <!-- <div class="online-indicator">
+            <span *ngIf="userst === data?.in_departmenthead_id" class="blink" [ngClass]="{
+        'bg-danger': useronlinestatus === 0,
+        'bg-success': useronlinestatus === 1
+      }">
+            </span>
+
+            <span *ngIf="userst != data?.in_departmenthead_id" class="blink" [ngClass]="{
+      'bg-danger': useronlinestatus === 0,
+     
+    }">
+            </span>
+        </div> -->
+      <div class="card-body">
+        <h4 class="card-title text-center">{{data?.full_name}}</h4>
+        <h5 class="card-title text-center text-info">{{data?.vru_address}}</h5>
+        <h6 class="card-subtitle text-muted">About:</h6>
+        <p class="card-text text-justify">{{data?.about_me}}</p>
+        <button class="btn btn-outline-info btn-sm btn-rounded float-right mb-3 px-4">More
+          <i class="fa fa-long-arrow-right"></i></button>
+        <div class="dropdown-divider w-100"></div>
+        <div class="row">
+          <div class="col-md-8 text-left">Department:</div>
+          <div class="col-md-4 text-right"><strong class="d-inline-block">{{data?.DprtName}}</strong></div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 text-left">Department Head:</div>
+          <div class="col-md-4 text-right"><strong class="d-inline-block"
+              style="text-wrap:nowrap;margin:0px 0px 0px -40px;">{{data?.DprtHeadFullName}}</strong>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 text-left">Approval</div>
+          <div class="col-md-4 text-right"><strong class="d-inline-block">{{data?.ApprvlbyFullName |titlecase}}</strong>
+          </div>
+        </div>
+        <div class="dropdown-divider w-100"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9 col-md-7">
+    <div class="card card-info border-0 box-shadow">
+      <div class="card-header text-white text-center bg-primary">
+        <span class="h4">Your Data</span>
+        <span style="float: right; cursor: pointer;" [routerLink]="['/pages/vendor-dashboard']"><i
+            class="fa fa-hand-o-left mr-1"></i>Back</span>
+      </div>
+      <div class="card-body bg-white">
+        <div class="row">
+          <!-- <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Salutation</label>
+            <p class="text-muted">Mr</p>
+          </div> -->
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Product Name</label>
+            <p class="text-muted">{{data.product_name}}</p>
+          </div>
+          <!-- <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Last Name</label>
+            <p class="text-muted">Doe</p>
+          </div> -->
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Quantity</label>
+            <p class="text-muted">{{data.quantity}} {{data.UntName}}</p>
+          </div>
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Per Unit Price</label>
+            <p class="text-muted">{{data.priceper_unit}}</p>
+          </div>
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Department Name</label>
+            <p class="text-muted">{{data.DprtName}}</p>
+          </div>
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Department Head</label>
+            <p class="text-muted">{{data.DprtHeadFullName}}</p>
+          </div>
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Approved By</label>
+            <p class="text-muted">{{data.ApprvlbyFullName}}</p>
+          </div>
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Payment</label>
+            <p class="text-muted">{{data.payment_status_to_vendor}}</p>
+          </div>
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Payment Status</label>
+            <p class="text-muted">{{data.mps_name}}</p>
+          </div>
+          <div class="col-md-3">
+            <label class="form-control-label font-weight-bold">Payment BY</label>
+            <p class="text-muted">{{data.pstsby_name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

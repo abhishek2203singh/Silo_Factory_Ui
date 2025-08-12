@@ -1,0 +1,275 @@
+<!-- <app-info-panels></app-info-panels> -->
+<!-- <div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Type to filter the column value..." autocomplete="off"
+        (keyup)="updateFilter($event.target)" />
+</div> -->
+
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="rows" [selected]="selected" [selectionType]="selection" (select)="onSelect($event)">
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+            {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="date">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.date | date:'fullDate' }}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="product_name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.product_name }}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="quantity">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Quantity</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.quantity}}/{{row.UntName}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="priceper_unit">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Per Unit Price</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.priceper_unit}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="DprtName">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Department Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.DprtName}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="DprtHeadFullName">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Department Head</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.DprtHeadFullName}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="ApprvlSts_name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Approval Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span [style.color]="row.ApprvlSts_name === 'Approved' ? 'green' : 
+                                row.ApprvlSts_name === 'Rejected' ? 'red' : 
+                                row.ApprvlSts_name === 'Pending' ? 'rgb(0, 150, 166)' :
+                                row.ApprvlSts_name === 'Discussion After Approved' ? 'rgb(244, 123, 0)' :
+                                row.ApprvlSts_name === 'Request' ? 'rgb(47, 62, 158)' :
+                                row.ApprvlSts_name === 'Under Process' ? 'rgb(193, 28, 132)' : 'black'">
+                {{ row.ApprvlSts_name }}
+            </span>
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="ApprvlbyFullName">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Approve By</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.ApprvlbyFullName}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="payment_status_to_vendor">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Payment</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.payment_status_to_vendor}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="mps_name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Payment Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span [style.color]="row.mps_name === 'Approved' ? 'green' : 
+                                row.mps_name === 'Rejected' ? 'red' : 
+                                row.mps_name === 'Pending' ? 'rgb(0, 150, 166)' : 'black'">
+                {{ row.mps_name }}
+            </span>
+        </ng-template>
+    </ngx-datatable-column>
+
+
+    <ngx-datatable-column name="pstsby_name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Payment By</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row.pstsby_name}}
+        </ng-template>
+    </ngx-datatable-column>
+
+
+    <ngx-datatable-column name="bill_image">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Bill</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <img [src]="imgurl + row.bill_image" width="50" height="50" />
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <button class="view btn btn-outline-success w-10p mb-1 mr-1" type="button" title="View Details"
+                (click)="DetailsRows(row.id)">
+                <i aria-hidden="true" class="fa fa-eye"></i>
+            </button>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>
+
+<div class="modal fade" id="lg-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label"
+    style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">Fill out the
+                    form</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputFullName">Full Name</label>
+                            <input type="text" class="form-control" id="inputFullName" placeholder="Full Name">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputMobile">Mobile</label>
+                            <input type="text" class="form-control" id="inputMobile" placeholder="Mobile">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputEmail">Email</label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputPassword">Password</label>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputAddress">Address</label>
+                            <input type="text" class="form-control" id="inputAddress" placeholder="Address">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputCity">City</label>
+                            <select class="form-control" id="inputCity">
+                                <option value disabled selected>Select
+                                    City</option>
+                                <!-- Add options dynamically here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputState">State</label>
+                            <select class="form-control" id="inputState">
+                                <option value disabled selected>Select
+                                    State</option>
+
+                                <option *ngFor="let state of stateList" [value]="state?.id">{{state.name}}</option>
+                                <!-- Add options dynamically here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputPincode">Pincode</label>
+                            <input type="text" class="form-control" id="inputPincode" placeholder="Pincode">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputProfilePhoto">Profile Photo</label>
+                            <input type="file" class="form-control" id="inputProfilePhoto" accept="image/*"
+                                onchange="previewImage(event)">
+                        </div>
+                        <div class="form-group">
+                            <div id="profilePhotoPreview" class="profile-photo-preview" *ngIf="previewImageUrl"
+                                [style.backgroundImage]="'url(' + previewImageUrl + ')'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputDepartmentId">Department ID</label>
+                            <select class="form-control" id="inputDepartmentId">
+                                <option value disabled selected>Select
+                                    Department</option>
+                                <!-- Add options dynamically here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputRoleId">Role ID</label>
+                            <select class="form-control" id="inputRoleId">
+                                <option value disabled selected>Select
+                                    Role</option>
+                                <!-- Add options dynamically here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputAboutMe">About Me</label>
+                            <textarea class="form-control" id="inputAboutMe" placeholder="About Me"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
+        </div>
+    </div>
+</div>

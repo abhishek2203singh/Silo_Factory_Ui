@@ -1,0 +1,50 @@
+<app-info-panels></app-info-panels>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true" [resizeable]="false">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Name">
+    <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+      @if (!editing[row.$$index + '-name']) {
+        <span
+          title="Double click to edit"
+          (dblclick)="editing[row.$$index + '-name'] = true"
+          >
+          {{value}}
+        </span>
+      }
+      @if (editing[row.$$index + '-name']) {
+        <input
+          autofocus
+          (blur)="updateValue($event, 'name', value, row)"
+          type="text"
+          [value]="value"
+          />
+      }
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Gender">
+    <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+      @if (!editing[row.$$index + '-gender']) {
+        <span
+          title="Double click to edit"
+          (dblclick)="editing[row.$$index + '-gender'] = true"
+          >
+          {{value}}
+        </span>
+      }
+      @if (editing[row.$$index + '-gender']) {
+        <select
+          (change)="updateValue($event, 'gender', value, row)"
+          [value]="value">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      }
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Company">
+    <ng-template ngx-datatable-cell-template let-value="value">
+      {{value}}
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>

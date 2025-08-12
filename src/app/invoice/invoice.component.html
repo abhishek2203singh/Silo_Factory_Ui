@@ -1,0 +1,132 @@
+<div class="form-group-wrapper">
+    <form [formGroup]="dateRangeforInvoice" (ngSubmit)="getInvoice()">
+        <div class="form-group inline-form-group">
+            <label for="input-from-date">From Date</label>
+            <input type="date" class="form-control date-input" id="input-from-date" formControlName="fromDate"
+                [max]="currentDate" />
+        </div>
+        <div class="form-group inline-form-group">
+            <label for="input-till-date">Till Date</label>
+            <input type="date" class="form-control date-input" id="input-till-date" formControlName="tillDate"
+                [max]="currentDate" />
+        </div>
+        <button class="btn btn-outline-info" type="submit" style="margin: 0 0px -10px 0px;">
+            <i class="fa fa-search"></i>
+            search
+        </button>
+    </form>
+    <button type="button" class="btn btn-primary float-right" style="margin: 10px 15px 0 10px"
+        (click)="goBack()"><i class="fas fa-arrow-left me-2"></i> Back</button>
+</div>
+<div class="cs-container style1">
+    <div class="cs-invoice cs-style1 padding_40">
+        <div class="cs-invoice_in" id="invoice-container">
+            <div class="cs-invoice_head cs-type1 column border-bottom-none">
+                <div class="display-flex justify-content-center cs-width_12">
+                    <div class="cs-text_center">
+                        <p class="cs-f18 cs-primary_color cs-bold cs-mb2">
+                            {{ VendorProfile?.full_name | titlecase }}
+                        </p>
+                        <p class="cs-m0 cs-primary_color cs-f14">
+                            {{ VendorProfile?.mobile }} <br>
+                            {{ VendorProfile?.vru_address | titlecase }}, {{ VendorProfile?.city_name |
+                            titlecase
+                            }},
+                        </p>
+                        <p class="cs-m0 cs-primary_color cs-f14"> {{ VendorProfile?.state_name | titlecase }}
+                            <br>
+                            {{ VendorProfile?.pincode }}<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="cs-border cs-mb10"></div>
+            <h5 class="cs-f16 cs-text_center text-transform-uppercase cs-mb10">
+                Product Receipt
+            </h5>
+            <div class="cs-border"></div>
+            <div class="cs-table cs-style2 padding-rignt-left">
+                <table>
+                    <thead>
+                        <tr class="cs-f12">
+                            <!-- <th class="cs-width_6 cs-normal cs-primary_color cs-p0 cs-p-t10 cs-p-b5">
+                                Dated
+                            </th> -->
+                            <th class=" cs-normal cs-primary_color cs-p0 cs-p-t10 cs-p-b5">
+                                Date
+                            </th>
+                            <th class=" cs-normal cs-primary_color cs-p0 cs-p-t10 cs-p-b5">
+                                Item
+                            </th>
+                            <th class="cs-normal cs-primary_color cs-p0 cs-p-t10 cs-p-b5">
+                                Price
+                            </th>
+                            <th class="cs-normal cs-primary_color cs-p0 cs-p-t10 cs-p-b5">
+                                Qty
+                            </th>
+                            <th class="cs-normal cs-primary_color cs-p0 cs-p-t10 cs-p-b5">
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="cs-f12 tm-border-none">
+                        <tr class="cs-primary_color" *ngFor="let item of qualityData">
+                            <td class="cs-p0 cs-p-b5 ">{{item.date | date:'dd/MM/yyyy'}}</td>
+                            <td class="cs-p0 cs-p-b5">{{item.product_name}}</td>
+                            <td class="cs-p0 cs-p-b5">{{item.priceper_unit}}</td>
+                            <td class="cs-p0 cs-p-b5">{{item.quantity}}</td>
+                            <td class="cs-p0 cs-p-b5">{{ item.quantity * item.priceper_unit |
+                                currency:
+                                'INR' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="cs-border cs-mt12"></div>
+            <div class="cs-table cs-style2 padding-rignt-left display-flex justify-content-flex-end">
+                <table class="cs-width_6">
+                    <tbody class="cs-f12 tm-border-none">
+                        <tr class="cs-primary_color">
+                            <td class="cs-p0 cs-p-t5">Total:</td>
+                            <td class="cs-p0 cs-p-t5">{{ getGrandTotal() | currency: 'INR' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="cs-border cs-mb10"></div>
+            <div class="cs-primary_color cs-f12">
+                <div class="display-flex justify-content-space-between flex-wrap">
+                    <div class="cs-width_6">
+                        <div class="display-flex justify-content-space-between">
+                            <p class="cs-mb5">Invoice:</p>
+                            <p class="cs-mb5"> #TM21325</p>
+                        </div>
+                        <div class="display-flex justify-content-space-between">
+                            <p class="cs-mb5">Date:</p>
+                            <p class="cs-mb5">{{currentDate | date:'yyyy-MM-dd'}}</p>
+                        </div>
+                        <!-- <div class="display-flex justify-content-space-between">
+                            <p class="cs-mb5">Time:</p>
+                            <p class="cs-mb5">{{currentDate | date:"HH:mm"}}</p>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="absolute mt-1 float-right">
+        <button (click)="printInvoice()" class="btn btn-outline-primary" aria-label="Print Receipt" title="Print">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path
+                    d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24"
+                    fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"></path>
+                <rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32" fill="none" stroke="currentColor"
+                    stroke-linejoin="round" stroke-width="32"></rect>
+                <path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none"
+                    stroke="currentColor" stroke-linejoin="round" stroke-width="32"></path>
+                <circle cx="392" cy="184" r="24" fill="currentColor"></circle>
+            </svg>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="card-header">
+            <span class="start1">Pious&nbsp;Factory</span>
+        </div>
+        <div class="card-body">
+            <!-- <h2 class="login-title">Member login</h2>
+            <a href="/register" class="transition-link">Don't have an account? Sign up now!</a> -->
+            <form [formGroup]="form" (ngSubmit)="login()" class="login-form">
+                <div class="form-group">
+                    <input [formControl]="mobile" type="number" class="form-control" placeholder="Mobile Number"
+                        maxlength="10">
+                    <div class="form-error"
+                        *ngIf="form.get('mobile')?.touched && form.get('mobile')?.hasError('required')">Mobile Number is
+                        required</div>
+                    <div class="form-error"
+                        *ngIf="form.get('mobile')?.touched && form.get('mobile')?.hasError('pattern')">Invalid mobile
+                        number. Must be 10 digits</div>
+                </div>
+                <div class="form-group position-relative">
+                    <input [formControl]="password" [type]="showPassword ? 'text' : 'password'" class="form-control"
+                        placeholder="Password" />
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()"
+                        aria-label="Toggle password visibility">
+                        <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </button>
+
+                    <div class="form-error"
+                        *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">Password is
+                        required</div>
+                    <div class="form-error"
+                        *ngIf="form.get('password')?.touched && form.get('password')?.hasError('minlength')">
+                        Password isn't long enough, minimum of 6 characters</div>
+                </div>
+                <!-- 
+                <div class="form-group-row">
+                    <a href="javascript:void(0);" class="transition-link pull-right">Forgot password?</a>
+                </div> -->
+                <div class="form-group">
+                    <button [disabled]="!form.valid" type="submit" class="btn btn-block">Sign in</button>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="card-footer">
+            <ul class="social-icons">
+                <li class="social-icon">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-facebook fa-stack-1x"></i>
+                    </span>
+                </li>
+                <li class="social-icon">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-twitter fa-stack-1x"></i>
+                    </span>
+                </li>
+                <li class="social-icon">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-google fa-stack-1x"></i>
+                    </span>
+                </li>
+            </ul>
+        </div> -->
+    </div>
+</div>

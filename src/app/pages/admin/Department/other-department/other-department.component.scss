@@ -1,0 +1,88 @@
+// .collapse {
+//     transition: height 0.4s ease;
+//   }
+
+//   .collapse.show {
+//     transition: height 0.4s ease;
+//   }
+
+.Return {
+  background-color: #ff7f68a6;
+}
+
+.badge.badge-info {
+  // border-color: #22afaf !important;
+  color: white !important;
+  font-weight: bolder !important;
+}
+
+.badge.badge-primary {
+  // border-color: #4c22af !important;
+  color: white !important;
+  font-weight: bolder !important;
+}
+.badge.badge-warning {
+  background: #ff9900 !important;
+  border-color: #d68100 !important;
+  color: white !important;
+  font-weight: bolder !important;
+}
+
+.badge.badge-stockout {
+  background: #ee5c5c !important;
+  border-color: #f54444 !important;
+  color: white !important;
+  font-weight: bolder !important;
+}
+
+.badge.badge-secondary11 {
+  background: #f34e30b4 !important;
+  border-color: #d60606 !important;
+  color: white !important;
+  font-weight: bolder !important;
+}
+.centered-text {
+  text-align: center;
+  // font-weight: bold;
+  // color: black;
+}
+.centered-text1 {
+  text-align: center;
+  font-weight: bold;
+  // color: black;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+.datatable-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+
+:host ::ng-deep .ngx-datatable {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+  .datatable-header {
+    border-bottom: 2px solid #ddd;
+    background-color: #f8f9fa;
+  }
+
+  .column-header {
+    font-weight: bold;
+    color: #333;
+  }
+}

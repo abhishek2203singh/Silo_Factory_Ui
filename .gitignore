@@ -1,0 +1,9 @@
+.angular
+.vscode
+# Node artifact files
+node_modules/
+dist/
+public/
+.vscode/
+# Compiled Java class files
+*.class

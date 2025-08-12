@@ -1,0 +1,685 @@
+<app-info-panels [panels]="infoPanels"></app-info-panels>
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">{{ isEditMode ? 'Update Form' : 'Add Form'
+                    }}</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="blockForm" (ngSubmit)=" isEditMode?updateDetails():onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="vendorId">Name of Vendor</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="vendorId" formControlName="vendorId"
+                                        (change)="productTypebyvendor($event)">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let vendor of vendorList" [value]="vendor.id">
+                                            {{ vendor.full_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productTypeId">Product Type</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="productTypeId" formControlName="productTypeId"
+                                        (change)="productbyproductType($event)">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let type of productTypeList" [value]="type.ms_product_type_id
+                                        ">
+                                            {{type.product_type_name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productId">Name of Product</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="productId" formControlName="productId"
+                                        (change)="packinggsizebyPrdct($event)">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let product of namesList" [value]="product.product_id">
+                                            {{ product.product_name }}
+                                        </option>
+                                    </select>
+                                    <!-- &nbsp;
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary mb-1 mr-1"
+                                            style="float: inline-end;" data-toggle="modal" data-target="#lg-modal"><i
+                                                aria-hidden="true" class="fa fa-plus-circle"></i>
+                                            Create Product</button>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="departmentId">Department</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="departmentId" formControlName="departmentId"
+                                        (change)="departmentHead($event)">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option [value]="department.id" *ngFor="let department of departmentList">
+                                            {{ department.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="departmentHeadId">Department
+                                    Head</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="departmentHeadId"
+                                        formControlName="departmentHeadId">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let head of departmentheadList" [value]="head.id">
+                                            {{ head.full_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" *ngIf="blockForm.get('departmentId')?.value != '4' && depart!=4">
+                                <label for="packingSizeId">Packaging
+                                    Size</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="packingSizeId" formControlName="packingSizeId"
+                                        (change)="getPrice($event)">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let pl of packingList" [value]="pl.id">{{ pl.weight
+                                            }} {{ pl.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" *ngIf="blockForm.get('departmentId')?.value == '4' ">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" formControlName="quantity"
+                                    placeholder="Enter Product Quantity" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4" *ngIf="blockForm.get('departmentId')?.value !== '4' && depart != '4'  ">
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" formControlName="quantity"
+                                    placeholder="Enter Product Quantity" min="0">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="unitId">Unit</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="unitId" formControlName="unitId">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let unit of unitList" [value]="unit.id">{{ unit.name
+                                            }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="pricePerUnit">Price (Per Unit)</label>
+                                <input type="number" class="form-control" id="pricePerUnit"
+                                    formControlName="pricePerUnit" placeholder="Enter Price" min="0">
+                            </div>
+                        </div>
+                        <div class="col-sm-2" *ngIf="blockForm.get('departmentId')?.value == '4'">
+                            <div class="form-group">
+                                <label for="billImage">Bill Image (If any.)</label>
+                                <input type="file" class="form-control" formControlName="bill_image" #billimage
+                                    accept="image/*" (change)="uploadFile(billimage.files)" />
+                            </div>
+                            <!-- <div class="form-group">
+                                <div class="bill-image-preview cursor-pointer" *ngIf="previewImageUrl"
+                                    [style.backgroundImage]="'url(' + previewImageUrl + ')'"
+                                    (click)="openImagePreview(previewImageUrl)"
+                                    style="width: 100px; height: 100px; background-size: cover; background-position: center; cursor: pointer;">
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="col-sm-2" *ngIf="blockForm.get('departmentId')?.value == '4'">
+                            <div class="form-group">
+                                <img [src]="previewImageUrl || (baseImgUrl + defaultPic)" width="70"
+                                    alt="Generic placeholder image" class="d-flex mr-3 cursor-pointer"
+                                    style="border: 4px solid #fff; cursor: pointer;"
+                                    (click)="openImagePreview(previewImageUrl || (baseImgUrl + defaultPic))">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4" *ngIf="blockForm.get('departmentId')?.value !== '4' && depart != '4'">
+                            <div class="form-group">
+                                <label for="billImage">Bill Image (If any.)</label>
+                                <input type="file" class="form-control" formControlName="bill_image" #billimage
+                                    accept="image/*" (change)="uploadFile(billimage.files)" />
+                            </div>
+                            <!-- <div class="form-group">
+                                <div class="bill-image-preview cursor-pointer" *ngIf="previewImageUrl"
+                                    [style.backgroundImage]="'url(' + previewImageUrl + ')'"
+                                    (click)="openImagePreview(previewImageUrl)"
+                                    style="width: 100px; height: 100px; background-size: cover; background-position: center; cursor: pointer;">
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="col-sm-4" *ngIf="blockForm.get('departmentId')?.value !== '4' && depart != '4' ">
+                            <div class="form-group">
+                                <img [src]="previewImageUrl || (baseImgUrl + defaultPic)" width="70"
+                                    alt="Generic placeholder image" class="d-flex mr-3 cursor-pointer"
+                                    style="border: 4px solid #fff; cursor: pointer;"
+                                    (click)="openImagePreview(previewImageUrl || (baseImgUrl + defaultPic))">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">{{isEditMode?"Update":"Submit"}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-lg-12">
+        <button class="print-btn" style="float: right" (click)="printFile()">
+            Print PDF <i class='fas fa-print'></i>
+        </button>
+        <button type="button" class="csv-btn" style="float: right" (click)="exportToCSV()">
+            Export to CSV <i aria-hidden="true" class='fas fa-file-csv'></i>
+        </button>
+
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+        </div>
+        <div class="custm">
+            <ngx-datatable #table class="material fixed-header" [rows]="Fulldata" [headerHeight]="50"
+                [footerHeight]="50" [rowHeight]="100" [scrollbarH]="true" [scrollbarV]="true" [columnMode]="'force'"
+                [reorderable]="true" [limit]="10" [count]="Fulldata.length" [style.height.px]="600">
+                <!-- <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="'auto'" [rows]="Fulldata" id="dtDynamicVerticalScroll"> -->
+                <!-- Sr. No Column -->
+                <ngx-datatable-column name="srNo" [width]="60">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Sr.No</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                        {{ rowIndex + 1 }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Created ON Column -->
+                <ngx-datatable-column name="created_on" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Entry Date</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.created_on | date}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Vendor NAME Column -->
+                <ngx-datatable-column name="VendorFullName" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Name</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig"> {{ row.full_name }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Product Name Column -->
+                <ngx-datatable-column name="productName" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Product</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row.product_name }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Product Type Column -->
+                <ngx-datatable-column name="Product Type" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Product Type</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.product_type_name }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Packaging Size Column -->
+                <ngx-datatable-column name="Packaging Size" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Packaging Size</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.packing_size || 'N/A'}} {{ row.st_name}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Quantity Column -->
+                <ngx-datatable-column name="quantity" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.quantity }} {{row.unit_name}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Rejected Quantity Column -->
+                <ngx-datatable-column name="quantity" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header"> Rejected Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.rejected_quantity }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Price per Unit Column -->
+                <ngx-datatable-column name="priceper_unit" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Price</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.priceper_unit }}/ {{ row.unit_name
+                        }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Department Column -->
+                <ngx-datatable-column name="DprtName" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Department</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row.DprtName }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Department Head Column -->
+                <ngx-datatable-column name="DprtHeadFullName" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Dept. Head</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig"> {{ row.DprtHeadFullName }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Approval By Column -->
+                <ngx-datatable-column name="ApprvlbyFullName" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Approved By</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.ApprvlbyFullName ? row.ApprvlbyFullName : 'Pending' }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Bill Image Column -->
+                <ngx-datatable-column name="bill_image" [sortable]="true" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Bill Img.</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <img [src]="baseImgUrl + row.bill_image" width="50" height="50" />
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Status Column -->
+                <ngx-datatable-column name="ApprvlSts_name" [width]="120">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Approved</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span *ngIf="row.approval_status_id === 1" class="badge badge-warning mr-1">
+                            {{ row.ApprvlSts_name }}
+                        </span>
+                        <span *ngIf="row.approval_status_id === 2" class="badge badge-info mr-1">
+                            {{ row.ApprvlSts_name }}
+                        </span>
+                        <span *ngIf="row.approval_status_id === 3" class="badge badge-success mr-1">
+                            {{ row.ApprvlSts_name }}
+                        </span>
+
+                        <span *ngIf="row.approval_status_id === 4" class="badge badge-warning mr-1">
+                            {{ row.ApprvlSts_name }}
+                        </span>
+                        <span *ngIf="![1, 2, 3, 4].includes(row.approval_status_id)" class="badge badge-warning mr-1">
+                            {{ row.ApprvlSts_name }}
+                        </span>
+
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Below two columns are commented bcoz no such thing is there to make the payment status or change it (UnComment it for future use) -->
+
+
+                <!-- Payment Approval Column -->
+                <!-- <ngx-datatable-column name="mps_name" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Payment Status</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span *ngIf="row.approval_status_id === 1" class="badge badge-warning mr-1">
+                            {{ row.mps_name }}
+                        </span>
+                        <span *ngIf="row.approval_status_id === 2" class="badge badge-info mr-1">
+                            {{ row.mps_name }}
+                        </span>
+                        <span *ngIf="row.approval_status_id === 3" class="badge badge-success mr-1">
+                            {{ row.mps_name }}
+                        </span>
+                        <span *ngIf="row.approval_status_id === 4" class="badge badge-warning mr-1">
+                            {{ row.mps_name }}
+                        </span>
+                        <span *ngIf="![1, 2, 3, 4].includes(row.approval_status_id)" class="badge badge-warning mr-1">
+                            {{ row.mps_name }}
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column> -->
+
+                <!-- Payment Approved by Name Column -->
+                <!-- <ngx-datatable-column name="pstsby_name" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Payment Appr. By</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.pstsby_name }}
+                    </ng-template>
+                </ngx-datatable-column> -->
+
+
+                <!-- These above two columns are commented bcoz no such thing is there to make the payment status or change it (UnComment it for future use) -->
+
+                <!-- Action Column -->
+                <ngx-datatable-column name="Action" [sortable]="false" [width]="200">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Action</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <button class="view btn btn-outline-secondary w-100p mb-1 mr-1" type="button" title="Invoice"
+                            (click)="openInvoice(row?.id)">
+                            <span class="fa fa-file"></span>
+                        </button>
+                        <button class="view btn btn-outline-primary w-100p mb-1 mr-1" type="button" title="View"
+                            [disabled]="row.approval_status_id === 1" (click)="viewProduct(row?.id)">
+                            <span class="fa fa-eye"></span>
+                        </button>
+                        <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                            (click)="editProduct(row?.id)">
+                            <span class="edit-icon"></span>
+                        </button>
+                        <!-- <button class="delete btn btn-outline-danger w-100p mb-1 mr-1" type="button" title="Delete"
+                            >
+                            <i aria-hidden="true" class="fa fa-trash"></i>
+                        </button> -->
+                        <button class="edit btn btn-outline-danger w-100p mb-1 mr-1" type="button" title="Delete"
+                            (click)="deleteProduct(row?.id)">
+                            <i aria-hidden="true" class="fa fa-trash-o" style="font-size: 25px;"></i>
+                        </button>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="lg-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" #lgModal>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">Create New
+                    Product</h4>
+                <button type="button" class="close" data-dismiss="modal" #closeButton aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- ... rest of your modal content ... -->
+            <form [formGroup]="productForm" (ngSubmit)="createProduct()">
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Product Name -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="inputProductName">Product
+                                    Name</label>
+                                <input type="text" step="0.01" class="form-control" formControlName="productName"
+                                    placeholder="Product Name">
+                                <div *ngIf="productForm.get('productName')?.invalid && (productForm.get('productName')?.dirty || productForm.get('productName')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="productForm.get('productName')?.errors?.required">Product
+                                        Name is
+                                        required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- product type -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="Status">Product type</label>
+                                <div class="input-group">
+                                    <select class="form-control" formControlName="productType">
+                                        <option [value]="0" [selected]="true" disabled selected>select
+                                            Product Type</option>
+                                        <option *ngFor="let item of productTypeList" [value]="item?.id">
+                                            {{item.name}}
+
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Unit of Measure -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="unitId">UoM (Unit of
+                                    Measure)</label>
+                                <select class="form-control" formControlName="unitId" id="unitId">
+                                    <option [value]="0" disabled selected>Select
+                                        UOM</option>
+                                    <option *ngFor="let unit of unitList" [value]="unit?.id">{{ unit.name
+                                        }}</option>
+                                </select>
+                                <div *ngIf="productForm.get('unitId')?.invalid && (productForm.get('unitId')?.dirty || productForm.get('unitId')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="productForm.get('unitId')?.errors?.required">Unit
+                                        is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Image -->
+                        <div class="col-sm-4">
+                            <!-- <input type="file" id="proPic" class="form-control d-none" #pic accept="image/*"
+                                (change)="uploadFile(pic.files)"> -->
+
+                            <div class="form-group">
+                                <label for="prdctimage">Product
+                                    Image</label>
+                                <input type="file" class="form-control" #prdctimage accept="image/*"
+                                    (change)="uploadFileproduct(prdctimage.files)" />
+
+                            </div>
+                        </div>
+                        <!-- status -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="departmentId">Status</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="departmentId" formControlName="status">
+                                        <option [value]="1" selected>Active</option>
+                                        <option [value]="0">
+                                            Deactive
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- rough product  -->
+                        <div class="col-sm-4">
+
+                            <div class="form-group">
+                                <label for="departmentHeadId">Raw
+                                    Product</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="roughProductId" formControlName="roughProductId">
+                                        <option [value]="0" [selected]="true" disabled selected>Select
+                                            Raw Product</option>
+                                        <option *ngFor="let product of productData" [value]="product?.id">
+                                            {{ product.product_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <!-- fresh price -->
+                        <!-- <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="Status">Fresh price <span class="text-info">(price of
+                                        product
+                                        before packing)</span>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control"
+                                            formControlName="freshPrice" placeholder="Fresh price">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <!-- packed product price -->
+                        <!-- <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="Status">Packed Price <span class="text-info">(price of
+                                        product
+                                        after packing)</span>
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control"
+                                            formControlName="packedPrice" placeholder="Fresh price">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="deliveryCharge">Sale Price</label>
+                                <input type="number" step="0.01" class="form-control" formControlName="salePrice"
+                                    placeholder="Sale Price">
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                                <label for="salePrice">Sale Price </label>
+                                <div class="input-group">
+                                    <div class="input-group mt-4">
+                                        <input type="number" step="0.01" class="form-control"
+                                            formControlName="salePrice" placeholder="Sale Price">
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        <!-- Delivery Charge -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="deliveryCharge">Delivery Charge</label>
+                                <input type="number" step="0.01" class="form-control" formControlName="deliveryCharge"
+                                    placeholder="Delivery Charge">
+                            </div>
+                        </div>
+
+                        <!-- Discount -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="discount">Discount</label>
+                                <input type="number" step="0.01" class="form-control" formControlName="discount"
+                                    placeholder="Discount">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- GST -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="hasGst">Include GST?</label>
+                                <div class="input-group">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" formControlName="hasGst"
+                                            id="hasGstYes" [value]="true">
+                                        <label class="form-check-label" for="hasGstYes">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" formControlName="hasGst"
+                                            id="hasGstNo" [value]="false">
+                                        <label class="form-check-label" for="hasGstNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="productForm.get('hasGst')?.value">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="centralGst">Central GST</label>
+                                    <input type="number" step="0.01" class="form-control" formControlName="centralGst"
+                                        placeholder="Central GST">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="stateGst">State GST</label>
+                                    <input type="number" step="0.01" class="form-control" formControlName="stateGst"
+                                        placeholder="State GST">
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+
+
+
+                </div>
+
+                <!-- Submit Button -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary ">
+                        Create Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Image Preview Modal -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Image Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img [src]="selectedPreviewImage" class="img-fluid" alt="Full size preview">
+            </div>
+        </div>
+    </div>
+</div>

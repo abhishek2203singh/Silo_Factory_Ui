@@ -1,0 +1,175 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted d-flex justify-content-space-between">
+                <h5 class="mb-0">Packaging Size</h5>
+                <button type="button" [routerLink]="['/pages/admin/tools/products']"
+                    class="btn btn-primary mb-1 ml-auto" style="float: inline-end;"><i aria-hidden="true"
+                        routerLinkActive="router-link-active" class="fa fa-plus-circle"></i>
+                    Create Product</button>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="editForm" (ngSubmit)="isEditMode?updatePacking():onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <!-- product type -->
+                            <div class="form-group">
+                                <label for="productType">Product Type</label>
+                                <select class="form-control" (change)="loadProductsByProductType($event)"
+                                    id="productType" formControlName="productType">
+                                    <option [value]="0" disabled selected>Choose...</option>
+                                    <option *ngFor="let proType of proTypeList" [value]="proType.id">
+                                        {{ proType.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- product name -->
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="product">Product Name</label>
+                                <select (change)="loadProductUnits($event)" class="form-control" id="productId"
+                                    formControlName="productId">
+                                    <option [value]="0" disabled selected>Choose...</option>
+                                    <option *ngFor="let product of productList" [value]="product.id">
+                                        {{ product.product_name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="unitId">Unit Name</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="unitId" formControlName="unitId">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let unit of unitList" [value]="unit.possible_unit_id">{{
+                                            unit.possible_unit_name
+                                            }} , {{unit.st_name |uppercase}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="mrp">MRP</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="MRP" id="mrp"
+                                        formControlName="mrp">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="weight">Weight</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Weight" id="weight"
+                                        formControlName="weight">
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <div class="input-group-append">
+                                            <button type="submit"
+                                                class="btn btn-primary">{{isEditMode?"Update":"Submit"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+</div>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="packData">
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+            {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Product Type -->
+    <ngx-datatable-column name="productType">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product Type</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.product_type; else noData">
+                {{ row.product_type }}
+            </span>
+            <ng-template #noData>
+                No data available
+            </ng-template>
+        </ng-template>
+
+    </ngx-datatable-column>
+    <!-- Product Name -->
+    <ngx-datatable-column name="productname">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span> {{ row.product_name }}</span>
+        </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Unit Name -->
+    <ngx-datatable-column name="unitname">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Unit</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span> {{row.name+" ," }} {{ row.st_name | uppercase }}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- MRP -->
+    <ngx-datatable-column name="mrp">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">MRP</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span> {{row.mrp | currency:"INR"}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Weight -->
+    <ngx-datatable-column name="Weight">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Weight</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span> {{ row.weight }}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Entry Date-->
+    <ngx-datatable-column name="created_on">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span> {{ row.created_on | date}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!--  Action -->
+    <ngx-datatable-column name="action" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                (click)="editPackData(row?.id)">
+                <span class="edit-icon"></span>
+            </button>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

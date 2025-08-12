@@ -1,0 +1,423 @@
+<div class="row mt-2">
+    <div class="col-lg-12">
+        <button class="print-btn" style="float: right" (click)="printFile()">
+            Print PDF <i class='fas fa-print'></i>
+        </button>
+        <button type="button" class="csv-btn" style="float: right" (click)="exportToCSV()">
+            Export to CSV <i aria-hidden="true" class='fas fa-file-csv'></i>
+        </button>
+        <button #openButton type="button" class="print-btn btn-primary" style="float: inline-end;" data-toggle="modal"
+            data-target="#lg-modal"> Add
+            User <span class="badge badge-pill badge-white text-primary ml-1"><i
+                    class="fa fa-user-plus"></i></span></button>
+        <!-- <button #openButton type="button" style="margin: 15px 8px 0px 0" class="btn btn-primary"
+            style="float: inline-end;margin: 15px 8px 0px 0" data-toggle="modal" data-target="#lg-modal"> Add
+            user <span class="badge badge-pill badge-white text-primary ml-1"><i
+                    class="fa fa-user-plus"></i></span></button> -->
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+        </div>
+
+        <div class="custm">
+            <ngx-datatable #table class="material fixed-header" [rows]="rows" [columns]="columns" [headerHeight]="50"
+                [footerHeight]="50" [rowHeight]="50" [scrollbarH]="true" [scrollbarV]="true" [columnMode]="'force'"
+                [reorderable]="true" [limit]="10" [count]="rows.length" [style.height.px]="600">
+
+                <!-- Sr. No Column -->
+                <ngx-datatable-column name="srNo" [width]="60">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Sr. No</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row" let-rowIndex="rowIndex">
+                        {{ rowIndex + 1 }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- NAME Column -->
+                <ngx-datatable-column name="full_name" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Name</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row?.full_name | titlecase }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- mobile no -->
+                <ngx-datatable-column name="mobile" [width]="120">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Mobile No.</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.mobile }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Address Column -->
+                <ngx-datatable-column name="address" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Address</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.address }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- state -->
+                <ngx-datatable-column name="state" [width]="100">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">State</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.state_name }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- city -->
+                <ngx-datatable-column name="city" [width]="100">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">City</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.city_name }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- department -->
+                <ngx-datatable-column name="department_name" [width]="150">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Department</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row.department_name }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- role -->
+                <ngx-datatable-column name="role_name" [width]="250">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Role</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row?.role_name }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Joining Date -->
+                <ngx-datatable-column name="joining_date" [width]="120">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Joining Date</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.joining_date | date }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Status-->
+                <ngx-datatable-column name="status" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Status</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="badge-pill fontBig  text-success" *ngIf="row.status === 1">Active</span>
+                        <span class="badge-pill fontBig  text-danger" *ngIf="row.status === 0">Deactive</span>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Action Column -->
+                <ngx-datatable-column name="Action" [width]="100">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Action</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="d-flex">
+                            <button class="btn btn-outline-success btn-sm mr-2" type="button" title="Edit"
+                                (click)="editUser(row?.id)">
+                                <span class="fa fa-eye"></span>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" type="button" title="Delete"
+                                (click)="deleteUser(row?.id,row?.full_name)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="lg-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label"
+    style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">
+                    {{isEditUser?"Edit Details":"Add User"}}
+                </h4>
+                <button type="button" #closeButton class="close" data-dismiss="modal"
+                    (click)="userForm.reset();isEditUser=false;" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+
+            <form [formGroup]="userForm" (ngSubmit)="isEditUser?updateUser(): createUser()">
+                <div class="modal-body">
+                    <!-- profile preview -->
+                    <div class="row justify-content-center align-items-center mb-4">
+                        <div class="col-auto text-center">
+                            <div style="position: relative; display: inline-block;">
+                                <img [src]="baseImgUrl + currentPic" alt="Profile Picture"
+                                    class="rounded-circle shadow-lg"
+                                    style="height: 120px; width: 120px; object-fit: cover; border: 4px solid #fff;">
+                                <!-- Camera Icon with Hover Effect -->
+                                <label for="proPic" class="camera-icon">
+                                    <i class="fa fa-camera" style="font-size: 18px;"></i>
+                                </label>
+                                <input type="file" id="proPic" class="form-control d-none" #pic accept="image/*"
+                                    (change)="uploadFile(pic.files)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-10">
+                        <!-- full name -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputFullName">Full Name</label>
+                                <input type="text" class="form-control" id="inputFullName" formControlName="full_name"
+                                    placeholder="Full Name">
+                                <div *ngIf="userForm.get('full_name')?.invalid && (userForm.get('full_name')?.dirty || userForm.get('full_name')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('full_name')?.errors?.required">Full
+                                        Name is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- mobile no -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputMobile">Mobile</label>
+                                <input type="text" class="form-control" id="inputMobile" formControlName="mobile"
+                                    placeholder="Mobile" [maxLength]="10">
+
+                                <div *ngIf="userForm.get('mobile')?.invalid && (userForm.get('mobile')?.dirty || userForm.get('mobile')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('mobile')?.errors?.required">
+                                        Mobile number is required.
+                                    </div>
+                                    <div *ngIf="userForm.get('mobile')?.errors?.pattern">
+                                        Enter a valid mobile number.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- email -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputEmail">Email</label>
+                                <input type="text" class="form-control" id="inputEmail" formControlName="email"
+                                    placeholder="Email">
+                                <small
+                                    *ngIf="userForm.get('email')!.touched && userForm.get('email')!.hasError('required')"
+                                    class="text-danger">Email is
+                                    required</small>
+                                <small
+                                    *ngIf="userForm.get('email')!.touched && userForm.get('email')!.hasError('pattern')"
+                                    class="text-danger">Invalid Email.
+                                    digits</small>
+
+                            </div>
+                        </div>
+
+                        <!-- password -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputPassword">Password</label>
+                                <input type="number" class="form-control" id="inputPassword" formControlName="password"
+                                    placeholder="Password">
+                                <div *ngIf="userForm.get('password')?.invalid && (userForm.get('password')?.dirty || userForm.get('password')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('password')?.errors?.required">Password
+                                        is required.</div>
+                                    <div *ngIf="userForm.get('password')?.errors?.minlength">Password
+                                        must be at least 6 characters
+                                        long.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- address -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputAddress">Address</label>
+                                <input type="text" class="form-control" id="inputAddress" formControlName="address"
+                                    placeholder="Address">
+                                <div *ngIf="userForm.get('address')?.invalid && (userForm.get('address')?.dirty || userForm.get('address')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('address')?.errors?.required">Address
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- state -->
+                        <div class="col-sm-3">
+
+                            <div class="form-group">
+                                <label for="inputState">State</label>
+                                <select #st class="form-control" formControlName="state" (change)="getCities(st?.value)"
+                                    id="inputState">
+                                    <option value disabled selected>Select
+                                        State</option>
+                                    <option *ngFor="let state of stateList" [value]="state?.id">{{state.name}}</option>
+
+                                </select>
+                                <div *ngIf="userForm.get('state')?.invalid && (userForm.get('state')?.dirty || userForm.get('state')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('state')?.errors?.required">State
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- city -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputCity">City</label>
+                                <select class="form-control" formControlName="city" id="inputCity">
+                                    <option value disabled selected>Select
+                                        City</option>
+                                    <option *ngFor="let city of cityList" [value]="city?.id">{{city?.name}}</option>
+                                    <!-- Add options dynamically here -->
+                                </select>
+                                <div *ngIf="userForm.get('city')?.invalid && (userForm.get('city')?.dirty || userForm.get('city')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('city')?.errors?.required">City
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- pincode -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputPincode">Pincode</label>
+                                <input type="text" formControlName="pincode" class="form-control" id="inputPincode"
+                                    placeholder="Pincode">
+                                <div *ngIf="userForm.get('pincode')?.invalid && (userForm.get('pincode')?.dirty || userForm.get('pincode')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('pincode')?.errors?.required">Pincode
+                                        is required.</div>
+                                    <div *ngIf="userForm.get('pincode')?.errors?.pattern">Pincode
+                                        must be a 6-digit number.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- department  -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputDepartmentId">Department
+                                </label>
+                                <select class="form-control" formControlName="department_id" id="inputDepartmentId">
+                                    <option value disabled selected>Select
+                                        Department</option>
+                                    <option *ngFor="let dpt of departmentList" [value]="dpt?.id">{{dpt?.name}}</option>
+
+                                </select>
+                                <div *ngIf="userForm.get('department_id')?.invalid && (userForm.get('department_id')?.dirty || userForm.get('department_id')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('department_id')?.errors?.required">Department
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- role -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputRoleId">Role </label>
+                                <select class="form-control" formControlName="role_id" id="inputRoleId">
+                                    <option value disabled selected>Select
+                                        Role</option>
+                                    <option *ngFor="let role of roleList" [value]="role?.id">{{role?.name}}</option>
+
+                                </select>
+                                <div *ngIf="userForm.get('role_id')?.invalid && (userForm.get('role_id')?.dirty || userForm.get('role_id')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('role_id')?.errors?.required">Role
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- gender -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="gender">Gender
+                                </label>
+                                <select class="form-control" formControlName="gender" id="gender">
+                                    <option value disabled selected>Select
+                                        Gender</option>
+                                    <option value="male">Male
+                                    </option>
+                                    <option value="female">Female
+                                    </option>
+
+                                </select>
+                                <div *ngIf="userForm.get('gender')?.invalid && (userForm.get('gender')?.dirty || userForm.get('gender')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('gender')?.errors?.required">Gender
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- salary -->
+                        @if(isEditUser){<div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputPincode">Salary</label>
+                                <input type="number" formControlName="salary" class="form-control" id="inputSalary"
+                                    placeholder="Salary">
+                                <div *ngIf="userForm.get('salary')?.invalid && (userForm.get('salary')?.dirty || userForm.get('salary')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="userForm.get('salary')?.errors?.required">salary
+                                        is required.</div>
+                                    <div *ngIf="userForm.get('salary')?.errors?.pattern">salary
+                                        must be 0 or Higher </div>
+                                </div>
+
+                            </div>
+                        </div>}
+
+                        <!-- about me -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputAboutMe">About Me</label>
+                                <textarea formControlName="about_me" class="form-control" id="inputAboutMe"
+                                    placeholder="About Me"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <button type="submit" [disabled]="!userForm.valid"
+                            class="btn btn-primary">{{isEditUser?"Update":"Submit"}}</button>
+                    </div>
+                </div>
+            </form>
+            <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> -->
+        </div>
+    </div>
+</div>

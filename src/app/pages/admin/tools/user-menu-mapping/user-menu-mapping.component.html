@@ -1,0 +1,75 @@
+<div class="container">
+    <h2>Assign Permissions</h2>
+
+    <!-- User Dropdown -->
+    <div class="form-group">
+        <label for="userId">Select User</label>
+        <select id="userId" class="form-control" [(ngModel)]="selectedUser" (change)="onUserChange($event)">
+            <option [value]="0" disabled selected>Select User</option>
+            <option *ngFor="let user of users" [value]="user.id">
+                {{ user.full_name }}
+            </option>
+        </select>
+    </div>
+    <!-- Department Dropdown (Optional) -->
+    <div class="form-group">
+        <label for="department">Select Department</label>
+        <select id="department" class="form-control" (change)="onDepartmentChange($event)">
+            <option value disabled selected>Select</option>
+            <option *ngFor="let list of departmentList" [value]="list.id">
+                {{ list.name }}
+            </option>
+        </select>
+    </div>
+
+    <!-- Permissions Table -->
+    <div *ngIf="menusArray.length">
+        <h3>Assign Permissions for {{ selectedUserName }}</h3>
+        <ng-container
+            *ngTemplateOutlet="permissionsTableTemplate; context: { $implicit: menusArray, level: 0 }"></ng-container>
+        <button class="btn btn-primary" (click)="savePermissions()" [disabled]="!selectedUser">
+            Save Permissions
+        </button>
+    </div>
+</div>
+
+<!-- Reusable Permissions Table Template -->
+<ng-template #permissionsTableTemplate let-menuItems let-level="level">
+    <table class="table table-bordered" [ngClass]="{'sub-menu': level > 0}">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>{{ level === 0 ? 'Menu Item' : 'Submenu Item' }}</th>
+                <th>Read</th>
+                <th>Write</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let menuItem of menuItems">
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span *ngIf="menuItem?.hasSubMenu" class="menu-icon" style="cursor: pointer;"
+                                title="Click to check submenu" (click)="toggleSubMenu(menuItem)">
+                                {{ menuItem?.SubMenu?.length > 0 ? (menuItem?.isSubMenuExpanded ? '▼' : '▶') : '' }}
+                            </span>
+                            {{ menuItem.menu_name }}
+                        </div>
+                    </td>
+                    <td><input type="checkbox" /></td>
+                    <td><input type="checkbox" /></td>
+                    <td><input type="checkbox" /></td>
+                </tr>
+                <!-- Recursive Submenu Rendering -->
+                <tr *ngIf="menuItem?.SubMenu && menuItem.isSubMenuExpanded">
+                    <td colspan="5">
+                        <ng-container
+                            *ngTemplateOutlet="permissionsTableTemplate; context: { $implicit: menuItem.SubMenu, level: level + 1 }"></ng-container>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</ng-template>

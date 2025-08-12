@@ -1,0 +1,20 @@
+<div class="wrapper-inner"
+    [ngClass]="{ 'vertical-menu-tooltip-place': (settings.theme.menuType == 'mini' && settings.theme.menu == 'vertical'),
+                                        'horizontal-menu-tooltip-place': (settings.theme.menuType == 'mini' && settings.theme.menu == 'horizontal') }">
+
+    <app-header></app-header>
+    <div class="d-flex h-100"
+        [ngClass]="{'flex-row': settings.theme.menu == 'vertical', 'flex-column': settings.theme.menu != 'vertical'}">
+        @if (settings.theme.menu == 'vertical') {
+        <app-sidebar></app-sidebar>
+        }
+        <div class="main-content">
+            <app-side-chat></app-side-chat>
+            <app-breadcrumb></app-breadcrumb>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+</div>
+<app-footer></app-footer>
+<app-back-top [position]="200"></app-back-top>

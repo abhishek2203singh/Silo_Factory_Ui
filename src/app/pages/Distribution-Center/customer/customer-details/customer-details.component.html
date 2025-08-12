@@ -1,0 +1,1415 @@
+<div class="row">
+  <div class="col-lg-12 col-12">
+    <button type="button" class="btn btn-primary float-right mb-2" (click)="goBack()"><i
+        class="fas fa-arrow-left me-2"></i> Back</button>
+    <div class="clearfix">
+      <ul class="nav nav-tabs custom top">
+        <li rel="profile" class="nav-item">
+          <a data-toggle="tab" href="#profile" class="nav-link active show"><i class="fa fa-user"></i> Profile</a>
+        </li>
+        <!-- <li rel="pricing" class="nav-item">
+          <a data-toggle="tab" href="#pricing" class="nav-link"><i class="fa fa-inr"></i> Pricing</a>
+        </li> -->
+        <li rel="subscription" class="nav-item">
+          <a data-toggle="tab" href="#subscription" class="nav-link"><i class="fa fa-pencil-square-o"></i>
+            Subscription</a>
+        </li>
+        <li rel="payment" class="nav-item">
+          <a data-toggle="tab" href="#payment" class="nav-link"><i class="fa fa-credit-card"></i> Payment</a>
+        </li>
+        <li rel="order" class="nav-item">
+          <a data-toggle="tab" href="#order" class="nav-link"><i class="fa fa-shopping-cart"></i> Order</a>
+        </li>
+        <li rel="delivery" class="nav-item">
+          <a data-toggle="tab" href="#delivery" class="nav-link"><i class="fa fa-shopping-cart"></i> Delivery</a>
+        </li>
+        <!-- <li rel="purchase" class="nav-item">
+          <a data-toggle="tab" href="#purchase" class="nav-link"><i class="fa fa-money"></i> Purchase</a>
+        </li> -->
+        <li rel="invoice" class="nav-item">
+          <a data-toggle="tab" href="#invoice" class="nav-link"><i class="fa fa-money"></i> Invoice</a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content top">
+      <div class="tab-pane active" id="profile">
+        <div class="modal-content">
+          <div class="modal-header state modal-primary"
+            style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 class="modal-title" id="modal-large-label">
+              Customer Detail
+            </h4>
+            <div>
+
+            </div>
+          </div>
+          <form [formGroup]="CustomerForm" (ngSubmit)="onSubmitCustForm()">
+            <div class="modal-body">
+              <!-- profile preview -->
+              <div class="row justify-content-center align-items-center mb-4">
+                <div class="col-auto text-center">
+                  <div style="position: relative; display: inline-block">
+                    <img [src]="baseImgUrl + currentPic" alt="Profile Picture" class="rounded-circle shadow-lg" style="
+                          height: 120px;
+                          width: 120px;
+                          object-fit: cover;
+                          border: 4px solid #fff;
+                        " />
+                    <!-- Camera Icon with Hover Effect -->
+                    <label for="proPic" class="camera-icon">
+                      <i class="fa fa-camera" style="font-size: 18px"></i>
+                    </label>
+                    <input type="file" id="proPic" class="form-control d-none" #pic accept="image/*"
+                      (change)="uploadFile(pic.files)">
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-10">
+
+                <!-- full name -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputFullName">Full Name</label>
+                    <input type="text" class="form-control" id="inputFullName" placeholder="Full Name" min="0"
+                      formControlName="full_name">
+                  </div>
+                </div>
+
+                <!-- gender -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select class="form-control" formControlName="gender" id="gender">
+                      <option value disabled selected>Select
+                        Gender</option>
+                      <option value="male">Male
+                      </option>
+                      <option value="female">Female
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- mobile no -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputMobile">Mobile</label>
+                    <input type="text" class="form-control" id="inputMobile" formControlName="mobile"
+                      placeholder="Mobile" [maxLength]="10" />
+                  </div>
+                </div>
+
+                <!-- email -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" class="form-control" id="inputEmail" formControlName="email"
+                      placeholder="Email" />
+                  </div>
+                </div>
+
+                <!-- password -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" class="form-control" id="inputPassword" formControlName="password"
+                      placeholder="Password" />
+                  </div>
+                </div>
+
+                <!-- address -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputAddress">Address</label>
+                    <input type="text" class="form-control" id="inputAddress" formControlName="address"
+                      placeholder="Address" />
+                  </div>
+                </div>
+
+                <!-- state -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputState">State</label>
+                    <select #st class="form-control" formControlName="state" (change)="getCities(st?.value)"
+                      id="inputState">
+                      <option value disabled selected>Select
+                        State</option>
+                      <option *ngFor="let state of stateList" [value]="state?.id">{{state.name}}</option>
+                    </select>
+                    <div
+                      *ngIf="CustomerForm.get('state')?.invalid && (CustomerForm.get('state')?.dirty || CustomerForm.get('state')?.touched)"
+                      class="text-danger">
+                      <div *ngIf="CustomerForm.get('state')?.errors?.required">State
+                        is required.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- city -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputCity">City</label>
+                    <select class="form-control" formControlName="city" id="inputCity">
+                      <option value disabled selected>Select
+                        City</option>
+                      <option *ngFor="let city of cityList" [value]="city?.id">{{city?.name}}</option>
+                      <!-- Add options dynamically here -->
+                    </select>
+                    <div
+                      *ngIf="CustomerForm.get('city')?.invalid && (CustomerForm.get('city')?.dirty || CustomerForm.get('city')?.touched)"
+                      class="text-danger">
+                      <div *ngIf="CustomerForm.get('city')?.errors?.required">City
+                        is required.</div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- pincode -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputPincode">Pincode</label>
+                    <input type="text" formControlName="pincode" class="form-control" id="inputPincode"
+                      placeholder="Pincode" />
+                  </div>
+                </div>
+
+                <!-- Delivery Charges -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <div class="form-group">
+                      <label for="inputPincode">Delivery Charges</label>
+                      <input type="text" formControlName="delivery charges" class="form-control" id="deliverycharges"
+                        placeholder="Delivery Charges" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputRoleId">Status</label>
+                    <input type="text" formControlName="status" class="form-control" id="status" placeholder="status"
+                      readonly />
+                  </div>
+                </div>
+
+                <!--Department -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputRoleId">Department</label>
+                    <select class="form-control" formControlName="department_id" id="department_id">
+                      <option value="" disabled selected>Select
+                        Department</option>
+                      <option [value]="6">Distribution</option>
+                      <option [value]="7">Retail Shop</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- User Role -->
+                <div class="col-sm-3">
+                  <div class="form-group">
+                    <label for="inputRoleId">Role </label>
+                    <select class="form-control" formControlName="role_id" id="inputRoleId">
+                      <option value disabled selected>Select
+                        Role</option>
+                      <option [value]="4">Customer</option>
+
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="row justify-content-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- <div class="tab-pane" id="pricing">
+        <div class="modal-content">
+          <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label">
+              Customer Product Price
+            </h4>
+            <button class="print-btn1" style="float: right">
+              Print PDF <i class='fas fa-print'></i>
+            </button>
+          </div>
+          <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [rows]="data">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+              [resizeable]="false">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="S.No">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">S.No</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value" let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Product">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Product</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                {{ row.product }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Price">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Price</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                {{ row.price }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="User  Price">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">User Price</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                {{ row.userPrice }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Action">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Action</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <button class="edit btn btn-outline-success w-100p mb-1 mr-1" (click)="onEdit(row)" type="button"
+                  title="Edit Product">
+                  <i aria-hidden="true" class="edit-icon"></i> Edit
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+
+          <div *ngIf="selectedRow" class="edit-form">
+            <h4>Edit Product Price</h4>
+            <form [formGroup]="editForm" (ngSubmit)="onSubmitPrice()">
+              <div class="form-group">
+                <label for="product">Product Name</label>
+                <input type="text" class="form-control" id="product" formControlName="product"
+                  [ngClass]="{'is-invalid': submitted && f.product.errors}">
+                <div *ngIf="submitted && f.product.errors" class="invalid-feedback">
+                  <div *ngIf="f.product.errors.required">Product name is required</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" formControlName="price"
+                  [ngClass]="{'is-invalid': submitted && f.price.errors}">
+                <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                  <div *ngIf="f.price.errors.required">Price is required</div>
+                  <div *ngIf="f.price.errors.min">Price must be greater than 0</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="userPrice">User Price</label>
+                <input type="number" class="form-control" id="userPrice" formControlName="userPrice"
+                  [ngClass]="{'is-invalid': submitted && f.userPrice.errors}">
+                <div *ngIf="submitted && f.userPrice.errors" class="invalid-feedback">
+                  <div *ngIf="f.userPrice.errors.required">User price is required</div>
+                  <div *ngIf="f.userPrice.errors.min">User price must be greater than 0</div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> -->
+      <div class="tab-pane" id="subscription">
+        <div id="accordion-1" role="tablist">
+          <div class="card">
+
+            <div role="tab" id="headingOne" class="card-header d-flex justify-content-between align-items-center">
+              <!-- <h5 class="mb-0">
+                <button data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
+                  class="collapsed custome-btn1" title="Click to Add">
+                  <i class="fa fa-plus"></i>&nbsp;Add New Subscription
+                </button>
+              </h5> -->
+
+              <div class="marquee-container">
+                <marquee behavior="scroll" direction="left" class="marquee-status"
+                  [ngClass]="{'active': sub_status === 'Active', 'inactive': sub_status !== 'Active'}">
+                  <i aria-hidden="true"></i>&nbsp;Current Subscription Status of Customer is:&nbsp;
+                  {{ sub_status === 'Active' ? sub_status : 'Inactive' }}
+                </marquee>
+              </div>
+            </div>
+
+
+            <!-- <div id="collapseOne" class="collapse" data-parent="#accordion-1" role="tabpanel"
+              aria-labelledby="headingOne">
+              <form [formGroup]="subscriptionDataForm" (ngSubmit)="onSubmit()" novalidate
+                class="ng-untouched ng-pristine ng-valid">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="row">
+                    Product Selection 
+                      <div class="col-lg-3 form-group">
+                        <label>Product</label>
+                        <select class="form-control" formControlName="productId">
+                          <option value="0" disabled selected>Choose...</option>
+                          <option *ngFor="let name of namesList" [value]="name?.id">{{
+                            name?.product_name }}</option>
+                        </select>
+                      </div>
+                      Delivery Agent Selection
+                      <div class="col-lg-3 form-group">
+                        <label>Delivery Agent</label>
+                        <select class="form-control" formControlName="deliveryBoyId">
+                          <option value="0" disabled selected>Choose...</option>
+                          <option *ngFor="let name of deliveryBoysData" [value]="name?.id">{{
+                            name?.full_name }}</option>
+                        </select>
+                      </div>
+
+                      Shift Time Selection 
+                      <div class="col-lg-3 form-group">
+                        <label>Shift Time</label>
+                        <select name="shift" required class="form-control required" formControlName="shift">
+                          <option value="0">---select---</option>
+                          <option value="1">Morning</option>
+                          <option value="2">Evening</option>
+                        </select>
+                      </div>
+
+                       Quantity Input 
+                      <div class="col-lg-3 form-group">
+                        <label>Quantity</label>
+                        <input name="qty" type="number" min="0" step="0.5" maxlength="8" placeholder="Quantity"
+                          class="form-control decimal" formControlName="quantity" />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                    Delivery Type with Days
+                      <div class="col-lg-3 form-group">
+                        <label>Delivery Type</label>
+                        <select name="shiftDays" required class="form-control required"
+                          formControlName="selectedDayOption">
+                          <option value="0">---select---</option>
+                          <option value="1">All Days</option>
+                          <option value="2">Alternate Day</option>
+                          <option value="3">Specific Day</option>
+                        </select>
+                      </div>
+
+                     Conditionally show Date Picker for Alternate Day 
+                      <div *ngIf="subscriptionDataForm.get('selectedDayOption')?.value === '2'"
+                        class="col-lg-3 form-group">
+                        <label>Choose Date</label>
+                        <div class="input-group">
+                          <input class="form-control" name="date" data-date-autoclose="true"
+                            data-date-format="yyyy-mm-dd" id="date" type="date" />
+                        </div>
+                      </div>
+
+                      Conditionally show checkboxes for Specific Day 
+                      <div *ngIf="subscriptionDataForm.get('selectedDayOption')?.value === '3'"
+                        class="col-lg-3 form-group">
+                        <label>Choose Days</label>
+                        <div class="row">
+                          <div class="col-md-6" *ngFor="let day of days">
+                            <label class="fancy-checkbox">
+                              <input type="checkbox" [id]="day" name="day" [value]="day"
+                                (change)="onDaySelection(day, $event)" />
+                              &nbsp;
+                              <span>{{ day }}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer bg-default">
+                      <button type="submit" class="btn btn-primary pull-right">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            </div> -->
+          </div>
+        </div>
+        <div class="modal-content mt-2">
+          <div class="modal-header state modal-primary"
+            style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 class="modal-title" id="modal-large-label">
+              Customer Subscription
+            </h4>
+            <div>
+              <!-- Print button -->
+              <button class="print-btn1" style="margin-left: 10px;" (click)="printFile()">
+                <i class='fas fa-print'></i>&nbsp;Print PDF
+              </button>
+
+              <!--  CSV button -->
+              <button type="button" class="csv-btn" style="margin-left: 10px;" (click)="exportToCSV()">
+                Export to CSV <i aria-hidden="true" class="fas fa-file-csv"></i>
+              </button>
+            </div>
+          </div>
+          <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [rows]="subscriptionData">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+              [resizeable]="false">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="S.No">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Sr No.</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Product">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Product</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{row.product_name}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Shift">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Shift</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{row.shift_name}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Delivery Agent">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Delivery Agent</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{row.delivery_boy_name}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Quantity">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Quantity</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{row.quantity}}
+              </ng-template>
+            </ngx-datatable-column>
+            <!-- 
+          <ngx-datatable-column name="Update Quantity (One Day Only)">
+            <ng-template ngx-datatable-header-template>
+              <span class="column-header">Update Quantity (One Day Only)</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template >
+              2
+            </ng-template>
+          </ngx-datatable-column> -->
+
+            <ngx-datatable-column name="Day Selection">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Day Selection</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngIf="row?.sunday == 1">Sun,</span>
+                <span *ngIf="row?.monday == 1"> Mon,</span>
+                <span *ngIf="row?.tuesday == 1"> Tue,</span>
+                <span *ngIf="row?.wednesday == 1"> Wed,</span>
+                <span *ngIf="row?.thursday == 1"> Thu,</span>
+                <span *ngIf="row?.friday == 1"> Fri,</span>
+                <span *ngIf="row?.saturday == 1"> Sat</span>
+                <span *ngIf="row?.alternate_day"> Alternate
+                  Day({{row?.alternate_day | date}})</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Actual Price">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Actual Price</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{row.userPrice}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- <ngx-datatable-column name="Action">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Action</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                  (click)="editData(row.subscription_id)">
+                  <i aria-hidden="true" class="edit-icon"></i>
+                </button>
+              </ng-template>
+            </ngx-datatable-column> -->
+          </ngx-datatable>
+        </div>
+      </div>
+      <div class="tab-pane" id="payment">
+        <div id="accordion-1" role="tablist">
+          <div class="card">
+            <div role="tab" id="headingOne" class="card-header">
+              <h5 class="mb-0"><button data-toggle="collapse" href="#collapseOne" aria-expanded="false"
+                  aria-controls="collapseOne" class="collapsed custome-btn1" title="Click to Add"> <i
+                    class="fa fa-plus"></i>&nbsp;New
+                  Payment </button></h5>
+            </div>
+            <div id="collapseOne" class="collapse" data-parent="#accordion-1" role="tabpanel"
+              aria-labelledby="headingOne">
+              <div class="card-body">
+                <form name="form" class="form-auth-small ng-untouched ng-pristine ng-invalid">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 id="addpaymentModelLabel" class="title">
+                        New Payment Entry
+                      </h4>
+                      <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <p aria-hidden="true">×</p>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-lg-3 form-group">
+                          <label>Date</label><input required="" id="dateml" name="dateasa" type="date"
+                            data-date-format="dd-mm-yyyy"
+                            class="form-control required date ng-untouched ng-pristine ng-valid"
+                            max="2024-12-11" /><!---->
+                        </div>
+                        <div class="col-lg-3 form-group">
+                          <label>Amount</label><input name="Amount" type="number" placeholder="Amount"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            step="0.000" maxlength="8" required=""
+                            class="form-control decimal required required-quantity ng-untouched ng-pristine ng-invalid" /><!---->
+                        </div>
+
+                        <div class="col-lg-3 form-group">
+                          <label>Collected By</label><input name="Collected by" type="varchar"
+                            placeholder="Collected By" maxlength="8"
+                            class="form-control decimal required required-quantity ng-untouched ng-pristine" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                          <label>Payment Mode<span class="productUnit"></span></label><select name="Payment" required=""
+                            class="form-control ng-untouched ng-pristine ng-valid">
+                            <option value="Cash">Cash</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Online">Online</option>
+                            <option value="Cheque">Cheque</option>
+                          </select><!---->
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-6 form-group">
+                          <label>Previous Balance Description</label><input name="Previous Balance" maxlength="5"
+                            class="form-control decimal required required-quantity ng-untouched ng-pristine" />
+                        </div>
+
+                        <div class="col-lg-6 form-group">
+                          <label>Description<span class="productUnit"></span></label><textarea name="description"
+                            cols="5" rows="3" value=""
+                            class="form-control decimal required required-quantity ng-untouched ng-pristine ng-valid"></textarea>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary pull-right" disabled="">
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix mt-2">
+          <ul class="nav nav-tabs custom top">
+            <li rel="cashPayment" class="nav-item">
+              <a data-toggle="tab" href="#cashPayment" class="nav-link active"><i class="fa fa-inr"></i>&nbsp;Cash
+                Payment</a>
+            </li>
+            <li rel="otherPayment" class="nav-item">
+              <a data-toggle="tab" href="#otherPayment" class="nav-link"><i
+                  class="fa fa-pencil-square-o"></i>&nbsp;Other
+                Payment</a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content top">
+          <div class="tab-pane active" id="cashPayment">
+            <div class="modal-content">
+              <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">
+                  Cash Payment
+                </h4>
+                <button class="print-btn1" style="float: right">
+                  Print PDF <i class='fas fa-print'></i>
+                </button>
+              </div>
+              <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+                <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                  [resizeable]="false">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="S.No">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">S.No</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    1
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Product">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Product</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    product of subscription
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Shift">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Shift</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                    Morning
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Delivery Agent">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Delivery Agent</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    Ram
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Quantity">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Quantity</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    2400
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Update Quantity One Day Only">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Update Quantity (1 Day)</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    2
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Day Selection">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Day Selection</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    Monday
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Actual Price">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Actual Price</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    2200
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Action">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Action</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button"
+                      title="Pasteurization Silo List">
+                      <i aria-hidden="true" class="edit-icon"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+
+            </div>
+          </div>
+          <div class="tab-pane" id="otherPayment">
+            <div class="modal-content">
+              <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">
+                  Other Payment
+                </h4>
+              </div>
+              <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+                <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                  [resizeable]="false">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="S.No">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">S.No</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    <!-- Cell content for S.No -->
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Date">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Date</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    <!-- Cell content for Date -->
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Amount">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Amount</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                    <!-- Cell content for Amount -->
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Collected By">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Collected By</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    <!-- Cell content for Collected By -->
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Status">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Status</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    <!-- Cell content for Status -->
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+
+            </div>
+            <div class="modal-content mt-5">
+              <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">
+                  <i class="fa fa-list"></i> Cheque Status Payment List
+                </h4>
+              </div>
+              <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+
+                <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                  [resizeable]="false">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="S.No">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">S.No</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    1
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Date">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Date</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    06/11/2024
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Customer">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Customer</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                    Govind
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Mobile">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Mobile</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                    9475862485
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Collected By">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Collected By</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    Shyam
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Amount">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Amount</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                    5500
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Status">
+                  <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Status</span>
+                  </ng-template>
+                  <ng-template ngx-datatable-cell-template let-value="value">
+                    In Process
+                  </ng-template>
+                </ngx-datatable-column>
+
+              </ngx-datatable>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="order">
+        <!-- <div id="accordion-1" role="tablist">
+          <div class="card">
+            <div role="tab" id="headingOne" class="card-header">
+              <h5 class="mb-0"><button data-toggle="collapse" href="#collapseOne" aria-expanded="false"
+                  aria-controls="collapseOne" class="collapsed custome-btn1" title="Click to Add"> <i
+                    class="fa fa-plus"></i>&nbsp;New
+                  Order </button></h5>
+            </div>
+            <div id="collapseOne" class="collapse" data-parent="#accordion-1" role="tabpanel"
+              aria-labelledby="headingOne">
+              <div class="card-body">
+                <form novalidate="" class="ng-untouched ng-pristine ng-invalid">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 id="femalecattleModalLabel" class="title">
+                        New Customer Orders Entry
+                      </h4>
+                      <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <p aria-hidden="true">×</p>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-lg-3 form-group">
+                          <label>Customer</label><span name="daname" style="color: royalblue">
+                            <p>abhishek singh</p>
+                          </span>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                          <label>Product</label><select required="" ngmodel="" name="productpro"
+                            class="form-control required productOptions ng-untouched ng-pristine ng-valid">
+                            <option value="0">---select---</option>
+                            <option value="1">Milk</option>
+                            <option value="2">Cream</option>
+                            <option value="6">Pure Goat Milk</option>
+                            <option value="7">Pure Cow Milk</option>
+                            <option value="8">Pure Buffalo Milk</option>
+                            <option value="9">Pure Buffalo Milk</option>
+                            <option value="10">Pure Camel Milk</option>
+                            <option value="11">Lassi</option>
+                            <option value="12">Shrikhand</option>
+                            <option value="13">Curd</option>
+                            <option value="53">Toned Milk</option>
+                            <option value="65">Cow Dung</option>
+                            <option value="66">Paneer</option>
+                            <option value="67">Cheese</option>
+                            <option value="68">Vermi Compost</option>
+                            <option value="69">Flavored Milk</option>
+                            <option value="70">Milk Powder</option>
+                            <option value="71">Other</option>
+                            <option value="72">Bhindi</option>
+                            <option value="73">Rose</option>
+                            <option value="74">Carrot</option>
+                            <option value="75">Haryanvi Carrot</option>
+                            <option value="77">Imli</option>
+                            <option value="78">Virus</option>
+                            <option value="79">Daru</option>
+                            <option value="80">we</option>
+                            <option value="81">Chaach</option>
+                            <option value="82">Kundru</option>
+                            <option value="83">Khoa/Khova</option>
+                            <option value="84">Mixed Milk</option>
+                            <option value="85">Cow Toned Milk</option>
+                            <option value="86">Buffalo Toned Milk</option>
+                            <option value="92">Butter</option>
+                            <option value="93">Pure Ghee</option>
+                          </select>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                          <label>Status</label><select name="statusnma" id="stss"
+                            class="form-control orderStatusOptions ng-untouched ng-pristine ng-valid">
+                            <option selected="selected" value="1">
+                              Processing
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                          <label>Requested Delivery Date</label><input type="date" data-date=""
+                            data-date-format="YYYY MMMM DD" placeholder="Delivery Date" name="datedli" required=""
+                            class="form-control ng-untouched ng-pristine ng-valid" min="2024-12-10" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-3 form-group">
+                          <label>Quantity<span class="productUnit"></span></label><input min="1"
+                            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                            type="number" step="0.5" maxlength="5" name="quantity" placeholder="Quantity"
+                            class="form-control decimal required required-quantity ng-untouched ng-pristine ng-valid" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                          <label>Unit Price <b><i class="fa fa-inr"></i></b></label>
+                          <span name="dairnam" style="color: royalblue"><input onkeypress="return event.charCode >= 48"
+                              min="0" type="number" step="0.5" placeholder="unit price" maxlength="8" name="unitPrice"
+                              required=""
+                              class="form-control decimal required required-quantity ng-untouched ng-pristine ng-valid" />
+                          </span>
+                        </div>
+
+                        <div class="col-lg-3 form-group">
+                          <label>Delivery Charge
+                            <span class="productUnit"></span></label><input onkeypress="return event.charCode >= 48"
+                            min="0" type="number" step="0.5" placeholder="deliveryCharge" maxlength="8"
+                            name="deliveryCharge" required=""
+                            class="form-control decimal required required-quantity ng-untouched ng-pristine ng-valid" />
+                        </div>
+                        <div class="col-lg-3 form-group">
+                          <label>Total Price <b><i class="fa fa-inr"></i></b></label>
+                          <span name="dairnam" style="color: royalblue"><input onkeypress="return event.charCode >= 48"
+                              min="0" type="number" step="0.5" placeholder="total price" maxlength="8" name="totalPrice"
+                              required=""
+                              class="form-control decimal required required-quantity ng-untouched ng-pristine ng-valid" />
+                          </span>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary pull-right">
+                        <i class="fa fa-plus"></i> Add
+                      </button>
+
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="modal-content mt-2">
+          <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label">
+              Customer Order
+            </h4>
+            <button class="print-btn1" style="float: right">
+              Print PDF <i class='fas fa-print'></i>
+            </button>
+          </div>
+          <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+
+            <!-- Hidden Column for Selection or Icons -->
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+              [resizeable]="false">
+            </ngx-datatable-column>
+
+            <!-- S.No Column -->
+            <ngx-datatable-column name="S.No">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">S.No</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                1
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Date Column -->
+            <ngx-datatable-column name="Date">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Date</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                06/11/2024
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Requested Date Column -->
+            <ngx-datatable-column name="Requested Date">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Requested Date</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                04/11/2024
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Product Column -->
+            <ngx-datatable-column name="Product">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Product</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                Milk
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Quantity Column -->
+            <ngx-datatable-column name="Quantity">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Quantity</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                50 ltr
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Price Column -->
+            <ngx-datatable-column name="Price">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Price</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                90
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Total Column -->
+            <ngx-datatable-column name="Total">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Total</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                450
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Status Column -->
+            <ngx-datatable-column name="Status">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Status</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                Processing or Cancelled
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Action Column -->
+            <ngx-datatable-column name="Action">
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Action</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-value="value">
+                <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit">
+                  <i aria-hidden="true" class="edit-icon"></i>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+
+          </ngx-datatable>
+        </div>
+      </div>
+      <div class="tab-pane" id="delivery">
+        <div class="modal-content">
+          <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label">
+              Customer Delivery
+            </h4>
+            <button class="print-btn1" style="float: right">
+              Print PDF <i class='fas fa-print'></i>
+            </button>
+          </div>
+          <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+              [resizeable]="false">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">S.No</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Date</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.date | date: 'MM/dd/yyyy' }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Product</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.productName }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Quantity</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.quantity }} ltr
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Price</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.price }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Shift</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.shift }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Delivery Agent</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.deliveryAgent }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Status</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.status === 'processing' ? 'Processing' : 'Cancelled' }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Action</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit">
+                  <i aria-hidden="true" class="edit-icon"></i>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+
+        </div>
+      </div>
+      <!-- <div class="tab-pane" id="purchase">
+        <div class="modal-content">
+          <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label">
+              Purchase
+            </h4>
+            <button class="print-btn1" style="float: right">
+              Print PDF <i class='fas fa-print'></i>
+            </button>
+          </div>
+          <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+              [resizeable]="false">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">S.No</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Date</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                06/11/2024
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Product</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                Milk
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Quantity</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                50 ltr
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Price</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                90
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Total</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                450
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Status</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                Sold
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+
+
+        </div>
+      </div> -->
+      <div class="tab-pane" id="invoice">
+        <div class="modal-content">
+          <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label">
+              Invoice Details
+            </h4>
+            <button type="submit" class="btn btn-primary btn-i pull-right" style="border-radius:20px;"><i
+                class="fa fa-plus"></i></button>
+          </div>
+          <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+              [resizeable]="false">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">S.No</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">From Date </span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                06/11/2024
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Date Invoice Generated</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                Milk
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Due Date</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                50 ltr
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Total Amount</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                90
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Status</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                450
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column>
+              <ng-template ngx-datatable-header-template>
+                <span class="column-header">Action</span>
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <button class="edit btn btn-outline-success w-100p mb-1 mr-25" type="button" title="View">
+                  <span class="fa fa-eye"></span>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

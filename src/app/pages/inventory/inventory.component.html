@@ -1,0 +1,100 @@
+<div class="dashboard">
+    <h1>{{departmentName | titlecase }}&nbsp;Inventory</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Purchase Details</h3>
+            <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="'auto'">
+                <ngx-datatable-column name="Name">
+                    <ng-template ngx-datatable-cell-template let-value="value">
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Gender">
+                    <ng-template ngx-datatable-cell-template let-value="value">
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Company">
+                    <ng-template ngx-datatable-cell-template let-value="value">
+                        {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+            <!-- <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Vendor</th>
+                        <th>Category</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Purchase Rate</th>
+                        <th>Sales Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let detail of purchaseDetails">
+                        <td>{{ detail.vendor }}</td>
+                        <td>{{ detail.category }}</td>
+                        <td>{{ detail.product }}</td>
+                        <td>{{ detail.quantity }}</td>
+                        <td>{{ detail.purchaseRate }}</td>
+                        <td>{{ detail.salesRate }}</td>
+                    </tr>
+                </tbody>
+            </table> -->
+        </div>
+        <div class="col-md-3">
+            <h3>Product Details</h3>
+            <canvas id="productDetailsChart"></canvas>
+        </div>
+        <div class="col-md-3">
+            <h3>Category Wise Sales (%)</h3>
+            <canvas id="categoryWiseSalesChart"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Sales Report</h3>
+            <canvas id="salesReportChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h3>Category Wise Quotation</h3>
+            <canvas id="categoryWiseQuotationChart"></canvas>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ totalVendors }}</h5>
+                    <p class="card-text">Total Vendors</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ totalCategories }}</h5>
+                    <p class="card-text">Total Categories</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ totalProducts }}</h5>
+                    <p class="card-text">Total Products</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ totalSales }}</h5>
+                    <p class="card-text">Total Sales</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

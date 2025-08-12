@@ -1,0 +1,228 @@
+.text-green {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.text-yellow {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.text-red {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.text-default {
+  color: #9e9e9e;
+  font-weight: bold;
+}
+
+/* If you prefer badge-style instead of colored text, use these styles */
+.badge {
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.badge.text-green {
+  background-color: #4caf50;
+  color: white;
+}
+
+.badge.text-yellow {
+  background-color: #ffc107;
+  color: black;
+}
+
+.badge.text-red {
+  background-color: #f44336;
+  color: white;
+}
+
+.badge.text-default {
+  background-color: #9e9e9e;
+  color: white;
+}
+
+/* Ensure the background color covers the entire row */
+.ngx-datatable .datatable-body-row {
+  overflow: visible;
+}
+
+.ngx-datatable .datatable-body-cell {
+  overflow: visible;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.2); /* Slightly less scale for a gentler pulse */
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.3); /* Final size is slightly larger */
+    opacity: 0; /* Fade out completely */
+  }
+}
+
+// .badge.badge-stockout {
+//   background: #ee5c5c !important;
+//   border-color: #f54444 !important;
+//   color: white !important;
+//   font-weight: bolder !important;
+// }
+
+.centered-text {
+  text-align: center;
+}
+.badge.badge-blue {
+  background-color: #00bbd3;
+  border: 1px solid #152e5ca6;
+  color: white !important;
+  font-weight: bolder !important;
+}
+
+.badge.badge-demand {
+  border: 1px solid #4c22af;
+  background-color: #5164cd;
+  color: white !important;
+  font-weight: bolder !important;
+}
+.badge.badge-warning {
+  background: #ff9900 !important;
+  border-color: #d68100 !important;
+  color: white !important;
+  font-weight: bolder !important;
+}
+
+.badge.badge-stockout {
+  background: #ee5c5c !important;
+  border: 1px solid #a50606;
+  color: white !important;
+  font-weight: bolder !important;
+}
+.badge-wg1 {
+  color: white;
+  background: #ff9900 !important;
+}
+
+.badge.badge-secondary {
+  background: #eec05c !important;
+  border-color: #f5a844 !important;
+  color: white !important;
+  font-weight: bolder !important;
+}
+
+.csv-btn {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 11px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.csv-btn:hover {
+  background-color: #45a049;
+}
+
+.front-content,
+.back-content {
+  width: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.back-content {
+  transform: rotateX(180deg);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+// .badge-pill {
+//   padding: 0.4em 0.6em;
+//   font-size: 85%;
+// }
+
+.badge-demand {
+  background-color: #28a745;
+  color: white;
+}
+.badge-warning {
+  background-color: #ffc107;
+  color: black;
+}
+.badge-blue {
+  background-color: #007bff;
+  color: white;
+}
+.badge-stockout {
+  background-color: #dc3545;
+  color: white;
+}
+
+.stockOut-row {
+  background-color: #dc354547;
+}
+
+.datatable-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+
+:host ::ng-deep .ngx-datatable {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+  .datatable-header {
+    border-bottom: 2px solid #ddd;
+    background-color: #f8f9fa;
+  }
+
+  .column-header {
+    font-weight: bold;
+    color: #333;
+  }
+}
+
+/* Define the click animation */
+@keyframes clickAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95); /* Slightly shrink */
+  }
+  100% {
+    transform: scale(1); /* Return to normal */
+  }
+}
+
+.button-click-animation:active {
+  animation: clickAnimation 0.2s ease-in-out;
+  transform-origin: center;
+}
+.button-click-animation:active {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+.button-click-animation:active {
+  // background-color: #4caf50;
+  color: white;
+  background: #2d7bc0; /* Darker shade for active state */
+  transform: translate(0em, 0.75em);
+}

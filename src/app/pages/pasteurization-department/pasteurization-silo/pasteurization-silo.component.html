@@ -1,0 +1,181 @@
+<div class="col-12 mb-4">
+    <div widget class="card border-0 box-shadow ">
+        <div class="card-header transparent border-0 text-muted">
+            <div class="header-container">
+                <h5 class="mb-0">Pasteurization Silo List</h5>
+                <form [formGroup]="siloDForm" class="silo-form">
+                    <div class="form-group">
+                        <input type="number" class="form-control" name="qty"
+                            id="qty" formControlName="qty"
+                            [attr.disabled]="true">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary back-button"
+                    (click)="goBack()"> <i class="fas fa-arrow-left me-2"></i> Back</button>
+            </div>
+        </div>
+        <div class="card-body widget-body mt-3">
+            <div class="w-100 h-200p d-flex flex-wrap justify-content-center">
+                <div class="pie-container" *ngFor="let item of pasteSilodata">
+                    <div class="silo-info">
+                        <h6>{{ item.name }}</h6>
+                    </div>
+                    <ng-container *ngIf="!item.showForm; else quantityForm">
+                        <button class="btn plus-button"
+                            (click)="onPlusClick(item)"
+                            *ngIf="util.isStockIn(entryType)&&siloDForm.value.qty>0">
+                            <i aria-hidden="true" class="fa fa-plus"></i>
+                        </button>
+                        <button class="btn minus-button"
+                            (click)="onMinusClick(item)"
+                            *ngIf="util.isStockOut(entryType,entryDetails.createBy)  &&siloDForm.value.qty>0">
+                            <i aria-hidden="true" class="fa fa-minus"></i>
+                        </button>
+                        <div class="chart-wrapper">
+                            <ngx-charts-pie-chart [results]="item.series"
+                                [animations]="true" [labels]="false"
+                                [tooltipDisabled]="true" [scheme]="colorScheme"
+                                [customColors]="customColors">
+                            </ngx-charts-pie-chart>
+                            <div class="percentage-label">
+                                <div class="percentage">{{
+                                    item.extra.percentage.toFixed(1) }}%</div>
+                                <div class="available-milk"
+                                    title="Quantity Available in Silo">
+                                    {{ item.series[0].value.toFixed(1) }} L
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #quantityForm>
+                        <form (ngSubmit)="onSubmit(item)">
+                            <div class="form-group">
+                                <label [for]="'quantity-' + item.name">Enter
+                                    Quantity (L):</label>
+                                <input type="number"
+                                    [id]="'quantity-' + item.name"
+                                    class="form-control"
+                                    [(ngModel)]="item.tempQuantity"
+                                    name="quantity" required min="0"
+                                    #quantityInput="ngModel" />
+                                <!-- Display validation error if the field is empty or invalid -->
+                                <div
+                                    *ngIf="quantityInput.invalid && quantityInput.touched"
+                                    class="text-danger">
+                                    Please enter a valid quantity.
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                class="btn btn-primary mr-2">Submit</button>
+                            <button type="button" class="btn btn-secondary"
+                                (click)="cancelForm(item)">Cancel</button>
+                        </form>
+                    </ng-template>
+                    <div class="capacity-label">
+                        Total Capacity: {{ item.totalcapacity +" " }}Ltr
+                        <br>
+                        Available Milk: {{ item.availableMilk +" " }} Ltr
+                        <br>
+                        Space Left: {{ item.empty_space +" " }}Ltr
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-12 mb-4">
+    <ngx-datatable #table class="material striped" [columnMode]="'flex'"
+        [headerHeight]="50" [footerHeight]="50"
+        [rowHeight]="'auto'" [limit]="10" [rows]="rows">
+
+        <!-- Column: Serial Number -->
+        <ngx-datatable-column name="srNo" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Sr. No</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Column: Silo Name -->
+        <ngx-datatable-column name="Silo Name" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Silo Name</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <span>{{ row.siloName }}</span>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Column: Quantity (Inline Editable) -->
+        <ngx-datatable-column name="Quantity" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Quantity</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row"
+                let-rowIndex="rowIndex">
+                <ng-container
+                    *ngIf="!isEditable[rowIndex]; else editableQuantity">
+                    <span>{{ row.milkQty }}</span>
+                </ng-container>
+                <ng-template #editableQuantity>
+                    <input type="number" [(ngModel)]="row.milkQty"
+                        class="form-control" />
+                </ng-template>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Column: Remaining Quantity -->
+        <ngx-datatable-column name="Remaining Quantity" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Remaining Quantity(In Silo)</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <span>{{ row.remaining }}</span>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- Action Buttons: Edit/Save -->
+        <ngx-datatable-column name="Action" [flexGrow]="0.5">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Action</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row"
+                let-rowIndex="rowIndex">
+                <button class="edit btn btn-outline-success w-100p mb-1 mr-1"
+                    type="button" title="Edit"
+                    *ngIf="!isEditable[rowIndex]" (click)="editRow(rowIndex)">
+                    <span class="edit-icon"></span>
+                </button>
+                <button class="view btn btn-outline-success w-100p mb-1 mr-1"
+                    type="button" title="save"
+                    (click)="saveRow(row, rowIndex)"
+                    *ngIf="isEditable[rowIndex]">
+                    <span class="fa fa-floppy-o"></span>
+                </button>
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-footer>
+            <ng-template ngx-datatable-footer-template>
+                <div
+                    class="datatable-footer-inner d-flex justify-content-between align-items-center">
+                    <div class="cstm">
+                        <span class="ml-2"><b>Total Quantity : </b> {{
+                            totalQuantity }}</span>
+                        <span class="ml-2"><b>Total Remaining Quantity : </b> {{
+                            totalRemainingQuantity }}</span>
+                    </div>
+                    <!-- Final Submit Button - Moved to the right corner -->
+                    <button class="btn btn-primary mr-4" (click)="finalSubmit()"
+                        [disabled]="isSubmitDisabled">Final
+                        Submit</button>
+                </div>
+            </ng-template>
+        </ngx-datatable-footer>
+
+    </ngx-datatable>
+
+    <!-- Table Footer with Totals -->
+
+</div>

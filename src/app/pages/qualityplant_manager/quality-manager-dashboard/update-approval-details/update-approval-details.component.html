@@ -1,0 +1,292 @@
+<div class="row">
+    <div class="col-lg-3 col-md-5">
+        <div class="card border-0 box-shadow mb-4">
+            <img class="card-img-top w-100" [src]="imgurl+aprolDetails?.indeprt_head_profile_photo" alt="Request user">
+            <div class="online-indicator">
+                <span *ngIf="userst === aprolDetails?.in_departmenthead_id" class="blink" [ngClass]="{
+            'bg-danger': useronlinestatus === 0,
+            'bg-success': useronlinestatus === 1
+          }">
+                </span>
+
+                <span *ngIf="userst != aprolDetails?.in_departmenthead_id" class="blink" [ngClass]="{
+          'bg-danger': useronlinestatus === 0,
+         
+        }">
+                </span>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title text-center">{{aprolDetails?.indeprt_head_name}}</h4>
+                <h5 class="card-title text-center text-info">{{aprolDetails?.indeprt_head_role_name}}</h5>
+                <h6 class="card-subtitle text-muted">About:</h6>
+                <p class="card-text text-justify">{{aprolDetails?.indeprt_head_about_me}}</p>
+                <button class="btn btn-outline-info btn-sm btn-rounded float-right mb-3 px-4">More
+                    <i class="fa fa-long-arrow-right"></i></button>
+                <div class="dropdown-divider w-100"></div>
+                <div class="row">
+                    <div class="col-md-8 text-left">Department name:</div>
+                    <div class="col-md-4 text-right"><strong
+                            class="d-inline-block">{{aprolDetails?.indepart_name}}</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 text-left">Mobile No:</div>
+                    <div class="col-md-4 text-right"><strong
+                            class="d-inline-block">{{aprolDetails?.indeprt_head_mobile}}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 text-left">Gender:</div>
+                    <div class="col-md-4 text-right"><strong
+                            class="d-inline-block">{{aprolDetails?.indeprt_head_gender}}</strong>
+                    </div>
+                </div>
+                <div class="dropdown-divider w-100"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-7">
+        <div class="card card-info border-0 box-shadow">
+            <div class="card-header text-white text-center bg-primary">
+                <span class="h4">Approval Details</span>
+                <span style="float: right; cursor: pointer;" [routerLink]="['/pages/qualitymanagerdashboard']"><i
+                        class="fa fa-hand-o-left mr-1"></i>Back</span>
+
+            </div>
+            <div class="card-body bg-white">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Product
+                            Name</label>
+                        <p class="text-muted">{{aprolDetails?.product_name}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Quantity</label>
+                        <p class="text-muted">{{aprolDetails?.quantity}} {{aprolDetails?.unitName}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Per
+                            Unit Prices</label>
+                        <p class="text-muted">{{qualityCt?.priceper_unit |
+                            currency:"INR"}} </p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Total
+                            Prices</label>
+                        <p class="text-muted">{{aprolDetails?.quantity *
+                            qualityCt?.priceper_unit | currency:"INR"}}</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">(In)
+                            Employee</label>
+                        <p class="text-muted">{{aprolDetails?.indeprt_head_name}}</p>
+
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">(In)
+                            Department</label>
+                        <p class="text-muted">{{aprolDetails?.indepart_name}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">(Send)
+                            Employee</label>
+                        <p class="text-muted">{{aprolDetails?.send_deprthead_name}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">(Send)
+                            Department</label>
+                        <p class="text-muted">{{aprolDetails?.send_deprt_name}}</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Date</label>
+                        <p class="text-muted">{{aprolDetails?.date | date}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Last
+                            Approval Status</label>
+                        <p class="text-muted">{{aprolDetails?.approval_status}}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Last
+                            Approve Name</label>
+                        <p class="text-muted">{{aprolDetails?.approval_by_name
+                            }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Approval
+                            Status Date</label>
+                        <p class="text-muted">{{aprolDetails?.approval_datetime
+                            | date}}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="col-lg-12">
+            <div id="accordion-1" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                    <div class="card-header" role="tab" id="headingOne" class="card-header  text-white text-center ">
+                        <h5 class="mb-0 text-center">
+                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="false"
+                                aria-controls="collapseOne" class="accordion-button "
+                                style="color: rgb(0, 0, 0);text-align: center;  cursor: pointer; display: block; padding: 15px; text-decoration: none; position: relative;"
+                                title="Click To Open Form">
+                                Approval
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion-1" role="tabpanel"
+                        aria-labelledby="headingOne">
+                        <div class="card-body bg-white">
+                            <form [formGroup]="approvalForm" (ngSubmit)="onFormSubmit()">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="product">Product
+                                                Name</label>
+                                            <input type="text" class="form-control" placeholder="Enter Product Name"
+                                                formControlName="productname" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="quantity">Quantity</label>
+                                            <input type="text" class="form-control" id="quantity"
+                                                placeholder="Enter Product Quantity" min="0" formControlName="quantity"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="pricePerUnit">Price per
+                                                Unit</label>
+                                            <input type="text" class="form-control" placeholder="Enter Price" min="0"
+                                                formControlName="priceperunit" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="Status">Select Approval Status</label>
+                                            <div class="input-group">
+                                                <select class="form-control" id="Status" formControlName="statusid">
+                                                    <option value="0" [selected]="true" selected>Select
+                                                        Status</option>
+                                                    <option [value]="st?.id" *ngFor="let st of approvallist">
+                                                        {{st?.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="message">Message</label>
+                                            <textarea class="form-control" id="message" placeholder="Enter your message"
+                                                rows="3" formControlName="message"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <button type="submit" [disabled]="approvalForm.get('statusid')?.value==0"
+                                        class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="card card-info border-0 box-shadow mt-25">
+            <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows" id="dtDynamicVerticalScroll">
+                <!-- Sr. No Column -->
+                <ngx-datatable-column name="srNo">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Sr.no.</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                        {{ rowIndex + 1 }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="product_name" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Product</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.qtyapmg_product_name }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Quantity Column -->
+                <ngx-datatable-column name="quantity" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.qtyapmg_quantity }} {{ row.qtyapmg_unitName }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="ApprvlbyFullName" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Approved By</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.full_name }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="message_val" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Message</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.message_val}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Created ON Column -->
+                <ngx-datatable-column name="created_on" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Date</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.created_on | date:'EEEE, dd MMM yyyy' }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Status Column -->
+                <ngx-datatable-column name="ApprvlSts_name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Status</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span *ngIf="row.mstapprovalstatus_id === 1" class="badge badge-warning mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                        <span *ngIf="row.mstapprovalstatus_id === 2" class="badge badge-info mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                        <span *ngIf="row.mstapprovalstatus_id === 3" class="badge badge-success mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                        <span *ngIf="row.mstapprovalstatus_id === 4" class="badge badge-warning mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                        <span *ngIf="![1, 2, 3, 4].includes(row.mstapprovalstatus_id)" class="badge badge-warning mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Payment Approval Column -->
+            </ngx-datatable>
+        </div>
+
+    </div>
+</div>

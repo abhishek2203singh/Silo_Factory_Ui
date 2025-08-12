@@ -1,0 +1,140 @@
+<div class="row first-div">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ totalCapacity | number:'1.2-2' }}</h5>
+                <p class="card-text">Total Capacity in Silos (Litres)</p>
+                <!-- <h5 class="card-title">45</h5>
+                <p class="card-text">Total Vendors</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ totalAvailableSpace | number:'1.2-2' }}</h5>
+                <p class="card-text">Available Space in Silos (Litres)</p>
+                <!-- <h5 class="card-title">656</h5>
+                <p class="card-text">Total Categories</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ totalMilkAvailable | number:'1.2-2' }}</h5>
+                <p class="card-text">Total Milk Available (Litres)</p>
+                <!-- <h5 class="card-title">1050</h5>
+                <p class="card-text">Total Products</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ totalMilkSent | number:'1.2-2' }}</h5>
+                <p class="card-text">Total Milk Sent (Litres)</p>
+                <!-- <h5 class="card-title">5899</h5>
+                <p class="card-text">Total Sales</p> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-12 mb-4 mt-4">
+    <div widget class="card border-0 box-shadow ">
+        <div class="card-header transparent border-0 text-muted">
+            <button type="button" class="btn btn-primary float-right" (click)="goBack()"><i class="fas fa-arrow-left me-2"></i> Back</button>
+            <h5 class="mb-0">Silo Chart</h5>
+        </div>
+        <div class="card-body widget-body mt-3">
+            <div class="w-100 h-200p d-flex flex-wrap justify-content-center">
+                <div class="pie-container" *ngFor="let item of silosdata">
+                    <div class="silo-info">
+                        <h6>{{ item.name }}</h6>
+                    </div>
+                    <ng-container *ngIf="!item.showForm; ">
+                        <div class="chart-wrapper">
+                            <ngx-charts-pie-chart [results]="item.series" [animations]="true" [labels]="false"
+                                [tooltipDisabled]="true" [scheme]="colorScheme" [customColors]="customColors">
+                            </ngx-charts-pie-chart>
+                            <div class="percentage-label">
+                                <div class="percentage">{{ item.extra.percentage.toFixed(1) }}%</div>
+                                <div class="available-milk" title="Quantity Available in Silo">
+                                    {{ item.series[0].value.toFixed(1) }} L
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <div class="capacity-label">
+                        Total Capacity: {{ item.totalcapacity }}Ltr
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-12 mb-4">
+    <div class="card-header transparent border-0 text-muted forheader">
+        <h5 class="mb-0 text-white">Previous
+            Entries</h5>
+    </div>
+    <ngx-datatable #table class="material striped" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50"
+        [rowHeight]="'auto'" [limit]="10" [rows]="Infodata">
+
+        <!-- Column: Serial Number -->
+        <ngx-datatable-column name="srNo" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Sr. No</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                {{ rowIndex + 1 }}
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- Column: Silo Name -->
+        <ngx-datatable-column name="Silo Name" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Entry Id</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.dpt_table_ref_id }}
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- Column: Silo Name -->
+        <ngx-datatable-column name="Silo Name" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Silo Name</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.silo_name }}
+            </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Quantity" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Quantity</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row" let-rowIndex="rowIndex">
+                <ng-container>
+                    <span *ngIf="row.milk_quantity < 0" style="color: red;">
+                        {{ row.milk_quantity }}
+                    </span>
+                    <span *ngIf="row.milk_quantity >= 0" style="color: green;">
+                        {{ row.milk_quantity }}
+                    </span>
+                </ng-container>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- Column: Silo Name -->
+        <ngx-datatable-column name="Trns type" [flexGrow]="1">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Transaction Type</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngIf="row.trns_type == 'in'" class="badge mr-1"
+                    style="background-color: #009688; color: white;">Incoming</span>
+                <span *ngIf="row.trns_type == 'out'" class="badge mr-1"
+                    style="background-color: #FF9800; color: white;">Outgoing</span>
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

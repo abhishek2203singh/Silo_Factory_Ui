@@ -1,0 +1,64 @@
+<nav class="navbar box-shadow app-header" [class.fixed-top]="settings.theme.navbarIsFixed"
+  [class.logo-visible]="showInfoContent">
+  <div class="d-flex flex-column w-100">
+
+    <div class="d-flex justify-content-start align-items-center top-navbar">
+
+      <a class="logo" (click)="closeSubMenus()">
+        <span class="start">Pious</span><span class="ng">PF</span>
+      </a>
+
+      <span class="navbar-text menu-icon transition ml-3 mr-3" [ngClass]="{'open': settings.theme.showMenu}"
+        (click)="settings.theme.showMenu = !settings.theme.showMenu">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </span>
+
+
+
+      <app-favorites class="d-none d-lg-inline-block"></app-favorites>
+
+      <div class="top-rigth-icons ml-auto">
+        <!-- <span class="d-none d-sm-inline-block">
+          <app-flags-menu></app-flags-menu>
+        </span> -->
+        <span class="d-none d-sm-inline-block">
+          <app-fullscreen></app-fullscreen>
+        </span>
+        <!-- <span class="d-none d-sm-inline-block">
+          <app-applications></app-applications>
+        </span> -->
+        <span class="d-none d-sm-inline-block">
+          <app-messages></app-messages>
+        </span>
+        <!-- <span class="d-none d-sm-inline-block pl-2 pr-2"
+          (click)="settings.theme.showSideChat = !settings.theme.showSideChat">
+          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+        </span> -->
+        <span class="d-none d-sm-inline-block">
+          <app-user-menu></app-user-menu>
+        </span>
+        <span class="pl-2 pr-2">
+          <a (click)="logout()">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+          </a>
+        </span>
+      </div>
+
+    </div>
+
+    @if (settings.theme.menu == 'horizontal') {
+    <div class="horizontal-menu-outer">
+      @if (showHorizontalMenu) {
+      <app-horizontal-menu [menuItems]="menuItems"></app-horizontal-menu>
+      }
+      <!-- @if (!showHorizontalMenu) {
+      <app-vertical-menu [menuItems]="menuItems"></app-vertical-menu>
+      } -->
+    </div>
+    }
+
+  </div>
+</nav>

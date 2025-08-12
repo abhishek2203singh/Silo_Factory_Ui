@@ -1,0 +1,103 @@
+.edit:hover {
+  background: #4f9e4f;
+}
+
+.edit span {
+  display: inline-block;
+  float: left;
+}
+
+.edit .edit-icon {
+  height: 25px;
+  position: relative;
+  width: 25px;
+}
+
+.edit .edit-icon:before {
+  border: 2px solid #79db79;
+  border-radius: 3px;
+  content: "";
+  display: inline-block;
+  height: 50%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.edit .edit-icon:after {
+  background: #79db79;
+  border: 2px #fff solid;
+  border-bottom-left-radius: 5px 15px;
+  border-bottom-right-radius: 5px 15px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  box-shadow: 0 0 0 2px #79db79;
+  content: "";
+  display: inline-block;
+  height: 55%;
+  position: absolute;
+  top: 7%;
+  left: 45%;
+  width: 6px;
+  transform: translate(0, 0) rotate(45deg);
+  transform-origin: 50% 75%;
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.edit:hover span:after {
+  background: #4f9e4f;
+  box-shadow: 0 0 0 2px #4f9e4f;
+  animation: wiggle 0.25s 3 linear;
+}
+
+@keyframes wiggle {
+  0% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+
+  25% {
+    transform: translate(0, 0) rotate(25deg);
+  }
+
+  50% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+
+  75% {
+    transform: translate(0, 0) rotate(65deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+}
+
+.edit {
+  margin-right: 10px;
+  /* Adjust the margin as needed */
+}
+
+.edit,
+.delete {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px;
+}

@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Master Device Type</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productId">Device Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="name">
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary mb-1 mr-1"
+                                            style="float: inline-end;" data-toggle="modal" data-target="#lg-modal">
+                                            Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="rows">
+
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+            {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="device name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Device Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span>computer</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department status -->
+    <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span class="badge-pill badge-danger">Deactive</span>
+            <span class="badge-pill badge-success">Active</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department status -->
+    <ngx-datatable-column name="is-deletable" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Is-Deletable</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span>abc</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department Action -->
+    <ngx-datatable-column name="action" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit">
+                <span class="edit-icon"></span>
+            </button>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

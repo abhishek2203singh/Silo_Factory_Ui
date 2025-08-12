@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Master Pasteurization Silos</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="psSilosForm" (ngSubmit)="isEditMode?updatePsSilos():onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="productId">Silo Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Silo name" id="siloName"
+                                        formControlName="siloName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="productId">Capacity</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Capacity" id="capacity"
+                                        formControlName="capacity">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productId">Total Aailable Milk</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Available Milk"
+                                        id="availableMilk" formControlName="availableMilk">
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <button type="submit"
+                                            class="btn btn-primary">{{isEditMode?"Update":"Submit"}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+</div>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="psSilos">
+
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+                {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="silo name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Silo Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+                <span>{{row.silo_name}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="capacity">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Capacity</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+                <span>{{row.capacity}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="total milk">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Total Available Milk</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+                <span>{{row.total_available_milk}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Entry Date-->
+    <ngx-datatable-column name="created_on">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Entry Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+                <span> {{ row.created_on | date}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department status -->
+    <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngIf="row.status === 1" class="badge badge-success mr-1"> Active </span>
+                <span *ngIf="row.status === 0" class="badge badge-warning mr-1"> Deactive </span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department Action -->
+    <ngx-datatable-column name="action" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                (click)="editPsilos(row?.id)">
+                <span class="edit-icon"></span>
+            </button>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

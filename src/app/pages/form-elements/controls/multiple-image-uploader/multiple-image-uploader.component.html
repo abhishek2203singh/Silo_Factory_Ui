@@ -1,0 +1,15 @@
+<div class="col-8 offset-2">
+  <input type="file" multiple (change)="fileChange(input)" #input class="m-img-upload-btn"/>
+  <button class="btn btn-success btn-block" type="button">
+    <i class="fa fa-upload"></i> Choose images...
+  </button>
+</div>
+
+<div class="card images-container">
+  @for (image of images; track image; let i = $index) {
+    <div class="m-image-wrapper">
+      <i class="fa fa-times m-delete-img" (click)="removeImage(i)"></i>
+      <img [attr.src]="image">
+    </div>
+  }
+</div>

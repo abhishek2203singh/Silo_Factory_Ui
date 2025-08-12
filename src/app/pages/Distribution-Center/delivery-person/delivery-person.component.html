@@ -1,0 +1,235 @@
+<div class="tab-content top">
+    <div class="clearfix">
+        <ul class="nav nav-tabs custom top">
+            <li rel="customer" class="nav-item">
+                <a data-toggle="tab" href="#activedeliveryboy" class="nav-link active show"><i class="fa fa-user"></i>
+                    Delivery Boy List
+                </a>
+            </li>
+            <li rel="schedul" class="nav-item">
+                <a data-toggle="tab" href="#changedelivery" class="nav-link"><i class="fa fa-list"></i> Change
+                    Delivery Boy
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Delivery Boy List  -->
+    <div class="tab-pane active" id="activedeliveryboy">
+        <button class="print-btn" style="float: right" (click)="printFile()">
+            Print PDF <i class='fas fa-print'></i>
+        </button>
+        <button type="button" class="csv-btn" style="float: right" (click)="exportToCSV()">
+            Export to CSV <i aria-hidden="true" class="fas fa-file-csv"></i>
+        </button>
+
+        <button class="print-btn" type="button" style="float: right;background-color:rgb(255, 130, 46) ;"
+            title="Assign Delivery Boy" (click)="goToAssignDeliveyPage()">
+            <span class="fa fa-mail-reply"></span> Assign Delivery Boy
+        </button>
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Type to filter the name..."
+                (keyup)="updateFilter($event)" />
+        </div>
+        <div class="custm">
+            <ngx-datatable #table class="material fixed-header" [headerHeight]="50" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="70" [scrollbarH]="true" [scrollbarV]="true" [columnMode]="'force'"
+                [reorderable]="true" [rows]="deliveryboy" [count]="deliveryboy.length" [style.height.px]="600">
+
+                <!-- Serial No Column -->
+                <ngx-datatable-column name="srNo">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Sr. No</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                        {{ rowIndex + 1 }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Name Column -->
+                <ngx-datatable-column name="Name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Name</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.full_name}}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Employee Type Column -->
+                <ngx-datatable-column name="Emp Type">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Employee Type</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.role_name }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Contact No Column -->
+                <ngx-datatable-column name="contactNo">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Contact No.</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row?.mobile}}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Action Column -->
+                <ngx-datatable-column name="Action">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Action</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span *ngIf="row.status == 0" class="badge badge-danger pointer" style="cursor: pointer;"
+                            (click)="deactive(row.id, 1)">
+                            DeActive
+                        </span>
+                        <span *ngIf="row.status == 1" class="badge badge-success pointer" style="cursor: pointer;"
+                            (click)="deactive(row.id, 0)">
+                            Active
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- View Column -->
+                <ngx-datatable-column name="View">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">View</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <button class="edit btn btn-outline-success w-100p mb-1  mr-25" type="button" title="View"
+                            (click)="VisitDetails(row.id)">
+                            <span class=" fa fa-eye"></span>
+                        </button>
+
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+    <div class="tab-pane" id="changedelivery">
+        <div class="card border border-default">
+            <form [formGroup]="changeDelivery" (ngSubmit)="changeDeliveryBoy()">
+                <div class="card-header">
+                    <h5><i class="fa fa-list"></i><b>&nbsp;Customer
+                            list</b></h5>
+                    <div class="row">
+                        <div class="col-lg-3 form-group">
+                            <label for="firstdeliveryBoyId">Delivery Boy
+                                (From)</label>
+                            <select class="form-control" id="firstdeliveryBoyId" formControlName="currentBoy"
+                                (change)="onFromDeliverySelect($event)">
+                                <option [value]="0" disabled>Choose
+                                    Curent Delivery Boy </option>
+                                <option *ngFor="let name of deliveryBoysData" [value]="name?.id">
+                                    {{ name?.full_name }}
+                                </option>
+                            </select>
+                            <div
+                                *ngIf="changeDelivery.get('currentBoy')?.invalid && changeDelivery.get('currentBoy')?.touched">
+                                <small class="text-danger">Please select
+                                    a Delivery Boy (From).</small>
+                            </div>
+                        </div>
+                        <div class="arrows">
+                            <i aria-hidden="true" class="fa fa-arrows-h"></i>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="deliveryBoy2">Delivery Boy
+                                (To)</label>
+                            <select class="form-control" formControlName="newBoy" id="deliveryBoy2">
+                                <option [value]="0" disabled>Choose
+                                    New Delivery Boy </option>
+                                <option *ngFor="let name of deliveryBoysData" [value]="name?.id">
+                                    {{ name?.full_name }}
+                                </option>
+                            </select>
+                            <div *ngIf="changeDelivery.get('newBoy')?.invalid && changeDelivery.get('newBoy')?.touched">
+                                <small class="text-danger">Please select
+                                    a Delivery Boy (To).</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn btn-primary mt-4">
+                                <i class="fa fa-arrow-right mr-2"></i>Update
+                                Delivery Boy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Customer List Table -->
+            <div class="table-responsive">
+                <div class="table-responsive">
+                    <ngx-datatable #table class="material fixed-header" [headerHeight]="50" [limit]="10"
+                        [columnMode]="'force'" [footerHeight]="50" [rowHeight]="70" [scrollbarH]="true"
+                        [scrollbarV]="true" [columnMode]="'force'" [reorderable]="true" [rows]="customerList"
+                        [count]="customerList.length" [style.height.px]="600">
+                        <ngx-datatable-column name="srNo" [width]="50">
+                            <ng-template ngx-datatable-header-template>
+                                <span class="column-header">
+                                    <input type="checkbox" [checked]="allSelected" (change)="selectAll($event)" />
+                                    Sr. No
+                                </span>
+                            </ng-template>
+                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                                <input type="checkbox" [(ngModel)]="customerList[rowIndex].selected"
+                                    (change)="toggleSelection(customerList[rowIndex].id, customerList[rowIndex].selected)" />
+                                {{ rowIndex + 1 }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Customer Column -->
+                        <ngx-datatable-column name="Customer">
+                            <ng-template ngx-datatable-header-template>
+                                <span class="column-header">Customer</span>
+                            </ng-template>
+                            <ng-template ngx-datatable-cell-template let-row="row">
+                                {{ row.userName | titlecase }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Product Column -->
+                        <ngx-datatable-column name="Product">
+                            <ng-template ngx-datatable-header-template>
+                                <span class="column-header">Product</span>
+                            </ng-template>
+                            <ng-template ngx-datatable-cell-template let-row="row">
+                                {{ row.product_name }}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <!-- Quantity Column -->
+                        <ngx-datatable-column name="Quantity">
+                            <ng-template ngx-datatable-header-template>
+                                <span class="column-header">Quantity</span>
+                            </ng-template>
+                            <ng-template ngx-datatable-cell-template let-row="row">
+                                {{ row.quantity}}{{row.st_name}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Shift Column -->
+                        <ngx-datatable-column name="Shift">
+                            <ng-template ngx-datatable-header-template>
+                                <span class="column-header">Shift</span>
+                            </ng-template>
+                            <ng-template ngx-datatable-cell-template let-row="row">
+                                {{ row.shift_time }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Registration Date -->
+                        <ngx-datatable-column name="Registration Date">
+                            <ng-template ngx-datatable-header-template>
+                                <span class="column-header">Registration Date</span>
+                            </ng-template>
+                            <ng-template ngx-datatable-cell-template let-row="row">
+                                {{ row.created_on | date }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

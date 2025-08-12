@@ -1,0 +1,96 @@
+.print-btn1 {
+  background-color: #239ee5;
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 1px 1px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.print-btn1:hover {
+  background-color: #177bb5;
+}
+
+.custome-btn1 {
+  background-color: #ff8008;
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 1px 1px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.custome-btn1:hover {
+  background-color: #d16806;
+}
+
+.modal-dialog {
+  max-width: 500px;
+  margin: 1.75rem auto;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.invalid-feedback {
+  display: block;
+  color: #dc3545;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+
+.marquee-container {
+  width: 100%;
+  // margin-top: 10px;
+  /* Adds space between the button and the marquee */
+  overflow: hidden;
+  /* Ensures no overflow of text */
+}
+
+.marquee-status {
+  font-size: 17px;
+  font-weight: bold;
+  font-style: italic;
+  white-space: nowrap;
+  animation: marquee 50s linear infinite;
+  -webkit-animation: marquee 30s linear infinite;
+}
+
+.marquee-status.active {
+  color: #28a745;
+  /* Green color for active */
+}
+
+.marquee-status.inactive {
+  color: #dc3545;
+  /* Red color for inactive */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}

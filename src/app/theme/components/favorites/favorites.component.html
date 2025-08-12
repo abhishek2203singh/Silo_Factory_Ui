@@ -1,0 +1,30 @@
+<!-- <div class="d-flex justify-content-start favorites-container ml-5" [class.show-list]="toggle">
+  @if (favorites.length == 0) {
+    <ul class="list-inline mb-0">
+      <li class="list-inline-item"><span class="fs-13 font-italic">Choose favorites <i id="arrow" class="fa fa-long-arrow-right"></i></span></li>
+    </ul>
+  }
+  @if (favorites.length > 0) {
+    <ul class="list-inline mb-0">
+      @for (favorite of favorites; track favorite) {
+        <li class="list-inline-item" placement="bottom" [ngbTooltip]="favorite.name">
+          @if (favorite.href) {
+            <a href="{{favorite.href}}" target="{{favorite.target}}"><i class="fa fa-{{favorite.icon}}"></i></a>
+          }
+          @if (favorite.routerLink) {
+            <a [routerLink]="favorite.routerLink"><i class="fa fa-{{favorite.icon}}"></i></a>
+          }
+        </li>
+      }
+    </ul>
+  }
+  <ngx-bootstrap-multiselect id="favorites" class="custom-multiselect"
+    [options]="favoriteOptions"
+    [texts]="favoriteTexts"
+    [settings]="favoriteSettings"
+    (dropdownOpened)="onDropdownOpened()"
+    (dropdownClosed)="onDropdownClosed()"
+    [(ngModel)]="favoriteModel"
+    (ngModelChange)="onChange()">
+  </ngx-bootstrap-multiselect>
+</div> -->

@@ -1,0 +1,72 @@
+<!-- <app-info-panels></app-info-panels> -->
+<!-- <app-info-custom-card></app-info-custom-card> -->
+<div class="row mb-3">
+    <div class="col-md-3">
+        <label for="fromDate">From Date</label>
+        <input type="date" class="form-control" [(ngModel)]="fromDate" id="fromDate">
+    </div>
+    <div class="col-md-3">
+        <label for="tillDate">Till Date</label>
+        <input type="date" class="form-control" [(ngModel)]="tillDate" id="tillDate">
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary" (click)="fetchFilteredData()">Fetch Data</button>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Inventory Chart</h5>
+            </div>
+            <div class="card-body widget-body">
+                <div class="w-100 h-300p">
+                    <ngx-charts-advanced-pie-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient"
+                        (select)="onSelect($event)">
+                    </ngx-charts-advanced-pie-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div widget class="card border-0">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Approvals Overview</h5>
+            </div>
+            <div class="card-body pt-0 pl-2 pr-2 pb-2 widget-body">
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div widget class="card border-0">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Silo Data</h5>
+            </div>
+            <div class="card-body pt-0 pl-2 pr-2 pb-2 widget-body">
+                <div class="text-center mb-2 fs-13">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input checkbox-dark-gray"
+                            id="checkboxExplodeSlices" [checked]="explodeSlices"
+                            (change)="explodeSlices = !explodeSlices">
+                        <label class="custom-control-label" for="checkboxExplodeSlices">Explode Slices</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input checkbox-dark-gray" id="checkboxShowLabels"
+                            [checked]="showLabels" (change)="showLabels = !showLabels">
+                        <label class="custom-control-label" for="checkboxShowLabels">Show Labels</label>
+                    </div>
+                </div>
+                <div class="w-100 h-300p">
+                    <ngx-charts-pie-chart [scheme]="colorScheme" [results]="single" [legend]="showLegend"
+                        [explodeSlices]="explodeSlices" [labels]="showLabels" [doughnut]="doughnut"
+                        [gradient]="gradient" (select)="onSelect($event)">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,188 @@
+<button #openButton type="button" class="btn btn-primary mb-1 mr-1" style="float: inline-end;" data-toggle="modal"
+    data-target="#lg-modal"><i aria-hidden="true" class="fa fa-plus-circle"></i>
+    Add Silo</button>
+
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+</div>
+
+<ngx-datatable #table class="material" [rows]="silosList" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+    [footerHeight]="50" [rowHeight]="'auto'" [rows] id="dtDynamicVerticalScroll">
+
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+
+            {{ rowIndex + 1 }}
+
+        </ng-template>
+    </ngx-datatable-column>
+
+    <!-- department -->
+    <ngx-datatable-column name="silo_name" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Silos Name </span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            {{ row?.silo_name }}
+
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="capacity" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Silos Capacity </span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            {{ row?.capacity }}
+
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Entry Date-->
+    <ngx-datatable-column name="created_on">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Entry Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            <span> {{ row.created_on | date}}</span>
+
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- <ngx-datatable-column name="total_available_milk" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Available Milk Qty.</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            
+                {{row.total_available_milk}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column> -->
+
+    <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.status === 1" class="badge badge-success mr-1">
+                Active
+            </span>
+            <span *ngIf="row.status === 0" class="badge badge-warning mr-1">
+                Deactive
+            </span>
+        </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Action Column -->
+    <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template class="flex justify-content" let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                (click)="editData(row?.id)">
+                <span class="edit-icon"></span>
+            </button>
+            <ng-toggle [value]="row?.status !== 0" [disabled]="row.EntryId == 3 || row.status == 0"
+                (click)="row.status !== 0 && row.EntryId !== 3 ? deleteSilos(row?.id) : null" [color]="{ 
+unchecked: row?.status === 0 ? '#F34235' : '#4BAE4F',
+checked: row?.status === 0 ? '#F34235' : '#4BAE4F'
+}" title="Change Status">
+            </ng-toggle>
+            <!-- <button class="delete btn btn-outline-danger w-100p mb-1 mr-1" type="button" title="Delete"
+                (click)="deleteSilos(row.id)">
+                <i aria-hidden="true" class="fa fa-trash"></i>
+            </button> -->
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>
+
+<div class="modal fade" id="lg-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label"
+    style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">
+                    Add Form
+                </h4>
+                <button type="button" (click)="isEditSilos=false;closeForm()" #closeButton class="close"
+                    data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+
+            <form [formGroup]="silosForm" (ngSubmit)="isEditSilos ? updateSilosData():submitSilosData()">
+                <div class="modal-body">
+                    <div class="row mt-10">
+                        <!-- full name -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputFullName">Silos Name</label>
+                                <input type="text" class="form-control" id="inputFullName" formControlName="siloName"
+                                    placeholder="Silos Name">
+                                <div *ngIf="silosForm.get('siloName')?.invalid && (silosForm.get('siloName')?.dirty || silosForm.get('siloName')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="silosForm.get('siloName')?.errors?.required">Silos Name
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputFullName">Silos Capacity</label>
+                                <input type="number" class="form-control" min="0" step="0.01" id="inputFullName"
+                                    formControlName="capacity" placeholder="Silos Capacity">
+                                <div *ngIf="silosForm.get('capacity')?.invalid && (silosForm.get('capacity')?.dirty || silosForm.get('capacity')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="silosForm.get('capacity')?.errors?.required">Capacity is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-10">
+                        <!-- <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputFullName">Available Milk</label>
+                                <input type="number" min="0" step="0.01" class="form-control" id="inputFullName"
+                                    formControlName="availableMilk" placeholder="Milk quantity">
+                                <div *ngIf="silosForm.get('availableMilk')?.invalid && (silosForm.get('availableMilk')?.dirty || silosForm.get('availableMilk')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="silosForm.get('availableMilk')?.errors?.required">Milk Quantity
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div> -->
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputState">Silos status</label>
+                                <select #st class="form-control" formControlName="status">
+                                    <option value disabled selected>Select Status</option>
+                                    <option value=1>Active</option>
+                                    <option value=0>In-Active</option>
+                                </select>
+                                <div *ngIf="silosForm.get('status')?.invalid && (silosForm.get('status')?.dirty || silosForm.get('status')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="silosForm.get('status')?.errors?.required">Select Status required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <!-- <button type="submit" class="btn btn-primary">{{isEditDepartment?"Update":"Submit"}}</button> -->
+                        <button type="submit" class="btn btn-primary">{{isEditSilos? "Update": "Submit"}}</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

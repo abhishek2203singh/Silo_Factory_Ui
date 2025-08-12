@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Master Units</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="unitForm" (ngSubmit)="isEditMode?updateUnit():onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="unitName">Unit Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="name" id="unitName"
+                                        formControlName="unitName" placeholder="Unit Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="shortName">Unit Short Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="shortName" id="shortName"
+                                        formControlName="shortName" placeholder="Unit Short Name">
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <div class="input-group-append">
+                                            <button type="submit"
+                                                class="btn btn-primary">{{isEditMode?"Update":"Submit"}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+</div>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="unit">
+
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+            {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Unit Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span>{{row.name}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department short name -->
+    <ngx-datatable-column name="stname">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Unit Short Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span>{{row.st_name}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Entry Date-->
+    <ngx-datatable-column name="created_on">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Entry Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+                <span> {{ row.created_on | date}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department Action -->
+    <ngx-datatable-column name="action" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                (click)="editUnit(row?.id)">
+                <span class="edit-icon"></span>
+            </button>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

@@ -1,0 +1,24 @@
+<div class="dashboard">
+    <h1>Inventory Values: 23/10/2023</h1>
+
+    <div class="current-value">
+        <h2>{{ formatCurrency(currentInventoryValue) }}</h2>
+        <p>CURRENT INVENTORY VALUE</p>
+    </div>
+    <div class="chart-container">
+        <div class="chart">
+            <h3>Value Projection</h3>
+            <canvas id="valueProjectionChart"></canvas>
+        </div>
+
+        <div class="chart">
+            <h3>Total Value by Item</h3>
+            <canvas id="totalValueByItemChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart">
+        <h3>Average Sales per Month</h3>
+        <canvas id="averageSalesChart"></canvas>
+    </div>
+</div>

@@ -1,0 +1,421 @@
+<div class="tab-pane" id="subscription">
+    <div class="modal-content rounded-3 pt-2 pr-2 shadow-lg border-0">
+        <!-- <button *ngIf="!isNewSubscription" (click)="showSubscriptionDialog()"
+            class="print-btn1 btn-primary mb-1 mr-1 ml-auto mt-10 mr-0 mb-3 px-4">
+            <i class="fas fa-plus me-2"></i>
+            New
+            Subscription</button> -->
+        <div class="modal-header bg-light rounded-top d-flex pt-2 justify-content-between align-items-center">
+            <h4 class="modal-title text-dark" id="modal-large-label">
+                Customer Subscription
+            </h4>
+            <button *ngIf="!isNewSubscription" class="print-btn1" (click)="printFile()">
+                <i class="fas fa-print me-2"></i> Print PDF
+            </button>
+        </div>
+        <div class="p-4 bg-white" *ngIf="!isNewSubscription">
+            <ngx-datatable #table class="material rounded-2 border" [headerHeight]="50" [limit]="10"
+                [columnMode]="'force'" [footerHeight]="60" [rowHeight]="'auto'" [rows]="subscriptions">
+                <!-- S.No Column -->
+                <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                    [resizeable]="false" name="S.No">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">S.No</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                        <div class="centered-text">
+                            <span class="fw-semibold">{{ rowIndex + 1 }}</span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Product Column -->
+                <ngx-datatable-column name="Product">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Product</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <span class="fw-semibold">{{ row.product_name }}</span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Shift Column -->
+                <ngx-datatable-column name="Shift">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Shift</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <span class="fw-semibold"><span class="fw-medium">{{ row.shift_name }}</span></span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Delivery Agent Column -->
+                <ngx-datatable-column name="Delivery Agent">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Delivery Agent</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <span class="fw-semibold"><span class="fw-medium">{{ row.delivery_boy_name }}</span></span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Quantity Column -->
+                <ngx-datatable-column name="Quantity">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <span class="fw-semibold"><span class="fw-medium">{{ row.quantity }}</span></span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Update Quantity Column -->
+                <ngx-datatable-column name="Update Quantity (One Day Only)">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Update Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <span class="fw-semibold"><span class="fw-medium">{{ row.updateQuantity }}</span></span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Day Selection Column -->
+                <ngx-datatable-column name="Day Selection">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Day Selection</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <span class="fw-semibold"><span class="fw-medium">{{ row.daySelection }}</span></span>
+                            <span *ngIf="row?.sunday == 1">Sun,</span>
+                            <span *ngIf="row?.monday == 1"> Mon,</span>
+                            <span *ngIf="row?.tuesday == 1"> Tue,</span>
+                            <span *ngIf="row?.wednesday == 1"> Wed,</span>
+                            <span *ngIf="row?.thursday == 1"> Thu,</span>
+                            <span *ngIf="row?.friday == 1"> Fri,</span>
+                            <span *ngIf="row?.saturday == 1"> Sat</span>
+                            <span *ngIf="row?.alternate_day"> Alternate
+                                Day({{row?.alternate_day | date}})</span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Actual Price Column -->
+                <ngx-datatable-column name="Actual Price">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Actual Price</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <span class="fw-semibold"><span class="text-success fw-bold">{{ row.userPrice
+                                    }}</span></span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Action Column -->
+                <ngx-datatable-column name="Action">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Action</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text">
+                            <button class="btn btn-primary btn-sm px-3 py-2 rounded-pill" type="button" title="Edit">
+                                <i class="fas fa-edit me-2"></i> Edit
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+
+            </ngx-datatable>
+        </div>
+    </div>
+</div>
+<!-- add new subscription -->
+<div class="tab-pane" id="notes1" *ngIf="isNewSubscription">
+    <!-- Example of a Bootstrap Close Button -->
+    <div class="clearfix">
+        <div class="body tab-content shadow-lg p-3 mb-5 bg-white rounded">
+            <div id="add" class="tab-pane show active">
+                <div class="card border border-default">
+                    <div class="card-header d-flex justify-content-between">
+                        <h5><i class="fa fa-plus"></i><b>
+                                Subscription</b>
+                        </h5>
+                        <button type="button" (click)="hideSubscriptionDialog()"
+                            class="btn btn-light bg-danger text-white rounded-circle" aria-label="Close">
+                            <i class="fa fa-close"></i>
+                        </button>
+                    </div>
+                    <div class="card-body mb-10">
+                        <!-- Only Customer Selection Initially -->
+                        <!-- Tables appear only after customer selection -->
+                        <ngx-datatable #table class="material fixed-header" [rows]="newSubscriptions"
+                            [headerHeight]="50" [footerHeight]="50" [rowHeight]="70" [scrollbarH]="true"
+                            [scrollbarV]="true" [columnMode]="'force'" [reorderable]="true" [limit]="10"
+                            [count]="newSubscriptions.length" [style.height.px]="600">
+                            <!-- S.No Column -->
+                            <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false"
+                                [draggable]="false" [resizeable]="false" name="S.No">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">S.No</span>
+                                </ng-template>
+                                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                                    <span class="fw-semibold">{{ rowIndex + 1 }}</span>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- product name  -->
+                            <ngx-datatable-column name="Name" [sortable]="true">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Name</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <input type="text" readonly [(ngModel)]="row.product_name"
+                                        [ngModelOptions]="{standalone: true}" class="form-control label-text" />
+                                    <input type="hidden" [(ngModel)]="row.productId">
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- shift -->
+                            <ngx-datatable-column name="Shift" [sortable]="true">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Shift</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <select [(ngModel)]="row.shift" [ngModelOptions]="{standalone: true}"
+                                        class="form-control required" required>
+                                        <option [value]="1">Morning</option>
+                                        <option [value]="2">Evening</option>
+                                    </select>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Delivery Boy selection -->
+                            <ngx-datatable-column name="Delivery Boy" [sortable]="false">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header">Delivery Boy</span>
+                                </ng-template>
+                                <ng-template ngx-datatable-cell-template let-row="row">
+                                    <select class="form-control" name="dboy" [value]="row.deliveryBoyId"
+                                        [(ngModel)]="row.deliveryBoyId" [ngModelOptions]="{standalone: true}">
+                                        <option [value]="0" disabled selected>Choose
+                                        </option>
+                                        <option [value]="list.id" *ngFor="let list of deliveryBoysData">
+                                            {{ list.full_name }}
+                                        </option>
+                                    </select>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Delivery Boy selection -->
+                            <!-- mrp -->
+                            <ngx-datatable-column class="header" name="MRP">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Price</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <span class="form-control required validate-name" type="number"
+                                        min="0">{{row.price|currency:"INR"}}</span>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- quantity -->
+                            <ngx-datatable-column class="header" name="Quantity">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Quantity</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="input-group">
+                                        <input [(ngModel)]="row.quantity" class="required validate-name quantity-input"
+                                            type="number" min="0" placeholder="Quantity" />
+                                        <span class="input-group-text">{{row.unit_name}}</span>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Mon -->
+                            <ngx-datatable-column class="header" name="Mon">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Mon</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <label class="premium-checkbox">
+                                        <input type="checkbox" [(ngModel)]="row.monday"
+                                            [ngModelOptions]="{standalone: true}" class="hidden-checkbox" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="label-text">Monday</span>
+                                    </label>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Tue -->
+                            <ngx-datatable-column class="header" name="Tue">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Tue</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <label class="premium-checkbox">
+                                        <input type="checkbox" [(ngModel)]="row.tuesday"
+                                            [ngModelOptions]="{standalone: true}" class="hidden-checkbox" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="label-text">Tuesday</span>
+                                    </label>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Wed -->
+                            <ngx-datatable-column class="header" name="Wed">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Wed</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <label class="premium-checkbox">
+                                        <input type="checkbox" [(ngModel)]="row.wednesday"
+                                            [ngModelOptions]="{standalone: true}" class="hidden-checkbox" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="label-text">Wednesday</span>
+                                    </label>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Thu -->
+                            <ngx-datatable-column class="header" name="Thu">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Thu</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <label class="premium-checkbox">
+                                        <input type="checkbox" [(ngModel)]="row.thursday"
+                                            [ngModelOptions]="{standalone: true}" class="hidden-checkbox" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="label-text">Thursday</span>
+                                    </label>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Fri -->
+                            <ngx-datatable-column class="head" name="Fri">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Fri</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <label class="premium-checkbox">
+                                        <input type="checkbox" [(ngModel)]="row.friday"
+                                            [ngModelOptions]="{standalone: true}" class="hidden-checkbox" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="label-text">Friday</span>
+                                    </label>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Sat -->
+                            <ngx-datatable-column class="head" name="Sat">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Sat</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <label class="premium-checkbox">
+                                        <input type="checkbox" [(ngModel)]="row.saturday"
+                                            [ngModelOptions]="{standalone: true}" class="hidden-checkbox" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="label-text">Saturday</span>
+                                    </label>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- Sun -->
+                            <ngx-datatable-column class="column-header" name="sun">
+                                <ng-template ngx-datatable-header-template>
+                                    <span class="column-header center-text">Sun</span>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <label class="premium-checkbox">
+                                        <input type="checkbox" [(ngModel)]="row.sunday"
+                                            [ngModelOptions]="{standalone: true}" class="hidden-checkbox" />
+                                        <span class="custom-checkbox"></span>
+                                        <span class="label-text">Sunday</span>
+                                    </label>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable>
+                        <div class="d-flex card-body justify-content-flex-end mt-10">
+                            <button *ngIf="isNewSubscription" (click)="addNewSubscription()"
+                                class="btn btn-primary mb-1 mr-1 ml-auto  mr-0 mb-3 px-4">
+                                <i class="fas fa-plus me-2"></i>
+                                Add Subscription </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="view" class="tab-pane">
+                <div class="card border border-default">
+                    <div class="card-header">
+                        <h5><i class="fa fa-list"></i><b>
+                                Subscription List</b>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>yhfgtyytfgt
+                                        &nbsp;:&nbsp;<span style="color: green">1000</span>
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Butter
+                                        &nbsp;:&nbsp;<span style="color: green">50</span>
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>kratitech dairy
+                                        &nbsp;:&nbsp;<span style="color: green">70</span>
+                                    </h6>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>desi cow milk
+                                        &nbsp;:&nbsp;<span style="color: green">70</span>
+                                    </h6>
+                                </div>
+                            </div>
+                            <br>
+                            <table id="custominfo" class="table table-bordered table-hover c_list">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center">Sr
+                                            No.
+                                        </th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Product
+                                            Price
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <ul class="ngx-pagination">
+                                <li class="pagination-previous disabled">
+                                    <span>Previous <span class="show-for-sr">page</span></span>
+                                </li>
+                                <li class="small-screen">1 /
+                                    1
+                                </li>
+                                <li class="current">
+                                    <span class="show-for-sr">You're
+                                        on page </span>
+                                    <span>1</span>
+                                </li>
+                                <li class="pagination-next disabled">
+                                    <span>Next <span class="show-for-sr">page</span></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

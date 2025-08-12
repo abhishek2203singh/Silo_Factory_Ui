@@ -1,0 +1,114 @@
+<h5>Create Menus</h5>
+
+<div class="buttons-container box-shadow">
+    <button *ngFor="let type of [1, 2, 3]"
+        [ngClass]="{ 'btn-success': menuType === type, 'btn-gray': menuType !== type }"
+        (click)="menuType = type;resetForm()">
+        {{ ['Create Menu', 'Create Sub Menu', 'Create Sub-Sub Menu'][type - 1]
+        }}
+    </button>
+</div>
+
+<div class="row justify-content-center mt-10">
+    <div class="col-xl-6 col-md-8 col-10">
+        <div class="card border-0 box-shadow rounded-0">
+            <div class="card-body pt-0">
+                <h5 class="form-heading text-info">{{ formHeading[menuType]
+                    }}</h5>
+                <hr>
+
+                <form [formGroup]="menusForm" (ngSubmit)="onSubmit(menuType)" class="mt-4">
+
+                    <div class="form-group">
+                        <label>Serial No.</label>
+                        <input formControlName="serialNo" class="form-control" type="number" placeholder="e.g. 1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select class="form-control" (change)="fetchMenus($event,menuType==3?true:false)"
+                            formControlName="departmentId">
+                            <option [value]="0" disabled selected>Select
+                                Department</option>
+                            <option *ngFor="let department of departments" [value]="department.id">
+                                {{ department.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- menu  -->
+                    <div class="form-group" *ngIf="menuType === 3">
+                        <label> Menu (top Menu)</label>
+                        <select class="form-control" (change)="getSubMenus($event)" formControlName="grandParentMenu">
+                            <option [value]="0" disabled selected>-- Select Menu
+                                --</option>
+                            <option *ngFor="let menu of menuList" [value]="menu.id">{{ menu.menu_name }}</option>
+                        </select>
+                    </div>
+                    <!-- menu/sub menus -->
+                    <div class="form-group" *ngIf="menuType > 1">
+                        <label>{{ menuType==2 ? "Parent Menu":
+                            "Parent Menu (Sub menu)"}}</label>
+                        <select class="form-control" formControlName="parentMenu">
+                            <option [value]="0" disabled selected>-- Select
+                                Parent
+                                Menu --</option>
+                            <!-- if creating sum menu then the list of menus will be displayed -->
+                            @if(menuType==2){
+                            <option *ngFor="let menu of menuList" [value]="menu.id">{{ menu.menu_name }}</option>
+                            }
+
+                            <!-- in case of sub-sub menu the sub-menus will be displed -->
+                            @if(menuType==3){ <option *ngFor="let subMenu of subMenuList;" [value]="subMenu.id">{{
+                                subMenu.menu_name
+                                }}</option>}
+                        </select>
+                    </div>
+
+                    <!-- name of menu -->
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input formControlName="name" class="form-control" type="text" placeholder="Enter menu name">
+                        <small *ngIf="menusForm.get('name')?.touched && menusForm.get('name')?.hasError('required')"
+                            class="text-danger">Name is required</small>
+                        <small *ngIf="menusForm.get('name')?.touched && menusForm.get('name')?.hasError('minlength')"
+                            class="text-danger">Minimum 3 characters
+                            required</small>
+                    </div>
+
+                    <!-- icon of menu -->
+                    <div class="form-group">
+                        <label>Icon</label>
+                        <select class="form-control" formControlName="icon">
+                            <option [value]="0" disabled selected>-- Select Icon
+                                --</option>
+                            <option *ngFor="let icon of icons" [value]="icon.name">{{ icon.name }}</option>
+                        </select>
+                    </div>
+
+                    <!-- menus's route link -->
+                    <div class="form-group">
+                        <label>RouterLink</label>
+                        <input formControlName="route" class="form-control" type="text" placeholder="e.g. /mailbox">
+                    </div>
+                    <!-- has sub menus -->
+                    <div class="form-group" *ngIf="menuType < 3">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="hasSubMenus"
+                                formControlName="hasSubMenus">
+                            <label class="custom-control-label" for="hasSubMenus">Has Sub Menus</label>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button [disabled]="!menusForm.valid" class="btn btn-success">
+                            <i class="fa fa-plus mr-2"></i>{{
+                            formHeading[menuType] }}
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

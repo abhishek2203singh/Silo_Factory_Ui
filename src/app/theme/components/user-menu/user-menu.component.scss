@@ -1,0 +1,17 @@
+.dropdown-menu .user-menu {
+  width: 240px;
+  padding: 0;
+
+  .user-img {
+    width: 100px;
+  }
+
+  .dropdown-item {
+    color: #666 !important;
+  }
+}
+.app.combined .dropdown.show .dropdown-menu {
+  max-height: 340px;
+  opacity: 1;
+  pointer-events: auto;
+}

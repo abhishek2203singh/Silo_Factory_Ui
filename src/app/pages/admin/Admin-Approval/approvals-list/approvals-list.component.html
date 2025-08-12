@@ -1,0 +1,194 @@
+<!-- <app-info-panels [panels]="infoPanels"></app-info-panels> -->
+<div class="row mt-2">
+    <div class="col-lg-12">
+        <button class="print-btn" style="float: right" (click)="printFile()">
+            Print PDF <i class='fas fa-print'></i>
+        </button>
+        <button type="button" class="csv-btn" style="float: right" (click)="exportToCSV()">
+            Export to CSV <i aria-hidden="true" class='fas fa-file-csv'></i>
+        </button>
+        <!-- <button (click)="printFile()" class="print-btn">Print Table</button> -->
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Type to filter the column value..."
+                (keyup)="updateFilter($event)" />
+        </div>
+        <div class="custm">
+            <ngx-datatable #table class="material fixed-header" [headerHeight]="50" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="60" [scrollbarH]="true" [scrollbarV]="true" [rows]="rows"
+                [columns]="columns" [count]="rows.length" [style.height.px]="600" (select)="onSelect($event)">
+                <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                    [resizeable]="false">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="srNo" [width]="60">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Sr. No</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                        {{ rowIndex + 1 }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="date">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Date</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.date | date }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="entry type">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Entry Type</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row.entry_type_name}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Product Type">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Product Type</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{row.master_product_type_name}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="product_name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Product</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig"> {{ row.product_name |titlecase}}
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="packaging_size">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Packaging Size</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.packing_weight || 'N/A'}}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="quantity">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.quantity}} {{row.unit_name}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="rejected_quantity">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Rejected Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.rejected_quantity}} {{row.unit_name}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="priceper_unit">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Price (Per Unit)</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.priceper_unit}}/{{row.unit_name}}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="indepart_name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">From Dept</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row.indepart_name}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="indeprt_head_name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">From Head</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig">{{ row.indeprt_head_name}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="send_deprt_name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">To Dept</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span class="fontBig"> {{ row.send_deprt_name}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="approval_status">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Approval Status</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text1">
+                            <span class="badge-pill  text-danger" *ngIf="row.approval_status_id == 1">{{
+                                row.approval_status}}</span>
+                            <!-- 'Discussion After Approved' -->
+                            <span class="badge-pill text-warning" *ngIf="row.approval_status_id == 2">{{
+                                row.approval_status}}</span>
+                            <!-- Approved -->
+                            <span class="badge-pill text-success" *ngIf="row.approval_status_id == 3">{{
+                                row.approval_status}}</span>
+                            <!-- for reject -->
+                            <span class="badge-pill text-danger" *ngIf="row.approval_status_id == 4">{{
+                                row.approval_status}}</span>
+
+                            <!-- Under Process -->
+                            <span class="badge badge-info" *ngIf="row.approval_status_id == 6">{{
+                                row.approval_status}} </span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="approval_by_name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Approved By</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.approval_by_name}}
+                        <!-- in pending -->
+
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Status" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Status</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text"
+                            [ngClass]="{'demand-row': row.EntryId == 1, 'stock-row': row.EntryId == 3}">
+                            <span class="badge-pill badge-danger" *ngIf="row.status == 0">Deactive</span>
+                            <span class="badge-pill badge-success" *ngIf="row.status == 1">Active</span>
+                        </div>
+                    </ng-template>
+
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Action</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="action-button-container"
+                            [title]="row.status == 0 ? 'Entry is deleted from the department' : 'View Details'">
+                            <button class="view btn btn-outline-success w-10p mb-1 mr-1" type="button"
+                                [disabled]="row.status === 0" (click)="DetailsRows(row.id)">
+                                <i aria-hidden="true" class="fa fa-spin fa-gear"></i>
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+.accordion-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  padding: 15px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-transition: background-color 0.3s ease, color 0.3s ease;
+  -moz-transition: background-color 0.3s ease, color 0.3s ease;
+  -ms-transition: background-color 0.3s ease, color 0.3s ease;
+  -o-transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.accordion-button:hover {
+  background-color: #3e50b4;
+  color: #ffffff !important;
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
+  -webkit-transition: transform 0.3s ease;
+  -moz-transition: transform 0.3s ease;
+  -ms-transition: transform 0.3s ease;
+  -o-transition: transform 0.3s ease;
+}
+
+.accordion-button[aria-expanded="true"] .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-button::after {
+  content: "\25BC";
+  font-size: 14px;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+.accordion-button[aria-expanded="true"]::after {
+  content: "\25B2";
+  transform: rotate(180deg);
+}

@@ -1,0 +1,73 @@
+<div class="tab-pane" id="otherPayment">
+    <button type="button" class="btn btn-primary float-right mb-2" (click)="goBack()"><i
+            class="fas fa-arrow-left me-2"></i> Back</button>
+    <div class="modal-content">
+        <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label">
+                Assign Delivery Boy
+            </h4>
+        </div>
+        <form [formGroup]="assignForm" (ngSubmit)="submitAssignData()">
+            <div class="row modal-header state modal-primary align-items-center">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="role_id">Select Delivery Boy</label>
+                        <select class="form-control" formControlName="deliveryBoy" id="inputRoleId">
+                            <option value="" disabled selected>Select Delivery Boy</option>
+                            <option *ngFor="let dlBoy of deliveryBoy" [value]="dlBoy.id">{{dlBoy.full_name}}</option>
+
+                        </select>
+                        <div *ngIf="assignForm.get('deliveryBoy')?.invalid && (assignForm.get('deliveryBoy')?.dirty || assignForm.get('deliveryBoy')?.touched)"
+                            class="text-danger">
+                            <div *ngIf="assignForm.get('deliveryBoy')?.errors?.['required']">Delivery Boy is Required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 mt-2">
+                    <button type="submit" class="btn btn-primary" [disabled]="!assignForm.valid"> <i
+                            class="fa fa-user-plus mr-1"></i>Assign</button>
+                </div>
+                <div class="col-sm-5">
+                </div>
+            </div>
+        </form>
+
+        <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [selected]="selected" [rows]="customerData"
+            [selectionType]="selection" (select)="onSelect($event)">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="srno">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Sr No</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                    {{ rowIndex + 1 }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="full_name">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Customer Name</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.full_name }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="deliveryBoyName">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Delivery Boy Name</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.deliveryBoyName || "Not Assigned" }}
+                </ng-template>
+            </ngx-datatable-column>
+
+        </ngx-datatable>
+
+    </div>
+</div>

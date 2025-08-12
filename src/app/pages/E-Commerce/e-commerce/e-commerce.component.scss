@@ -1,0 +1,24 @@
+.centered-text {
+  text-align: center;
+}
+
+.datatable-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+
+:host ::ng-deep .ngx-datatable {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+  .datatable-header {
+    border-bottom: 2px solid #ddd;
+    background-color: #f8f9fa;
+  }
+
+  .column-header {
+    font-weight: bold;
+    color: #333;
+  }
+}

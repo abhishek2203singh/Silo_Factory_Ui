@@ -1,0 +1,158 @@
+.print-btn1 {
+  background-color: #239ee5;
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 1px 1px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.head {
+  color: red;
+}
+.premium-checkbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  position: relative;
+  gap: 8px;
+}
+
+.hidden-checkbox {
+  display: none;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff; /* Premium blue border */
+  border-radius: 4px;
+  background-color: white;
+  position: relative;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.premium-checkbox input:checked + .custom-checkbox {
+  background-color: #007bff; /* Premium blue fill when checked */
+  border-color: #0056b3;
+}
+
+.custom-checkbox::after {
+  content: "";
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.premium-checkbox input:checked + .custom-checkbox::after {
+  opacity: 1;
+}
+
+.label-text {
+  color: #333;
+}
+
+.input-group {
+  width: 100%; /* Full width */
+  border: 2px solid #a19a9a !important;
+  border-radius: 4px;
+  padding: 0;
+}
+
+.quantity-input {
+  width: 70%;
+  padding-left: 2px;
+  border: none;
+}
+.quantity-input {
+  outline: none;
+}
+.input-group-text {
+  width: 30%;
+  padding-right: 0px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 0px 3px 3px 0px;
+  background-color: #898b8d;
+  border: none;
+}
+
+//   input for quantity
+
+.print-btn1 {
+  background-color: #239ee5;
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 1px 1px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.print-btn1:hover {
+  background-color: #177bb5;
+}
+.text-danger-glow {
+  color: #ff4141;
+  text-shadow: 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00,
+    0 0 60px #f00, 0 0 70px #f00, 0 0 80px #f00;
+}
+
+.column-header {
+  font-weight: bold !important;
+  color: #333 !important;
+}
+
+.blink {
+  animation: blinker 1s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+}
+@keyframes blinker {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.checkSingle {
+  cursor: pointer;
+}
+
+::ng-deep ngx-datatable .datatable-header {
+  background-color: #f8f8f8 !important; /* Light gray background */
+  color: #333 !important; /* Dark text */
+  font-weight: bold !important; /* Normal font weight */
+  border-bottom: 1px solid #ddd !important; /* Light border */
+}
+
+::ng-deep ngx-datatable .datatable-header .datatable-header-cell {
+  padding: 10px !important; /* Adjust padding as needed */
+  text-align: center !important; /* Center-align header text */
+  font-size: 14px !important; /* Adjust font size */
+}
+
+/* Remove hover or other effects on headers */
+::ng-deep ngx-datatable .datatable-header .datatable-header-cell:hover {
+  background-color: #f8f8f8 !important;
+}

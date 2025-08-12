@@ -1,0 +1,55 @@
+.entry-type-container {
+  position: relative;
+  padding-top: 15px; /* Adjust as needed to give space for the badge */
+}
+
+.entry-type-badges {
+  position: absolute;
+  top: 0px;
+  left: 65%;
+  transform: translateX(-30%);
+  z-index: 1;
+}
+
+.latest-badge,
+.old-badge {
+  font-size: 0.7rem;
+  padding: 2px 5px;
+  color: rgb(0, 0, 0);
+}
+
+// .latest-badge {
+//   background-color: #28a745;
+// }
+
+// .old-badge {
+//   background-color: #ec9b65;
+// }
+.datatable-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+
+:host ::ng-deep .ngx-datatable {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+  .datatable-header {
+    border-bottom: 2px solid #ddd;
+    background-color: #f8f9fa;
+  }
+
+  .column-header {
+    font-weight: bold;
+    color: #333;
+  }
+}
+
+.edit {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.edit i {
+  transition: color 0.3s ease;
+}

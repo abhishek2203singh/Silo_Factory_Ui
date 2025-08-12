@@ -1,0 +1,63 @@
+/* Set up the wrapper to manage scroll */
+.table-wrapper {
+  height: 600px; /* Adjust height to fit your needs */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+}
+
+ngx-datatable.material {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Set fixed header and footer heights */
+ngx-datatable .datatable-header,
+ngx-datatable .datatable-footer {
+  flex: 0 0 auto;
+  background-color: white;
+  z-index: 2;
+}
+
+ngx-datatable .datatable-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.datatable-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+
+:host ::ng-deep .ngx-datatable {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+  .datatable-header {
+    border-bottom: 2px solid #ddd;
+    background-color: #f8f9fa;
+  }
+
+  .column-header {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .datatable-body-row {
+    border-bottom: 1px solid #eee;
+  }
+
+  .datatable-row-even {
+    background-color: #fbfbfb;
+  }
+}
+.fontBig {
+  font-size: 13px;
+  font-weight: bold;
+}
+.centered-text1 {
+  text-align: center;
+  font-weight: bold;
+}

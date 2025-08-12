@@ -1,0 +1,155 @@
+<div class="tab-pane" id="productDelivery">
+    <div class="modal-content">
+        <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label"><i class="fa fa-cart-arrow-down"></i>
+                List of Orders
+            </h4>
+            <div class="button-group">
+
+
+                <button class="csv-btn" (click)="exportToCSV()">
+                    Export to CSV <i aria-hidden="true" class="fas fa-file-csv"></i>
+                </button>
+                <button class="print-btn" (click)="printFile()">
+                    Print PDF <i class='fas fa-print'></i>
+                </button>
+            </div>
+        </div>
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Type to filter the product name..."
+                (keyup)="updateFilter($event)" />
+        </div>
+        <ngx-datatable #table class="material rounded-2 border" [rows]="orderData" [headerHeight]="50"
+            [footerHeight]="60" [rowHeight]="60" [scrollbarH]="true" [scrollbarV]="true" [virtualization]="true"
+            [count]="orderData.length" [limit]="10" [columnMode]="'force'" [style.height.px]="600">
+            <!-- Serial Number -->
+            <ngx-datatable-column name="S.No" [width]="40" [sortable]="false">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header center-text">Sr. No</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                    <span class="fw-semibold">{{ rowIndex + 1 }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Date -->
+            <ngx-datatable-column name="Date">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header center-text">Date</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span class="text-medium">{{ row.order_date | date }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Customer -->
+            <ngx-datatable-column name="customer">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Customer</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span class="fw-medium">{{ row.cust_name | titlecase }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Product -->
+            <ngx-datatable-column name="delivery agent">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Product</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span class="fw-medium">{{ row.product_name }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Quantity -->
+            <ngx-datatable-column name="quantity" [width]="50">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Quantity</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span class="fw-medium">{{ row.quantity || '50 ltr' }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Price -->
+            <ngx-datatable-column name="Update quantity one day only" [width]="50">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Price</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span class="fw-medium text-success">{{ row.price }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Total -->
+            <ngx-datatable-column name="Total" [width]="50">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Total</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span class="fw-bold text-dark">{{ row.total_price }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Delivery Boy -->
+            <ngx-datatable-column name="delivery_boy_name" [width]="100">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Delivery Boy</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span class="fw-medium">{{ row.delivery_boy_name | titlecase }}</span>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Delivery Status -->
+            <ngx-datatable-column name="delivery_status_name" [width]="230">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Delivery Status</span>
+                </ng-template>
+
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <div class="status-change-container">
+                        <!-- Display current status -->
+                        <ng-container *ngIf="!row.isEditing">
+                            <span *ngIf="row.status !== 0" class="badge" [ngClass]="{
+                                'badge-warning': row.delivery_status === 1 || row.delivery_status === 2 || row.delivery_status === 3,
+                                'badge-success': row.delivery_status === 4 || row.delivery_status === 7,
+                                'badge-danger': row.delivery_status === 5 || row.delivery_status === 6 
+                            }">
+                                {{ row.delivery_status_name }}
+                            </span>
+                            <span *ngIf="row.status === 0" class="badge badge-danger">Cancelled by Customer</span>
+                        </ng-container>
+
+                        <!-- Inline editing form -->
+                        <div *ngIf="row.isEditing" class="d-flex align-items-center">
+                            <select class="form-control mr-2" [(ngModel)]="row.delivery_status">
+                                <option *ngFor="let status of deliveryStatuses" [value]="status.id"
+                                    [disabled]="status.id === row.tempDeliveryStatus">
+                                    {{ status.name }}
+                                </option>
+                            </select>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-success mr-1"
+                                    (click)="saveStatusChange(row.order_id)">Save</button>
+                                <button class="btn btn-sm btn-secondary" (click)="cancelStatusEdit(row)">Cancel</button>
+                            </div>
+                        </div>
+
+                        <!--Edit button-->
+                        <button
+                            *ngIf="!row.isEditing && !(row.delivery_status === 4 || row.delivery_status === 5 || row.delivery_status === 6 || row.status === 0 )"
+                            class="btn btn-sm btn-outline-primary ml-2" (click)="startStatusEdit(row?.order_id)"
+                            title="Change Delivery Status">
+                            <i class="fa fa-exchange"></i>
+                        </button>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+
+        </ngx-datatable>
+
+    </div>
+</div>

@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  // background-color: red;
+  margin-bottom: 0px !important;
+  padding: 0px !important;
+}
+
+.icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 24px;
+}
+
+.create-product-button {
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.create-product-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.create-product-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.img {
+  height: 35px !important;
+  width: 35px !important;
+  border-radius: 1000px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}

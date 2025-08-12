@@ -1,0 +1,207 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Assign Product to vendor</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="productForm" (ngSubmit)="isEditMode?updateVendorPro():onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="vendorId">Name of Vendor</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="vendorId" formControlName="vendorId">
+                                        <option value="0">Choose...</option>
+                                        <option *ngFor="let vendor of vendorList" [value]="vendor.id">
+                                            {{ vendor.full_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productTypeId">Product Type</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="productTypeId" formControlName="productTypeId"
+                                        (change)="productbyproductType($event)">
+                                        <option [value]="0">Choose...</option>
+                                        <option *ngFor="let type of productTypeList" [value]="type.id">
+                                            {{type.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productId">Name of Product</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="productId" formControlName="productId"
+                                        (change)="packinggsizebyPrdct($event)">
+                                        <option [value]="0">Choose...</option>
+                                        <option *ngFor="let product of namesList" [value]="product.id">
+                                            {{ product.product_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="productId">Packing Size</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="packingSizeId" formControlName="packingSizeId">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let pl of packingList" [value]="pl.id">{{ pl.weight
+                                            }} {{ pl.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="price">Price</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="price" formControlName="price"
+                                        placeholder="Enter Price">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">
+                            {{isEditMode?"Update":"Submit"}}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+</div>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="vendorProdata">
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+
+            {{ rowIndex + 1 }}
+
+        </ng-template>
+    </ngx-datatable-column>
+
+    <!--Entry Date-->
+    <ngx-datatable-column name="created_on">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            <span> {{ row.created_on | date}}</span>
+
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Vendor Name-->
+    <ngx-datatable-column name="Vendorname">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Vendor Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            <span> {{ row.vendor_name }}</span>
+
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Product Type Name-->
+    <ngx-datatable-column name="ProTypename">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product Type Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            <span> {{ row.product_type_name }}</span>
+
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Product Name-->
+    <ngx-datatable-column name="Productname">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            <span> {{ row.product_name }}</span>
+
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Packing Size-->
+    <!-- <ngx-datatable-column name="weight">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Packing Size</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            <span> {{ row.weight}} {{row.shortName}}</span>
+
+        </ng-template>
+    </ngx-datatable-column> -->
+    <!--Price-->
+    <ngx-datatable-column name="Productname">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Price</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+
+            <span> {{ row.price }}</span>
+
+        </ng-template>
+    </ngx-datatable-column>
+
+    <!-- status -->
+    <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.status === 1" class="badge badge-success mr-1">
+                Active
+            </span>
+            <span *ngIf="row.status === 0" class="badge badge-warning mr-1">
+                Deactive
+            </span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department Action -->
+    <ngx-datatable-column name="action" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                (click)="editVendorPro(row?.id)">
+                <span class="edit-icon"></span>
+            </button>
+            <button class="edit btn btn-outline-warning w-100p mb-1 mr-1" type="button" title="Change status"
+                (click)="changeData(row)">
+                <i aria-hidden="true" class="fa fa-exchange" style="font-size: 25px;"></i>
+            </button>
+            <!-- <button class="edit btn btn-outline-danger w-100p mb-1 mr-1" type="button" title="Delete"
+                (click)="deleteData(row)">
+                <i aria-hidden="true" class="fa fa-trash-o" style="font-size: 25px;"></i>
+            </button> -->
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

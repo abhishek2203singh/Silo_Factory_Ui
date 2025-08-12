@@ -1,0 +1,170 @@
+<div>
+    <div class="card card-info border-0 box-shadow">
+        <div class="card-header text-white text-center bg-primary">
+            <span class="h4">User Details</span>
+            <span style="float: right; cursor: pointer;" [routerLink]="['/pages/e-commerce']"><i
+                    class="fa fa-hand-o-left mr-1"></i>Back</span>
+        </div>
+
+        <div class="card-body bg-white">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Full Name
+                    </label>
+                    <p class="text-muted">{{Details?.EcommUsrName}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Mobile
+                    </label>
+                    <p class="text-muted">{{Details?.mobile}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Email
+                    </label>
+                    <p class="text-muted">{{Details?.email}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Password
+                    </label>
+                    <p class="text-muted">{{Details?.password}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Address
+                    </label>
+                    <p class="text-muted">{{Details?.address}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">State
+                    </label>
+                    <p class="text-muted">{{Details?.statename}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">City
+                    </label>
+                    <p class="text-muted">{{Details?.cityname}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Pincode
+                    </label>
+                    <p class="text-muted">{{Details?.pincode}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Date</label>
+                    <p class="text-muted">{{Details?.date | date}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">
+                        Approval Status</label>
+                    <p class="text-muted">{{Details?.approvalStatusName}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Facebook Page
+                    </label>
+                    <p class="text-muted">{{Details?.facebook_page
+                        }}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Website
+                    </label>
+                    <p class="text-muted">{{Details?.website
+                        }}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">About Me
+                    </label>
+                    <p class="text-muted">{{Details?.about_me
+                        }}</p>
+                </div>
+                <!-- <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Online Status
+                    </label>
+                    <p class="text-muted">{{Details?.online_status
+                        }}</p>
+                </div> -->
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Status</label>
+                    <p class="text-muted">
+                        {{ Details?.status === 0 ? 'Inactive' : (Details?.status === 1 ? 'Active' : 'Unknown') }}
+                    </p>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Security money
+                    </label>
+                    <p class="text-muted">{{Details?.securtiy_money
+                        }}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="card card-info border-0 box-shadow">
+        <div class="card-header text-white text-center bg-primary">
+            <span class="h4">Product Details</span>
+        </div>
+
+        <div class="card-body bg-white">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Product Name
+                    </label>
+                    <p class="text-muted">{{Details?.productName}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Entry Type
+                    </label>
+                    <p class="text-muted">{{Details?.entryTypeName}} </p>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Quantity
+                    </label>
+                    <p class="text-muted">{{Details?.qty}} {{Details?.unitShortName}}</p>
+                </div>
+                <!-- <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Unit
+                    </label>
+                    <p class="text-muted">{{Details?.unitShortName}}</p>
+                </div> -->
+
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Price (Per Unit)</label>
+                    <p class="text-muted">Rs. {{Details?.priceper_unit}} / {{Details?.unitShortName}}</p>
+                </div>
+
+
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Weight (Per Unit)</label>
+                    <p class="text-muted">{{Details?.weight_per_unit}} / {{Details?.unitShortName}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <div class="card card-info border-0 box-shadow">
+        <div class="card-header text-white text-center bg-primary">
+            <span class="h4">Department Details</span>
+        </div>
+
+        <div class="card-body bg-white">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Department Name
+                    </label>
+                    <p class="text-muted">{{Details?.dname}}</p>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-control-label font-weight-bold">Department Head
+                    </label>
+                    <p class="text-muted">{{Details?.department_headName}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

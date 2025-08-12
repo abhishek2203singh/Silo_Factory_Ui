@@ -1,0 +1,18 @@
+<input type="file" (change)="fileChange(input)" #input class="img-upload-btn"/>
+
+<button class="btn btn-info btn-block rounded-0" type="button"> 
+  @if (image) {
+    <span><i class="fa fa-refresh"></i> Change Image... </span>
+  } @else {
+    <span><i class="fa fa-upload"></i> Select Image... </span>
+  }
+</button>
+
+<div class="image-wrapper">
+  @if (image) {
+    <i class="fa fa-times delete-img" (click)="removeImage()"></i>
+    <img [attr.src]="image" width="100%">
+  } @else {
+    <img src="img/app/no-image.png" width="100%">
+  } 
+</div>

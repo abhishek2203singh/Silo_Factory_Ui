@@ -1,0 +1,551 @@
+<app-info-panels [panels]="infoPanels"></app-info-panels>
+<div id="accordion-1" class="bg-white" role="tablist" aria-multiselectable="true">
+    <div class="card-header border-0" role="tab" id="headingOne">
+        <!-- <h5 class="mb-0 text-right">
+      <button type="button" class="btn btn-primary" [disabled]="isReturnVisible" (click)="toggleTransaction()">
+        <i class="fa fa-plus"></i> Transaction
+      </button>
+    </h5> -->
+        <h5 class="mb-0 text-right">
+            <button type="button" class="print-btn btn-primary mb-2" (click)="GoToVisit()">
+                <i class="fa fa-clipboard"></i> Proceed to Transaction
+            </button>
+        </h5>
+    </div>
+    <!-- <div class="card border-0 box-shadow mb-3">
+    <div *ngIf="isTransactionVisible">
+      <div class="card-header d-flex transparent border-0 text-muted">
+        <h5 class="mb-0">Ecommerce Transaction</h5>
+      </div>
+      <div class="card-body widget-body">
+        <form [formGroup]="transactionForm">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="ecomm">Ecommerce User</label>
+                <div class="input-group">
+                  <select class="form-control" id="ecomm" formControlName="ecomm">
+                    <option value="" disabled selected>Choose...</option>
+                    <option *ngFor="let user of ['FlipKart', 'Amazon', 'Myntra', 'Ajio', 'BlinkIt', 'Ekart']">{{ user }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="entryType">Entry Type</label>
+                <div class="input-group">
+                  <select class="form-control" id="entryType" formControlName="entryType">
+                    <option value="" disabled selected>Choose...</option>
+                    <option *ngFor="let name of entryList" [value]="name?.id">{{name?.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="productId">Product Name</label>
+                <div class="input-group">
+                  <select class="form-control" id="productId" formControlName="productId">
+                    <option value="" disabled selected>Choose...</option>
+                    <option *ngFor="let product of productList" [value]="product.id">{{ product.product_name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="unitId">Unit Type</label>
+                <div class="input-group">
+                  <select class="form-control" id="unitId" formControlName="unitId">
+                    <option value="" disabled selected>Choose...</option>
+                    <option *ngFor="let unit of unitList" [value]="unit.id">{{ unit.name }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <div class="input-group">
+                  <input type="number" step="0.01" class="form-control" formControlName="quantity"
+                    placeholder="Quantity">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <button type="button" class="btn btn-primary" (click)="submitTransaction()">Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<div id="accordion-2" class="bg-white" role="tablist" aria-multiselectable="true">
+    <div class="card-header border-0" role="tab" id="headingTwo">
+        <!-- <h5 class="mb-0 text-right">
+            <button *ngIf="isReturnVisible" type="button" class="btn btn-primary" (click)="toggleReturn(0)">
+                Return
+            </button>
+        </h5> -->
+        <h5 class="mb-0 text-right">
+            <button *ngIf="isReturnVisible" type="button" class="btn btn-primary" (click)="toggleReturn(0)"
+                (click)="closeCollapse()">
+                Close
+            </button>
+        </h5>
+    </div>
+    <div class="card border-0 box-shadow mb-3">
+        <div *ngIf="isReturnVisible">
+            <div class="card-header d-flex transparent border-0 text-muted">
+                <h5 class="mb-0">Ecommerce Return</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="ecommForm" (ngSubmit)="onEcommSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="ecommerceUserId">Ecommerce
+                                    User</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="EcommUsrName" formControlName="ecommerceUserId">
+                                        <option value disabled selected>Choose...</option>
+                                        <option *ngFor="let name of eUsrList" [value]="name?.id">{{name?.full_name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="entryType">Entry Type</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="entryType" formControlName="entryType">
+                                        <option value disabled selected>Choose...</option>
+                                        <option *ngFor="let name of entryList" [value]="name?.id">{{name?.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productId">Product Name</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="productId" formControlName="productId">
+                                        <option value disabled selected>Choose...</option>
+                                        <option *ngFor="let product of productList" [value]="product.id">
+                                            {{ product.product_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="unitId">Unit Type</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="unitId" formControlName="unitId">
+                                        <option value disabled selected>Choose...</option>
+                                        <option *ngFor="let unit of unitList" [value]="unit.id">{{ unit.name
+                                            }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="quantity">Price (Per Unit)</label>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control"
+                                            formControlName="pricePerUnit" placeholder="Price Per Unit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="quantity">Weight (Per Unit)</label>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control"
+                                            formControlName="weightPerUnit" placeholder="Weight Per Unit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" class="form-control" formControlName="quantity"
+                                            placeholder="Quantity">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">{{"Submit"}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button #openButton type="button" class="print-btn btn-primary mb-2 " (click)="goToInfo()" style="float: right;"
+    data-toggle="modal" data-target="#lg-modal"> Add E-commerce
+    User <span class="badge badge-pill badge-white text-primary ml-1"><i class="fa fa-user-plus"></i></span></button>
+<button type="button" style="float: right;" class="print-btn btn-warning mb-2" (click)="GoToInventory()">
+    <i aria-hidden="true" class='fas fa-sticky-note'></i> Visit Inventory
+</button>
+
+
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Type to filter the column name..."
+        (keyup)="updateFilter($event)" />
+</div>
+
+<div class="custm">
+    <ngx-datatable #table class="material fixed-header" [rows]="ecommdeprt" [headerHeight]="50" [footerHeight]="50"
+        [rowHeight]="70" [scrollbarH]="true" [scrollbarV]="true" [columnMode]="'force'" [reorderable]="true"
+        [limit]="10" [count]="ecommdeprt.length" [style.height.px]="600">
+
+        <!-- Sr. No Column -->
+        <ngx-datatable-column name="srNo">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Sr. No</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ rowIndex + 1 }}
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Entry Type Column -->
+        <ngx-datatable-column name="entryTypeName" [sortable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Entry Type</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    <span class="badge-pill badge pulse" [ngClass]="{
+            'badge-demand': row.EntryId == 1,
+            'badge-warning': row.EntryId == 2,
+            'badge-blue': row.EntryId == 3,
+            'badge-stockout': row.EntryId == 4,
+            'badge-return': row.EntryId == 5,
+            'badge-secondary': !row.EntryId || row.EntryId > 5
+          }">
+                        {{row.entryTypeName || 'N/A'}}
+                    </span>
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Entry Date -->
+        <ngx-datatable-column name="created_on" [sortable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Date</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ row?.created_on | date }}
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Ecommerce User -->
+        <ngx-datatable-column name="EcommUsrName" [sortable]="true" [width]="200">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Ecommerce User</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ row.EcommUsrName }}
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Product -->
+        <ngx-datatable-column name="productName" [sortable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Product</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ row.productName }}
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Price per unit -->
+        <ngx-datatable-column name="pricePerUnit" [sortable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Price (Per Unit)</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ row.priceper_unit }}
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Weight per unit -->
+        <ngx-datatable-column name="weight_per_unit" [sortable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Weight (Per Unit)</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ row.weight_per_unit }}
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Quantity -->
+        <ngx-datatable-column name="qty" [sortable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Quantity</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ row?.qty }}
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+        <!--Rejected Quantity -->
+        <ngx-datatable-column name="qty" [sortable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Rejected Quantity</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    {{ row?.rejected_quantity }}
+                    <!-- Info button for EntryId 7 -->
+                    <button *ngIf="row.EntryId == 7 && row.rejected_quantity > 0" class="btn btn-link p-0 ml-2"
+                        type="button" (click)="openQuantityModal(row)" title="View Quantity Details">
+                        <i class="fa fa-info-circle text-danger"></i>
+                    </button>
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- Approval -->
+        <ngx-datatable-column name="Approvalname" [sortable]="true" [width]="200">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header center-text">Approval Name</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row" class="centered-text">
+                <div class="centered-text" [ngClass]="{
+            'demand-row': row.EntryId == 1,
+            'request-row': row.EntryId == 2,
+            'stockIn-row': row.EntryId == 3,
+            'stockOut-row': row.EntryId == 4,
+            'return-row': row.EntryId == 5
+          }">
+                    <span *ngIf="row.approval_status === 1"
+                        class="badge badge-warning mr-1">{{row.approvalStatusName}}</span>
+                    <span *ngIf="row.approval_status === 2"
+                        class="badge badge-info mr-1">{{row.approvalStatusName}}</span>
+                    <span *ngIf="row.approval_status === 3"
+                        class="badge badge-success mr-1">{{row.approvalStatusName}}</span>
+                    <span *ngIf="row.approval_status === 4"
+                        class="badge badge-danger mr-1">{{row.approvalStatusName}}</span>
+
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- Status -->
+        <!-- <ngx-datatable-column name="Status" [sortable]="true">
+      <ng-template ngx-datatable-header-template>
+        <span class="column-header center-text">Status</span>
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <div class="centered-text"
+          [ngClass]="{'demand-row': row.EntryId == 1 , 'request-row': row.EntryId == 2,'stockIn-row': row.EntryId == 3,'stockOut-row': row.EntryId == 4}">
+          <span class="badge-pill badge-danger" *ngIf="row.edStatus == 0">Deactive</span>
+          <span class="badge-pill badge-success" *ngIf="row.edStatus == 1">Active</span>
+        </div>
+      </ng-template>
+    </ngx-datatable-column> -->
+
+        <!-- Action -->
+        <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Action</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <button class="view btn btn-outline-success w-10p mb-1 mr-1" type="button" title="View Details"
+                    (click)="DetailsRows(row.eDId)">
+                    <i aria-hidden="true" class="fa fa-eye"></i>
+                </button>
+                <button class="return btn btn-outline-danger w-10p mb-1 mr-1" type="button" title="Return Item"
+                    (click)="toggleReturn(row?.eDId)">
+                    <i aria-hidden="true" class="fa fa-undo"></i>
+                </button>
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>
+<!-- Modal Template -->
+<div class="modal fade" id="quantityInfoModal" tabindex="-1" role="dialog" aria-labelledby="quantityInfoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quantityInfoModalLabel">Entry Records</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="records-container">
+                        <!-- Previous Entry Table -->
+                        <div class="card record-card">
+                            <div class="card-header bg-info text-white">
+                                Previous Entry
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Entry Type</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2024-03-20</td>
+                                        <td>Stock-In</td>
+                                        <td>ButterMilk</td>
+                                        <td>2 Liters</td>
+                                        <td><span class="badge bg-success">Accepted</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Traffic Sign Arrow -->
+                        <div class="arrow-container">
+                            <div class="traffic-sign">
+                                <svg class="arrow" viewBox="0 0 200 100">
+                                    <!-- Border -->
+                                    <rect x="10" y="10" width="180" height="80" rx="5" class="sign-border" />
+                                    <!-- Left Arrow Head -->
+                                    <path d="M60 50 L80 30 L80 70 Z" class="arrow-head left" />
+                                    <!-- Right Arrow Head -->
+                                    <path d="M140 50 L120 30 L120 70 Z" class="arrow-head right" />
+                                    <!-- Middle Line -->
+                                    <line x1="80" y1="50" x2="120" y2="50" class="arrow-line" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Latest/Rejected Entry Table -->
+                        <div class="card record-card">
+                            <div class="card-header bg-warning text-dark">
+                                Latest Entry (Rejected)
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Entry Type</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2024-03-21</td>
+                                        <td>Stock Out</td>
+                                        <td>ButterMilk</td>
+                                        <td>3 Liters</td>
+                                        <td><span class="badge bg-danger">Rejected</span></td>
+                                        <td>Quantity exceeded daily limit</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

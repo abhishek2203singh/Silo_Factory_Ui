@@ -1,0 +1,325 @@
+<app-info-panels [panels]="infoPanels"></app-info-panels>
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Type to filter the column name..."
+        (keyup)="updateFilter($event)" />
+</div>
+<ngx-datatable #table class="material fixed-header" [headerHeight]="50" [limit]="10" [columnMode]="'force'"
+    [footerHeight]="50" [rowHeight]="60" [scrollbarH]="true" [scrollbarV]="true" [rows]="rows" [count]="rows.length"
+    [style.height.px]="600">
+    <ngx-datatable-column name="srNo" [width]="20">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ rowIndex + 1 }}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="date" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.date | date}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="entry type">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Entry Type</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text" [ngClass]="{
+         'demand-row': row.entry_type_id == 1,
+         'request-row': row.entry_type_id == 2,
+         'stockIn-row': row.entry_type_id == 3,
+         'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,
+         'adminreturn-row': row.entry_type_id == 7
+         }">
+                <span class="badge-pill badge pulse" [ngClass]="{
+            'badge-demand': row.entry_type_id == 1,
+            'badge-warning': row.entry_type_id == 2,
+            'badge-blue': row.entry_type_id == 3,
+            'badge-stockout': row.entry_type_id == 4,
+            'badge-return': row.entry_type_id == 5,
+            'badge-secondary': !row.entry_type_id || row.entry_type_id > 4,
+            'badge-adminreturn': row.entry_type_id == 7,
+            }">
+                    {{ row.entry_type_name || 'N/A'}}
+                </span>
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="indepart_name" [width]="200">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product Type</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.master_product_type_name }}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="product_name" [width]="180">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.product_name }}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- <ngx-datatable-column name="indepart_name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Packaging Size</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.packing_weight}} {{row.st_name}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column> -->
+    <ngx-datatable-column name="quantity">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Quantity</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.quantity}} {{row.unit_name}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Rejected Quantity -->
+    <ngx-datatable-column name="qty" [sortable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header center-text">Rejected
+                Quantity</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'reject-row': row.entry_type_id == 6,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row?.rejected_quantity }} {{row.unit_name}}
+                <!-- Info button for entry_type_id 7 -->
+                <button *ngIf="row.entry_type_id == 7 && row.rejected_quantity > 0" class="btn btn-link p-0 ml-2 bounce"
+                    type="button" (click)="openQuantityModal(row)" title="View Quantity Details">
+                    <i class="fa fa-info-circle text-cstm-danger"></i>
+                </button>
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="indepart_name" [width]="200">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">From Dept</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.indepart_name}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="indeprt_head_name" [width]="200">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">From Head</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.indeprt_head_name}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="send_deprt_name" [width]="250">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">To Dept</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.send_deprt_name}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="send_deprthead_name" [width]="250">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">To Head</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.send_deprthead_name}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="approval_status" [width]="200">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Approval Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1, 'request-row': row.entry_type_id == 2, 'stockIn-row': row.entry_type_id == 3, 'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                <span *ngIf="row.approval_status_id === 1" class="badge badge-warning mr-1">
+                    {{ row.approval_status }}
+                </span>
+                <span *ngIf="row.approval_status_id === 2" class="badge badge-info mr-1">
+                    {{ row.approval_status }}
+                </span>
+                <span *ngIf="row.approval_status_id === 3" class="badge badge-success mr-1">
+                    {{ row.approval_status }}
+                </span>
+                <span *ngIf="row.approval_status_id === 4" class="badge badge-warning mr-1">
+                    {{ row.approval_status }}
+                </span>
+                <span *ngIf="![1, 2, 3, 4].includes(row.approval_status_id)" class="badge badge-warning mr-1">
+                    {{ row.approval_status }}
+                </span>
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="approval_by_name" [width]="200">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Approved By</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <div class="centered-text"
+                [ngClass]="{'demand-row': row.entry_type_id == 1 , 'request-row': row.entry_type_id == 2,'stockIn-row': row.entry_type_id == 3,'stockOut-row': row.entry_type_id == 4,'return-row': row.entry_type_id == 5,'adminreturn-row': row.entry_type_id == 7}">
+                {{ row.approval_by_name}}
+            </div>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <button class="view btn btn-outline-success w-10p mb-1 mr-1" type="button" title="View Details"
+                (click)="DetailsRows(row.id)">
+                <i aria-hidden="true" class="fa fa-spin fa-gear"></i>
+            </button>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>
+<!-- Modal Template -->
+<div class="modal fade" id="quantityInfoModal" tabindex="-1" role="dialog" aria-labelledby="quantityInfoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quantityInfoModalLabel">Entry
+                    Records
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="records-container">
+                        <!-- Previous Entry Table -->
+                        <div class="card record-card">
+                            <div class="card-header bg-info text-white">
+                                Stock Out Details
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Entry Type</th>
+                                        <th>Product</th>
+                                        <th>Quantity (actual)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{stockOutData?.date|
+                                            date:'EEEE dd MMM yyyy HH:mm:ss'}}
+                                        </td>
+                                        <td>{{stockOutData?.entry_type_name}}</td>
+                                        <td>{{stockOutData?.product_name}}</td>
+                                        <!-- <td class="font-weight-bold">{{stockOutData?.quantity+" "
+                                            |number:'1.2-3'}}
+                                            {{stockOutData?.unit_name}}
+                                        </td> -->
+                                        <td class="font-weight-bold">
+                                            {{ stockOutData?.quantity != null ? (stockOutData.quantity | number:'1.2-3')
+                                            : '0.00' }}
+                                        </td>
+                                        <td><span class="badge bg-success">{{stockOutData?.approval_status}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Traffic Sign Arrow -->
+                        <div class="arrow-container">
+                            <div class="traffic-sign">
+                                <svg class="arrow" viewBox="0 0 200 100">
+                                    <!-- Border -->
+                                    <rect x="10" y="10" width="180" height="80" rx="5" class="sign-border" />
+                                    <!-- Left Arrow Head -->
+                                    <path d="M60 50 L80 30 L80 70 Z" class="arrow-head left" />
+                                    <!-- Right Arrow Head -->
+                                    <path d="M140 50 L120 30 L120 70 Z" class="arrow-head right" />
+                                    <!-- Middle Line -->
+                                    <line x1="80" y1="50" x2="120" y2="50" class="arrow-line" />
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Latest/Rejected Entry Table -->
+                        <div class="card record-card">
+                            <div class="card-header bg-warning text-dark">
+                                Latest Entry (Return)
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Entry Type</th>
+                                        <th>Product</th>
+                                        <th>Quantity (Rejected)</th>
+                                        <th>Approved Quantity</th>
+                                        <th>Status</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{returnData?.date|
+                                            date:'EEEE dd MMM yyyy HH:mm:ss'}}
+                                        </td>
+                                        <td>{{returnData?.entry_type_name}}</td>
+                                        <td>{{returnData?.product_name}}</td>
+                                        <td class="font-weight-bold text-danger">{{returnData?.rejected_quantity
+                                            |number:'1.2-3'}}
+                                            {{returnData?.unit_name}}
+                                        </td>
+                                        <td class="font-weight-bold text-success">
+                                            {{stockOutData?.quantity-returnData?.rejected_quantity|number:'1.2-3'
+                                            }}
+                                            {{" "+returnData?.unit_name}}
+                                        </td>
+                                        <td><span class="badge bg-success">{{returnData?.approval_status}}</span></td>
+                                        <td>{{returnData?.message}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

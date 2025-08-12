@@ -1,0 +1,260 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Master Distribution Center</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="DistForm" (ngSubmit)="isEditMode?updateDetails():onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="centerName">Center Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Center Name" id="centerName"
+                                        formControlName="centerName">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="address">Center Code</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Center Code" id="centerCode"
+                                        formControlName="centerCode">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="manager">Manager or Owner</label>
+                                <select class="form-control" formControlName="manager" id="manager">
+                                    <option value disabled selected>Select
+                                        Manager</option>
+                                    <option *ngFor="let role of List" [value]="role.id">{{role.full_name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Address" id="address"
+                                        formControlName="address">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="stateId">State Name</label>
+                                <div class="input-group">
+                                    <select class="form-control" (change)="onStateChange($event)" id="state"
+                                        formControlName="state">
+                                        <option value="" disabled selected>Choose...</option>
+                                        <option *ngFor="let state of stateList" [value]="state.id">{{ state.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="city">City Name</label>
+                                <div class="input-group">
+                                    <select class="form-control"
+                                        [class.is-invalid]="DistForm.get('city')?.touched && DistForm.get('city')?.invalid"
+                                        id="city" formControlName="city">
+                                        <option value="" disabled selected>Choose...</option>
+                                        <option *ngFor="let city of cityList" [value]="city.id">{{ city.name }}</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="DistForm.get('city')?.touched && DistForm.get('city')?.invalid"
+                                    class="invalid-feedback d-block">
+                                    <div *ngIf="DistForm.get('city')?.errors?.['required']">City is required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="pincode">Pincode</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Pincode" id="pincode"
+                                        formControlName="pincode">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Email" id="email"
+                                        formControlName="email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="mobile">Mobile</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Mobile" id="mobile"
+                                        formControlName="mobile" [maxLength]="10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">{{isEditMode?"Update":"Submit"}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+</div>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="distribution">
+
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+            {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Center Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.center_name}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Center Code</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.center_code}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Full Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.full_name}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Address</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.address}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="state">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">State</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.stateName}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="city">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">City</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.cityName}}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Pincode</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.pincode}}
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Entry Date-->
+    <ngx-datatable-column name="created_on">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Entry Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span> {{ row.created_on | date}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!--  status -->
+    <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.status === 1" class="badge badge-success mr-1">
+                Active
+            </span>
+            <span *ngIf="row.status === 0" class="badge badge-warning mr-1">
+                Deactive
+            </span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department status -->
+    <ngx-datatable-column name="is-deletable" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Is-Deletable</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.is_deletable == 0">Permanent</span>
+            <span *ngIf="row.is_deletable == 1">Temporary</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department Action -->
+    <ngx-datatable-column>
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template class="flex justify-content" let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1  mr-25" type="button" title="Edit"
+                (click)="onEditDistdprt(row?.id)">
+                <span class=" fa fa-eye"></span>
+            </button>
+            <ng-toggle [value]="row?.status !== 0" [disabled]="row.EntryId == 3 || row.status == 0"
+                (click)="row.status !== 0 && row.EntryId !== 3 ? deleteData(row?.id) : null" [color]="{ 
+    unchecked: row?.status === 0 ? '#F34235' : '#4BAE4F',
+    checked: row?.status === 0 ? '#F34235' : '#4BAE4F'
+}" title="Change Status">
+            </ng-toggle>
+            <!-- <button class="delete btn btn-outline-danger w-100p mb-1 mr-1" type="button" title="Delete"
+                (click)="deleteData(row?.id)">
+                <i aria-hidden="true" class="fa fa-trash"></i>
+            </button> -->
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

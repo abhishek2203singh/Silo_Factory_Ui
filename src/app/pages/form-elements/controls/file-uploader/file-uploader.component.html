@@ -1,0 +1,12 @@
+<div class="form-group">
+    <div class="input-group file-upload">
+        <input type="file" (change)="fileChange(input)" #input class="file-upload-btn"/>
+        <input type="text" class="form-control" placeholder="Choose a file..." value="{{file}}">
+        @if (file) {
+            <i class="fa fa-times delete-file" (click)="removeFile()"></i>
+        } 
+        <span class="input-group-append">
+            <button class="btn btn-primary" type="button"><i class="fa fa-upload"></i></button>
+        </span>
+    </div>
+</div>

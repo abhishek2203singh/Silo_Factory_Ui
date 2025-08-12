@@ -1,0 +1,115 @@
+<div class="invoice-slider-container mt-3 mb-4" *ngIf="selectedCustomers.length > 0">
+    <div class="invoice-navigation">
+        <button class="btn btn-outline-primary mt-1" (click)="prevInvoice()" [disabled]="currentInvoiceIndex === 0">
+            <i class="fa fa-chevron-left"></i> Previous
+        </button>
+        <span class="invoice-counter">
+            Pages-&nbsp;{{ currentInvoiceIndex + 1 }} / {{ selectedCustomers.length }}
+        </span>
+        <button class="btn btn-outline-primary mt-1" (click)="nextInvoice()"
+            [disabled]="currentInvoiceIndex === selectedCustomers.length - 1">
+            Next <i class="fa fa-chevron-right"></i>
+        </button>
+    </div>
+
+
+    <div class="invoice-slide-container" [@slideAnimation]="currentInvoiceIndex">
+        <div class="card border border-default">
+            <div *ngIf="selectedCustomers[currentInvoiceIndex] as cust" class="modern-invoice-container">
+                <div id="invoiceprint" class="modern-invoice-body">
+                    <!-- Header Section -->
+                    <div class="modern-invoice-header">
+                        <div class="text-center">
+                            <!-- <i class="fa fa-book fa-2x text-success-m2 mr-1"></i> -->
+                            <span class="company-name">{{cust.dairydata?.name || 'Pious Factory'}}</span>
+                        </div>
+                    </div>
+
+                    <!-- Customer and Invoice Details -->
+                    <div class="modern-invoice-details">
+                        <div class="customer-info">
+                            <h3>Bill To:</h3>
+                            <p><strong>{{cust.full_name}}</strong></p>
+                            <p>{{cust.address}}</p>
+                            <p>
+                                <i class="fa fa-mobile"></i> {{cust.mobile}}
+                            </p>
+                            <p>
+                                <i class="fa fa-envelope"></i> {{cust.email}}
+                            </p>
+                        </div>
+
+                        <div class="invoice-meta">
+                            <p><strong>Invoice No:</strong> INV-{{(currentInvoiceIndex + 1).toString().padStart(4,
+                                '0')}}</p>
+                            <p><strong>Invoice Date:</strong> {{today | date:'mediumDate'}}</p>
+                            <p><strong>Due Date:</strong> {{dueDate | date:'mediumDate'}}</p>
+                            <p><strong>Status:</strong> <span class="badge badge-warning">Unpaid</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Items -->
+                    <div class="modern-invoice-items">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Product Name</th>
+                                    <th>Type</th>
+                                    <th>Qty</th>
+                                    <th>Unit Price</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of cust.invoicedata; let j=index">
+                                    <td>{{j + 1}}</td>
+                                    <td>{{item.date | date:'shortDate'}}</td>
+                                    <td>{{item.DairyProductName !== 'NA' ? item.DairyProductName : item.product_name}}
+                                    </td>
+                                    <td>{{item.sch_via}}</td>
+                                    <td>{{item.total_quantity}} {{item.uom}}</td>
+                                    <td>{{item.pro_amount}}/{{item.uom}}</td>
+                                    <td>{{item.amount_user}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-right">Total:</td>
+                                    <td>{{ calculateTotalAmount(cust.invoicedata) | number:'1.2-2' }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" class="text-right">Tax (10%):</td>
+                                    <td>{{ calculateTax(cust.invoicedata) | number:'1.2-2' }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" class="text-right">Grand Total:</td>
+                                    <td>{{ calculateGrandTotal(cust.invoicedata) | number:'1.2-2' }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Footer Section -->
+                    <div class="modern-invoice-footer">
+                        <div class="payment-details">
+                            <p>Please make payment within the due date. All payments should be in INR.</p>
+                            <p>Bank Details: {{cust.dairydata?.bank_details || 'N/A'}}</p>
+                        </div>
+                        <div class="authorized-signature">
+                            <p>Authorized Signature</p>
+                            <div class="signature-placeholder"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="print-btn" style="float: right" (click)="printInvoice()">
+                    Print PDF <i class='fas fa-print'></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="tab-pane" id="productDelivery">
+    <div class="modal-content">
+        <div class="modal-header state modal-primary">
+            <h4 class="modal-title" id="modal-large-label">
+                Product Delivery List
+            </h4>
+        </div>
+        <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+            [footerHeight]="50" [rowHeight]="'auto'" [rows]="productdelivery">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                [resizeable]="false">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="S.No">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Sr No.</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    1
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Product">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Product</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                    product of subscribtion
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Shift">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Shift</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+                    Morning
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="delivery agent">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Delivery Agent</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    Ram
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="quantity">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Quantity</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    2400
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Update quantity one day only">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Update quantity one day only</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    2
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Day Selection">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Day Selection</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    Monday
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Actual Price">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Actual Price</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    2200
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Action">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Action</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-value="value">
+                    <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button"
+                        title="Pasteurization Silo List">
+                        <i aria-hidden="true" class="edit-icon"></i>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>

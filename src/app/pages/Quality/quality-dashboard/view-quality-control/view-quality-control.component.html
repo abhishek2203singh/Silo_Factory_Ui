@@ -1,0 +1,222 @@
+<div class="row">
+    <div class="col-lg-3 col-md-5">
+        <div class="card border-0 box-shadow mb-4 rounded-lg overflow-hidden">
+            <div class="position-relative">
+                <img [src]="(approvalData?.qtyapmg_send_head_profile_photo ? baseImgUrl + approvalData?.qtyapmg_send_head_profile_photo : 'assets/images/no-image.png')"
+                    class="card-img-top w-100" />
+                <!-- Online/Offline Indicator -->
+                <div class="online-indicator">
+                    <span class="blink" [ngClass]="{
+                    'bg-danger': qualityData.Vru_online_status === 0,
+                    'bg-success': qualityData.Vru_online_status === 1
+                  }">
+                    </span>
+                </div>
+            </div>
+            <div class="card-body text-center">
+                <h4 class="card-title text-dark font-weight-bold mb-2">
+                    {{ (approvalData?.qtyapmg_send_deprthead_name | titlecase) || 'No Data' }}
+                </h4>
+                <h5 class="card-title text-info mb-2">
+                    {{ approvalData?.qtyapmg_send_head_mobile || 'No Data' }}
+                </h5>
+                <h6 class="card-subtitle text-muted mb-2">
+                    Gender: <span>{{ (approvalData?.qtyapmg_send_head_gender | titlecase) || 'No Data' }}</span>
+                </h6>
+                <h6 class="card-subtitle text-muted mb-2">
+                    Department: <span>{{ (approvalData?.QtyMg_send_db_table_name | titlecase) || 'No Data' }}</span>
+                </h6>
+                <h6 class="card-subtitle text-muted mb-2">
+                    Address: <span>
+                        {{ qualityData.Vru_address && qualityData.Vru_city_name && qualityData.Vru_state_name &&
+                        qualityData.Vru_pincode
+                        ? (qualityData.Vru_address | titlecase) + ', ' + (qualityData.Vru_city_name | titlecase) + ', '
+                        + (qualityData.Vru_state_name | titlecase) + ', ' + qualityData.Vru_pincode
+                        : 'No Data' }}
+                    </span>
+                </h6>
+
+                <div class="dropdown-divider w-100"></div>
+                <div class="row mt-3">
+                    <div class="col-md-8 text-left text-dark">Registration Date:</div>
+                    <div class="col-md-4 text-right text-dark">
+                        <strong class="d-inline-block">
+                            {{ qualityData.rg_date ? (qualityData.rg_date | date:'fullDate') : 'No Data' }}
+                        </strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 text-left text-dark">Joining Date:</div>
+                    <div class="col-md-4 text-right text-dark">
+                        <strong class="d-inline-block">
+                            {{ qualityData.join_date ? (qualityData.join_date | date:'fullDate') : 'No Data' }}
+                        </strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 text-left text-dark">Role:</div>
+                    <div class="col-md-4 text-right text-dark">
+                        <strong class="d-inline-block">{{ qualityData.name || 'No Data' }}</strong>
+                    </div>
+                </div>
+                <div class="dropdown-divider w-100"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-7">
+        <button type="button" class="btn btn-primary mb-1 mr-1" (click)="goBack()">Back</button>
+
+        <div class="card card-info border-0 box-shadow">
+            <div class="card-header text-white text-center bg-primary">
+                <h4>Details:</h4>
+            </div>
+            <div class="card-body bg-white">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Product</label>
+                        <p class="text-muted">{{ qualityData.product_name }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Product Type</label>
+                        <p class="text-muted">{{ qualityData.product_type_name }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Packaging Size</label>
+                        <p class="text-muted">{{ qualityData.packing_size }}&nbsp;{{ qualityData.UntName }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Quantity</label>
+                        <p class="text-muted">{{ qualityData.quantity }}&nbsp;{{ qualityData.UntName }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Price (Per Unit)</label>
+                        <p class="text-muted">{{ qualityData.priceper_unit|currency:"INR" }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Total Price</label>
+                        <p class="text-muted">{{ calculateTotalPrice()|currency:"INR" }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Department</label>
+                        <p class="text-muted">{{ qualityData.DprtName }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Department Head</label>
+                        <p class="text-muted">{{ qualityData.DprtHeadFullName }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Approved By</label>
+                        <p class="text-muted">{{ qualityData.ApprvlbyFullName }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Bill Image</label>
+                        <img [src]="baseImgUrl + qualityData.bill_image" width="50" height="50"
+                            (click)="viewImage(baseImgUrl + qualityData.bill_image)" style="cursor: pointer;"
+                            alt="Bill Image" title="click to view on full size" />
+                    </div>
+                    <!-- Full-page image overlay -->
+                    <div class="full-page-image-container" *ngIf="isFullPageImageVisible"
+                        (click)="closeFullPageImage()">
+                        <img [src]="fullPageImageUrl" alt="Full-Page Image" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Date</label>
+                        <p class="text-muted">{{ qualityData.date | date:'fullDate' }}</p>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Approval Status</label>
+                        <p class="text-muted">{{ qualityData.ApprvlSts_name }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Payment Status</label>
+                        <p class="text-muted">{{ qualityData.mps_name }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-control-label font-weight-bold">Payment Approved By</label>
+                        <p class="text-muted">{{ qualityData.pstsby_name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <br><br>
+        <div class="card card-info border-0 box-shadow mt-25">
+            <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows" id="dtDynamicVerticalScroll">
+
+                <!-- Sr. No Column -->
+                <ngx-datatable-column name="srNo">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Sr.no.</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                        {{ rowIndex + 1 }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="product_name" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Manager name (Qlt. Appr.)</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.full_name }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Quantity Column -->
+                <ngx-datatable-column name="quantity" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Approval By</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.qtyapmg_quantity }}/ {{ row.qtyapmg_unitName }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="message_val" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Message</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.message_val}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Created ON Column -->
+                <ngx-datatable-column name="created_on" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Date</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.created_on | date:'fullDate' }}
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Status Column -->
+                <ngx-datatable-column name="ApprvlSts_name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Status</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span *ngIf="row.mstapprovalstatus_id === 1" class="badge badge-warning mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                        <span *ngIf="row.mstapprovalstatus_id === 2" class="badge badge-info mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                        <span *ngIf="row.mstapprovalstatus_id === 3" class="badge badge-success mr-1">
+                            {{ row.approval_status }}
+                        </span>
+                        <span *ngIf="row.mstapprovalstatus_id === 4" class="badge badge-warning mr-1">
+                            {{ row.approval_status }}
+                        </span>
+
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <!-- Payment Approval Column -->
+            </ngx-datatable>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,9 @@
+<div class="app" [ngClass]="settings.theme.skin"
+    [class.navbar-fixed]="settings.theme.navbarIsFixed"
+    [class.sidebar-fixed]="settings.theme.sidebarIsFixed"
+    [class.horizontal-menu]="settings.theme.menu == 'horizontal'"
+    [class.menu-hide]="!settings.theme.showMenu">
+    <div class="wrapper">
+        <router-outlet />
+    </div>
+</div>

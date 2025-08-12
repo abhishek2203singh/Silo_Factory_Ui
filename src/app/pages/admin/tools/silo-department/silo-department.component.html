@@ -1,0 +1,143 @@
+<button #openButton type="button" class="btn btn-primary mb-1 mr-1" style="float: inline-end;" data-toggle="modal"
+    data-target="#lg-modal"><i aria-hidden="true" class="fa fa-plus-circle"></i>
+    Add User</button>
+
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Type to filter the name column..." />
+</div>
+
+<ngx-datatable #table class="material" [rows]="departmentList" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+    [footerHeight]="50" [rowHeight]="'auto'" [rows] id="dtDynamicVerticalScroll">
+
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+            {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+
+    <!-- department -->
+    <ngx-datatable-column name="department_name" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Product</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{ row?.name }}
+        </ng-template>
+    </ngx-datatable-column>
+
+
+    <ngx-datatable-column name="priorityLevel" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Quantity</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.is_deletable == 0">Permanent</span>
+            <span *ngIf="row.is_deletable == 1">Temporary</span>
+        </ng-template>
+    </ngx-datatable-column>
+
+
+    <ngx-datatable-column name="priorityLevel" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Distributed Qty.</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.is_deletable == 0">Permanent</span>
+            <span *ngIf="row.is_deletable == 1">Temporary</span>
+        </ng-template>
+    </ngx-datatable-column>
+
+
+
+    <!-- Department status -->
+    <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span class="badge-pill badge-danger" *ngIf="row.status == 0">Deactive</span>
+            <span class="badge-pill badge-success" *ngIf="row.status == 1">Active</span>
+        </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Action Column -->
+    <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template class="flex justify-content" let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1  mr-25" type="button" title="Edit"
+                (click)="editData(row.id)">
+                <span class=" fa fa-eye"></span>
+            </button>
+            <button class="delete btn btn-outline-danger w-100p mb-1 mr-1" type="button" title="Delete"
+                (click)="deleteUser(row.id)">
+                <i aria-hidden="true" class="fa fa-trash"></i>
+            </button>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>
+<div class="modal fade" id="lg-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label"
+    style="display: none;">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-primary">
+                <h4 class="modal-title" id="modal-large-label">
+                    Add Form
+                </h4>
+                <button type="button" (click)="isEditDepartment=false;closeForm()" #closeButton class="close"
+                    data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+
+            <form [formGroup]="DepartmentForm"
+                (ngSubmit)="isEditDepartment ? editDepartmentForm():onSubmitDepartment()">
+                <div class="modal-body">
+                    <div class="d-grid mt-10">
+                        <!-- full name -->
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="inputFullName">Department Name</label>
+                                <input type="text" class="form-control" id="inputFullName"
+                                    formControlName="departmentName" placeholder="Full Name">
+                                <div *ngIf="DepartmentForm.get('departmentName')?.invalid && (DepartmentForm.get('departmentName')?.dirty || DepartmentForm.get('departmentName')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="DepartmentForm.get('departmentName')?.errors?.required">Department Name
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="inputState">Priority</label>
+                                <select #st class="form-control" formControlName="priorityLevel">
+                                    <option value disabled selected>Select Priority</option>
+                                    <option value="temporary">Temporary</option>
+                                    <option value="permanent">Permanent</option>
+                                </select>
+                                <div *ngIf="DepartmentForm.get('priorityLevel')?.invalid && (DepartmentForm.get('priorityLevel')?.dirty || DepartmentForm.get('priorityLevel')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="DepartmentForm.get('priorityLevel')?.errors?.required">Priority is
+                                        required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <!-- <button type="submit" class="btn btn-primary">{{isEditDepartment?"Update":"Submit"}}</button> -->
+                        <button type="submit" class="btn btn-primary">{{isEditDepartment? "Update":"Submit"}}</button>
+                    </div>
+
+                </div>
+                <p class="text-danger text-end" style="padding: 0px .5rem;">*If you select permanent it can't be change
+                    or edit</p>
+            </form>
+        </div>
+    </div>
+</div>

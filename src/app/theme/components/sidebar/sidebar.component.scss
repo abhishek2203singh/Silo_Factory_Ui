@@ -1,0 +1,12 @@
+@import "../../../theme/styles/variables";
+
+.sidebar-outer {
+    height: 100%;
+    width: $sidebar-width;
+
+    .logo {
+        height: $top-navbar-height;
+        padding: 0 14px;
+        width: $sidebar-width;
+    }
+}

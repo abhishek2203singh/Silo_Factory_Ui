@@ -1,0 +1,599 @@
+<app-info-panels [panels]="infoPanels"></app-info-panels>
+<button #openButton type="button" class="print-btn btn-primary mb-2" (click)="goToRetailCreation()">
+    <i class="fa fa-th-list"></i>&nbsp;Users List </button>
+<!-- <button type="button" (click)="AddStock()" class="print-btn btn-primary mb-2 create-add-button">
+   <i class="fa fa-plus"></i>&nbsp;Add Stock
+   </button> -->
+<button type="button" [disabled]="iddata" (click)="Return()" class="print-btn btn-primary create-return-button  mb-2">
+    <i class="fa fa-reply"></i>&nbsp;Return
+</button>
+<button type="button" href="#CreateSchedul" data-toggle="modal" data-target="#CreateSchedul"
+    class="print-btn btn-primary create-return-button float-lg-right mb-2">
+    <i aria-hidden="true" class="fa fa-clock-o"></i>&nbsp;Schedule Time
+</button>
+<!-- <button type="button" class="print-btn btn-primary create-return-button float-lg-right mb-2" (click)="GoToInventory()">
+    <i aria-hidden="true" class="fa fa-sticky-note"></i>&nbsp;Inventory
+</button> -->
+<div class="row">
+    <div class="col-lg-12 mb-3">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header d-flex transparent border-0 text-muted">
+                <h5 class="mb-0">
+                    {{isReturnMode?'Return Stock':(iddata?'Update Stock':'Add Order')}}
+                    <!-- {{ iddata ? (isReturnMode ? 'Update Return' : 'Update Order') : (isReturnMode ? 'Return' :
+                  'AddOrder') }} -->
+                </h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="distributionCenterForm"
+                    (ngSubmit)="isReturnMode? returnStockItem():(iddata?updateDistribution():onSubmit())">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="entryType">Entry Type</label>
+                                <div class="input-group d-grid">
+                                    <input *ngIf="isReturnMode" type="text" class="form-control" id="entryType"
+                                        value="Return" formControlName="return" readonly />
+                                    <!-- Show "Request" as read-only input if not return mode -->
+                                    <input *ngIf="!isReturnMode" type="text" class="form-control" id="entryType"
+                                        value="Request" readonly />
+                                    <!-- <select *ngIf="!isReturnMode" class="form-control" id="entryType"
+                                        formControlName="entryType">
+                                        <option value="2" disabled selected>Request</option> -->
+                                    <!-- <option *ngFor="let name of entryType" [value]="name?.id">{{ name?.name }} -->
+                                    <!-- </option> -->
+                                    <!-- </select> -->
+                                </div>
+                                <span
+                                    *ngIf="distributionCenterForm.controls['entryType'].touched && distributionCenterForm.controls['entryType'].invalid"
+                                    class="text-danger">
+                                    Entry Type is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="productId">Name of Product</label>
+                                <div class="input-group d-grid">
+                                    <select class="form-control" id="productId" formControlName="productId"
+                                        (change)="isReturnMode ? packagingByProdId($event) : unitByProdId($event)">
+                                        <option value="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let name of (isReturnMode ? productList : namesList)"
+                                            [value]="isReturnMode ? name?.product_id : name?.id">
+                                            {{ name?.product_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <span
+                                    *ngIf="distributionCenterForm.controls['productId'].touched && distributionCenterForm.controls['productId'].invalid"
+                                    class="text-danger">
+                                    Product Name is required.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="unitId">Packing Size</label>
+                                <div class="input-group d-grid">
+                                    <select class="form-control" id="unitId" formControlName="masterPckSizeUnit">
+                                        <option [value]="0" disabled>Choose...</option>
+                                        <option *ngFor="let name of (isReturnMode ? PackagingList : unitList)"
+                                            [value]="isReturnMode ? name?.packing_size_id : name?.id">
+                                            {{ name?.weight }} {{ name?.st_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <span *ngIf="distributionCenterForm.controls['masterPckSizeUnit'].touched &&
+                        (distributionCenterForm.controls['masterPckSizeUnit'].invalid ||
+                        distributionCenterForm.controls['masterPckSizeUnit'].value === 0)" class="text-danger">
+                                    Packing Size is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" formControlName="quantity"
+                                    placeholder="Enter Product Quantity">
+                                <div *ngIf="distributionCenterForm.controls['quantity'].touched && distributionCenterForm.controls['quantity'].invalid"
+                                    class="text-danger">
+                                    <div *ngIf="distributionCenterForm.controls['quantity'].errors?.required">
+                                        Quantity
+                                        is required.
+                                    </div>
+                                    <div *ngIf="distributionCenterForm.controls['quantity'].errors?.min">Minimum
+                                        quantity is 1.
+                                    </div>
+                                    <div *ngIf="distributionCenterForm.controls['quantity'].errors?.max">Maximum
+                                        quantity is 1000.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="isReturnMode">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="message">Cause of Return</label>
+                                <textarea class="form-control" id="message" placeholder="Enter here..." rows="3"
+                                    formControlName="message"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">
+                            {{isReturnMode? 'Return Stock':(iddata? 'Update':'Submit')}}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-lg-12">
+        <button class="print-btn" style="float: right" (click)="printFile()"><i class='fas fa-print'></i>&nbsp;Print PDF
+        </button>
+        <button type="button" class="csv-btn" style="float: right" (click)="exportToCSV()">
+            <i aria-hidden="true" class='fas fa-file-csv'></i>&nbsp;Export to CSV
+        </button>
+        <!-- <button (click)="printFile()" class="print-btn">Print Table</button> -->
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Type to filter the product name..."
+                (keyup)="updateFilter($event)" />
+        </div>
+        <div class="custm">
+            <ngx-datatable #table class="material fixed-header" [rows]="distributionData" [headerHeight]="50"
+                [footerHeight]="50" [rowHeight]="70" [scrollbarH]="true" [scrollbarV]="true" [columnMode]="'force'"
+                [reorderable]="true" [limit]="10" [count]="distributionData.length" [style.height.px]="600">
+                <!-- Sr. No Column -->
+                <ngx-datatable-column name="srNo" [width]="60">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Sr. No</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+                        <div class="centered-text" [ngClass]="{
+                  'demand-row': row.EntryId == 1,
+                  'request-row': row.EntryId == 2,
+                  'stockIn-row': row.EntryId == 3,
+                  'stockOut-row': row.EntryId == 4,
+                  'return-row': row.EntryId == 5,
+                  'adminreturn-row': row.EntryId == 7
+                  }">
+                            {{ rowIndex + 1 }}
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Type of Entry Column -->
+                <ngx-datatable-column name="entryTypeName">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Entry Type</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+                  'demand-row': row.EntryId == 1,
+                  'request-row': row.EntryId == 2,
+                  'stockIn-row': row.EntryId == 3,
+                  'stockOut-row': row.EntryId == 4,
+                  'return-row': row.EntryId == 5,
+                  'adminreturn-row': row.EntryId == 7
+                  }">
+                            <span class="badge-pill badge pulse" [ngClass]="{
+                     'badge-demand': row.EntryId == 1,
+                     'badge-warning': row.EntryId == 2,
+                     'badge-blue': row.EntryId == 3,
+                     'badge-stockout': row.EntryId == 4,
+                     'badge-return': row.EntryId == 5,
+                     'badge-adminreturn': row.EntryId == 7,
+                     'badge-secondary': !row.EntryId || row.EntryId > 5
+                     }">
+                                {{row.entryTypeName || 'N/A'}}
+                            </span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Product Name Column -->
+                <ngx-datatable-column name="productName" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Product
+                        </span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+               'demand-row': row.EntryId == 1,
+               'request-row': row.EntryId == 2,
+               'stockIn-row': row.EntryId == 3,
+               'stockOut-row': row.EntryId == 4,
+               'return-row': row.EntryId == 5,
+               'adminreturn-row': row.EntryId == 7
+               }">
+                            {{ row.productName }}
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!--Entry Date-->
+                <ngx-datatable-column name="created_on">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Date</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+                  'demand-row': row.EntryId == 1,
+                  'request-row': row.EntryId == 2,
+                  'stockIn-row': row.EntryId == 3,
+                  'stockOut-row': row.EntryId == 4,
+                  'return-row': row.EntryId == 5,
+                  'adminreturn-row': row.EntryId == 7
+                  }">
+                            <span> {{ row.created_on | date}}</span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="quantity" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+               'demand-row': row.EntryId == 1,
+               'request-row': row.EntryId == 2,
+               'stockIn-row': row.EntryId == 3,
+               'stockOut-row': row.EntryId == 4,
+               'return-row': row.EntryId == 5,
+               'adminreturn-row': row.EntryId == 7
+               }">
+                            {{ row.quantity }} {{row.unitShortName}}
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!--distributed_quantity-->
+                <ngx-datatable-column name="quantity" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Distributed Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+               'demand-row': row.EntryId == 1,
+               'request-row': row.EntryId == 2,
+               'stockIn-row': row.EntryId == 3,
+               'stockOut-row': row.EntryId == 4,
+               'return-row': row.EntryId == 5,
+               'adminreturn-row': row.EntryId == 7
+               }">
+                            {{ row.distributed_quantity }} {{row.unitShortName}}
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Rejected Quantity Column -->
+                <ngx-datatable-column name="quantity" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Rejected Quantity</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+               'demand-row': row.EntryId == 1,
+               'request-row': row.EntryId == 2,
+               'stockIn-row': row.EntryId == 3,
+               'stockOut-row': row.EntryId == 4,
+               'return-row': row.EntryId == 5,
+               'adminreturn-row': row.EntryId == 7
+               }">
+                            {{ row.rejected_quantity}}
+                            <!-- Info button for EntryId 7 -->
+                            <button *ngIf="row.EntryId == 7 && row.rejected_quantity > 0"
+                                class="btn btn-link p-0 ml-2 bounce" type="button" (click)="openQuantityModal(row)"
+                                title="View Quantity Details">
+                                <i class="fa fa-info-circle text-danger"></i>
+                            </button>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Quantity Column -->
+                <ngx-datatable-column name="unit" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Packaging
+                            Size</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+               'demand-row': row.EntryId == 1,
+               'request-row': row.EntryId == 2,
+               'stockIn-row': row.EntryId == 3,
+               'stockOut-row': row.EntryId == 4,
+               'return-row': row.EntryId == 5,
+               'adminreturn-row': row.EntryId == 7
+               }">
+                            {{ row.weight_packing}} {{ row.weight_packing_st_name
+                            }}
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Quantity Column -->
+                @if (roleId==1) {
+                <ngx-datatable-column name="distCenterName" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Distribution
+                            Center</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+               'demand-row': row.EntryId == 1,
+               'request-row': row.EntryId == 2,
+               'stockIn-row': row.EntryId == 3,
+               'stockOut-row': row.EntryId == 4,
+               'return-row': row.EntryId == 5,
+               'adminreturn-row': row.EntryId == 7
+               }">
+                            {{ row.distCenterName }}
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                }
+                <ngx-datatable-column name="Status" [sortable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header center-text">Manager Approval
+                        </span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+                  'demand-row': row.EntryId == 1,
+                  'request-row': row.EntryId == 2,
+                  'stockIn-row': row.EntryId == 3,
+                  'stockOut-row': row.EntryId == 4,
+                  'return-row': row.EntryId == 5,
+                  'adminreturn-row': row.EntryId == 7
+                  }">
+                            <span *ngIf="row.approval_status == 1" class="badge badge-warning mr-1">{{
+                                row.appmangerName
+                                }}</span>
+                            <span *ngIf="row.approval_status == 2" class="badge badge-info mr-1">{{
+                                row.appmangerName
+                                }}</span>
+                            <span *ngIf="row.approval_status == 3" class="badge badge-success mr-1">{{
+                                row.appmangerName
+                                }}</span>
+                            <span *ngIf="row.approval_status == 4" class="badge badge-danger mr-1">{{
+                                row.appmangerName
+                                }}</span>
+                            <span *ngIf="!['1', '2', '3', '4'].includes(row.approval_status)"
+                                class="badge badge-warning mr-1">
+                                {{ row.appmangerName }}
+                            </span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Status</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <div class="centered-text" [ngClass]="{
+               'demand-row': row.EntryId == 1,
+               'request-row': row.EntryId == 2,
+               'stockIn-row': row.EntryId == 3,
+               'stockOut-row': row.EntryId == 4,
+               'return-row': row.EntryId == 5,
+               'adminreturn-row': row.EntryId == 7
+               }">
+                            <span *ngIf="row.status === 1" class="badge-pill badge-success">
+                                Active
+                            </span>
+                            <span *ngIf="row.status === 0" class="badge-pill badge-danger">
+                                Deactive
+                            </span>
+                        </div>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Action Column -->
+                <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Action</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <ng-container *ngIf="row.EntryId !== 4 && row.EntryId !== 5; else specialBadge">
+                            <!-- Show Accepted badge when quantities are equal -->
+                            <ng-container *ngIf="row.quantity === row.distributed_quantity; else actionButtons">
+                                <span
+                                    class="badge badge-success centered-text d-flex align-items-center justify-content-center">
+                                    Accepted
+                                </span>
+                            </ng-container>
+                            <!-- Template for action buttons when quantities are not equal -->
+                            <ng-template #actionButtons>
+                                <button *ngIf="row.EntryId !== 5" class="edit btn btn-outline-success w-100p mb-1 mr-1"
+                                    type="button" title="Edit" (click)="editData(row.id)"
+                                    [disabled]="row?.status === 0">
+                                    <span class="edit-icon"></span>
+                                </button>
+                                <ng-toggle *ngIf="row.EntryId !== 5" class="mb-1 mr-1" [value]="row?.status !== 0"
+                                    [disabled]="row.approval_status == 3 || row?.status === 0"
+                                    (click)="$event.stopPropagation(); row.approval_status !== 3 && row?.status !== 0 && !(row.approval_status == 3 || row?.status === 0) ? changeDeleteStatus(row.id) : null"
+                                    [color]="{
+                  unchecked: row?.status === 0 ? '#F34235' : '#4BAE4F',
+                  checked: row?.status === 0 ? '#F34235' : '#4BAE4F',
+                  disabled: row?.status !== 0 ? '#4BAE4F' : '#F34235'
+                  }" title="Change Status">
+                                </ng-toggle>
+                                <button *ngIf="util.isStockOut(row.EntryId,row.createBy)"
+                                    class="edit btn btn-outline-warning w-100p mb-1 mr-1" type="button"
+                                    title="Send Quantity" (click)="gotoSend(row?.id)">
+                                    <i aria-hidden="true" class="fa fa-mail-forward"></i>
+                                </button>
+                                <!-- Accept button for specific conditions -->
+                                <button *ngIf="row.EntryId == 3 && row.approval_status == 3"
+                                    class="edit btn btn-outline-primary w-100p mb-1 mr-1" type="button" title="Accept"
+                                    (click)="acceptEntry(row)">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </button>
+                            </ng-template>
+                        </ng-container>
+                        <!-- Template for special badges -->
+                        <ng-template #specialBadge>
+                            <span *ngIf="row.EntryId == 5"
+                                class="badge badge-danger centered-text d-flex align-items-center justify-content-center">
+                                No Action Allowed
+                            </span>
+                            <span *ngIf="row.EntryId == 4"
+                                class="badge badge-info centered-text d-flex align-items-center justify-content-center">
+                                Dispatched
+                            </span>
+                        </ng-template>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>
+<!-- Modal Template -->
+<div class="modal fade" id="quantityInfoModal" tabindex="-1" role="dialog" aria-labelledby="quantityInfoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quantityInfoModalLabel">Entry
+                    Records
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="records-container">
+                        <!-- Previous Entry Table -->
+                        <div class="card record-card">
+                            <div class="card-header bg-info text-white">
+                                Stock Out Details
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Entry Type</th>
+                                        <th>Product</th>
+                                        <th>Quantity (actual)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{stockOutData?.date|
+                                            date:'EEEE dd MMM yyyy HH:mm:ss'}}
+                                        </td>
+                                        <td>{{stockOutData?.entry_type_name}}</td>
+                                        <td>{{stockOutData?.product_name}}</td>
+                                        <td class="font-weight-bold">
+                                            {{ (stockOutData?.quantity ?? 0) | number:'1.2-3' }}
+                                            {{ stockOutData?.unit_name }}
+                                        </td>
+                                        <td><span class="badge bg-success">{{stockOutData?.approval_status}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Traffic Sign Arrow -->
+                        <div class="arrow-container">
+                            <div class="traffic-sign">
+                                <svg class="arrow" viewBox="0 0 200 100">
+                                    <!-- Border -->
+                                    <rect x="10" y="10" width="180" height="80" rx="5" class="sign-border" />
+                                    <!-- Left Arrow Head -->
+                                    <path d="M60 50 L80 30 L80 70 Z" class="arrow-head left" />
+                                    <!-- Right Arrow Head -->
+                                    <path d="M140 50 L120 30 L120 70 Z" class="arrow-head right" />
+                                    <!-- Middle Line -->
+                                    <line x1="80" y1="50" x2="120" y2="50" class="arrow-line" />
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Latest/Rejected Entry Table -->
+                        <div class="card record-card">
+                            <div class="card-header bg-warning text-dark">
+                                Latest Entry (Return)
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Entry Type</th>
+                                        <th>Product</th>
+                                        <th>Quantity (Rejected)</th>
+                                        <th>Approved Quantity</th>
+                                        <th>Status</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{returnData?.date|
+                                            date:'EEEE dd MMM yyyy HH:mm:ss'}}
+                                        </td>
+                                        <td>{{returnData?.entry_type_name}}</td>
+                                        <td>{{returnData?.product_name}}</td>
+                                        <td class="font-weight-bold text-danger">{{returnData?.rejected_quantity
+                                            |number:'1.2-3'}}
+                                            {{returnData?.unit_name}}
+                                        </td>
+                                        <td class="font-weight-bold text-success">
+                                            {{stockOutData?.quantity-returnData?.rejected_quantity|number:'1.2-3'
+                                            }}
+                                            {{" "+returnData?.unit_name}}
+                                        </td>
+                                        <td><span class="badge bg-success">{{returnData?.approval_status}}</span></td>
+                                        <td>{{returnData?.message}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div #createScheduleModal id="CreateSchedul" tabindex="-1" role="dialog" class="modal fade" aria-hidden="true">
+    <div role="document" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="CreateSchedulLabel" class="title text-center d-block">Set Schedule Time</h4>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                    <p aria-hidden="true">×</p>
+                </button>
+            </div>
+            <form (ngSubmit)="onTimeSubmit()" [formGroup]="scheduleTimeForm">
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <div class="col-3">
+                            <div class="form-group text-center">
+                                <!-- <ngb-timepicker formControlName="schdule_time" [spinners]="false"
+                        class="d-flex justify-content-center">
+                        </ngb-timepicker> -->
+                                <!-- <input type="time" class="d-flex justify-content-center" formControlName="time"> -->
+                                <label for="schedule_time" class="form-label"> HH : MM </label>
+                                <ngb-timepicker formControlName="time" [spinners]="false" [meridian]="false"
+                                    class="d-flex justify-content-center">
+                                </ngb-timepicker>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group text-center">
+                                <label for="minimum_balance">Min Balance (For Customer)</label>
+                                <input class="form-control" type="number" formControlName="minBalance"
+                                    id="minimum_balance">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-20px justify-content-center">
+                        <button type="submit" class="btn btn-primary">
+                            Set Time
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+// @import url(https://unpkg.com/@webpixels/css@1.1.5/dist/index.css);
+
+.img {
+  /* Adjust card width as needed */
+  height: 130px; /* Adjust height based on your card's requirements */
+  background-image: url("../../../../../assets/images/backgroundMilk.png");
+
+  /* Ensure the image fits within the card while maintaining aspect ratio */
+  background-size: contain; /* Or 'cover' if you want the image to cover the entire card */
+  background-position: center;
+  /* Center the image in the card */
+
+  /* Prevent the image from repeating */
+  background-repeat: no-repeat;
+}
+.milkProd {
+  /* Adjust card width as needed */
+  height: 130px; /* Adjust height based on your card's requirements */
+  background-image: url("../../../../../assets/images/milk_product.png");
+
+  /* Ensure the image fits within the card while maintaining aspect ratio */
+  background-size: contain; /* Or 'cover' if you want the image to cover the entire card */
+  background-position: center;
+  /* Center the image in the card */
+
+  /* Prevent the image from repeating */
+  background-repeat: no-repeat;
+}
+.empImg {
+  /* Adjust card width as needed */
+  height: 130px; /* Adjust height based on your card's requirements */
+  background-image: url("../../../../../assets/images/emp-2.png");
+
+  /* Ensure the image fits within the card while maintaining aspect ratio */
+  background-size: contain; /* Or 'cover' if you want the image to cover the entire card */
+  background-position: center;
+  /* Center the image in the card */
+
+  /* Prevent the image from repeating */
+  background-repeat: no-repeat;
+}
+.siloImg {
+  /* Adjust card width as needed */
+  height: 130px; /* Adjust height based on your card's requirements */
+  background-image: url("../../../../../assets/images/silo.png");
+
+  /* Ensure the image fits within the card while maintaining aspect ratio */
+  background-size: contain; /* Or 'cover' if you want the image to cover the entire card */
+  background-position: center;
+  /* Center the image in the card */
+
+  /* Prevent the image from repeating */
+  background-repeat: no-repeat;
+}
+
+.bg-card {
+  background-color: #f5f9fc !important;
+}
+.card-header {
+  background: transparent !important;
+  border-bottom: none !important;
+}

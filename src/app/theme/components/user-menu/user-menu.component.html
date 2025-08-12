@@ -1,0 +1,19 @@
+<div class="dropdown d-inline-block">
+    <a class="dropdown-toggle no-caret pl-2 pr-2" id="user-menu" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        <i class="fa fa-user-o" aria-hidden="true"></i>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right rounded-0 mt-3 p-0 box-shadow" aria-labelledby="user-menu">
+        <div class="user-menu">
+            <div class="user-info text-center p-3">
+                <img [src]="ImgUrl + loguser?.profile_photo" alt="user-img" class="user-img rounded-circle">
+                <p class="mt-1 mb-0"> {{loguser?.full_name}} - {{loguser?.role_name}} <br>
+                    <small>{{loguser?.mobile}} - {{loguser?.department_name}}</small>
+                </p>
+            </div>
+            <a class="dropdown-item" routerLink="/change-password"><i class="fa fa-user mr-2"></i>Change Password</a>
+            <!-- <a class="dropdown-item" routerLink="/"><i class="fa fa-cog mr-2"></i>Settings</a> -->
+            <a class="dropdown-item mb-1" (click)="logout()"><i class="fa fa-power-off mr-2"></i>Log out</a>
+        </div>
+    </div>
+</div>

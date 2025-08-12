@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header transparent border-0 text-muted">
+                <h5 class="mb-0">Master Entry Type</h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="entryForm" (ngSubmit)="isEditMode?updateEntry():onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="name">Entry Type Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="name" id="name"
+                                        placeholder="Name">
+                                    &nbsp;
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-primary mb-1 mr-1"
+                                            style="float: inline-end;" data-toggle="modal" data-target="#lg-modal">
+                                            {{isEditMode?"Update":"Submit"}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+</div>
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="entry">
+
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <!-- Sr. No Column -->
+    <ngx-datatable-column name="srNo" [width]="60">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Sr. No</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+            {{ rowIndex + 1 }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Name">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Entry Type Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            {{row.name}}
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department status -->
+    <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Status</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.status === 0" class="badge badge-warning mr-1">Deactive</span>
+            <span *ngIf="row.status === 1" class="badge badge-success mr-1">Active</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!--Entry Date-->
+    <ngx-datatable-column name="created_on">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Entry Date</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span> {{ row.created_on | date}}</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department status -->
+    <ngx-datatable-column name="is_deletable" [sortable]="true" [resizeable]="true">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Is-Deletable</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-row="row">
+            <span *ngIf="row.is_deletable == 0">Permanent</span>
+            <span *ngIf="row.is_deletable == 1">Temporary</span>
+        </ng-template>
+    </ngx-datatable-column>
+    <!-- Department Action -->
+    <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+        <ng-template ngx-datatable-header-template>
+            <span class="column-header">Action</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template class="flex justify-content" let-row="row">
+            <button class="edit btn btn-outline-success w-100p mb-1  mr-25" type="button" title="Edit"
+                (click)="editName(row?.id)">
+                <span class=" fa fa-eye"></span>
+            </button>
+            <ng-toggle [value]="row?.status !== 0" [disabled]="row.EntryId == 3 || row.status == 0"
+                (click)="row.status !== 0 && row.EntryId !== 3 ? deleteUser(row?.id) : null" [color]="{ 
+    unchecked: row?.status === 0 ? '#F34235' : '#4BAE4F',
+    checked: row?.status === 0 ? '#F34235' : '#4BAE4F',
+    disabled: row?.status !== 0 ? '#4BAE4F' : '#F34235'
+}" title="Change Status">
+            </ng-toggle>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

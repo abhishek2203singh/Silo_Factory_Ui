@@ -1,0 +1,43 @@
+<!-- <button type="button" class="btn btn-primary mb-1 mr-1" style="float: inline-end;" data-toggle="modal"
+    data-target="#lg-modal"><i aria-hidden="true" class="fa fa-plus-circle"></i> Add User</button> -->
+<div class="input-group mb-2">
+    <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+    <input class="form-control" type="text" placeholder="Type to filter the name column..." autocomplete="off"
+        (input)="updateFilter($event)" />
+</div>
+
+<ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'" [footerHeight]="50"
+    [rowHeight]="'auto'" [rows]="rows" [selected]="selected" [selectionType]="selection" (select)="onSelect($event)">
+    <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+        [resizeable]="false">
+    </ngx-datatable-column>
+    <ngx-datatable-column name="BillImage">
+        <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+            <span *ngIf="!editing[row.$$index + '-name']">
+                {{ value }}
+            </span>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="paymentStatusToVendor">
+        <ng-template ngx-datatable-cell-template let-row="row" let-value="value">
+            <span *ngIf="!editing[row.$$index + '-gender']">
+                {{ value }}
+            </span>
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="quantity">
+        <ng-template ngx-datatable-cell-template let-value="value">
+            {{ value }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="pricePerUnit">
+        <ng-template ngx-datatable-cell-template let-value="value">
+            {{ value }}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="productId">
+        <ng-template ngx-datatable-cell-template let-value="value">
+            {{ value }}
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>

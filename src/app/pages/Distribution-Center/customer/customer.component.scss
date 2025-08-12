@@ -1,0 +1,96 @@
+.print-btn1 {
+  background-color: #239ee5;
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 1px 1px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+// .input-group {
+//   width: 100%; /* Full width */
+//   border: 2px solid #a19a9a !important;
+//   border-radius: 4px;
+//   padding: 0;
+// }
+
+.quantity-input {
+  width: 70%;
+  padding-left: 2px;
+  border: none;
+}
+.quantity-input {
+  outline: none;
+}
+// .input-group-text {
+//   width: 30%;
+//   padding-right: 0px;
+//   font-weight: 600;
+//   text-align: center;
+//   border-radius: 0px 3px 3px 0px;
+//   background-color: #898b8d;
+//   border: none;
+// }
+
+.print-btn1:hover {
+  background-color: #177bb5;
+}
+.text-danger-glow {
+  color: #ff4141;
+  text-shadow: 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00,
+    0 0 60px #f00, 0 0 70px #f00, 0 0 80px #f00;
+}
+
+.blink {
+  animation: blinker 1s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+}
+@keyframes blinker {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.checkSingle {
+  cursor: pointer;
+}
+
+.invoice-slider-container {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.invoice-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.invoice-navigation .invoice-counter {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.invoice-slide-container {
+  position: relative;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+@media print {
+  .invoice-navigation {
+    display: none;
+  }
+}
+.text-center {
+  font-size: 14px;
+}

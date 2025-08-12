@@ -1,0 +1,99 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div class="card border-0 box-shadow">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <!-- Dashboard Header -->
+                    <div class="dashboard">
+                        <h1>Customer Dashboard</h1>
+                    </div>
+
+                    <!-- Summary Section -->
+                    <div class="summary row">
+                        <div class="col-md-4 mb-3">
+                            <div class="summary-card spending card p-3 border-0">
+                                <h3>Total Spending</h3>
+                                <p>Rs.{{ total_price }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="summary-card orders card p-3 border-0">
+                                <h3>Total Quantity</h3>
+                                <p>{{ quantity }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="summary-card favorite card p-3 border-0">
+                                <h3>Total Products Ordered</h3>
+                                <p>{{ totalOrders }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Widgets Section -->
+                    <div class="row mb-3">
+                        <!-- First Widget -->
+                        <div class="col-lg-6">
+                            <div class="card border-0">
+                                <div class="card-header bg-transparent border-0 text-muted">
+                                    <h2>Order Products Quantity</h2>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="chart-container">
+                                        <canvas id="pieChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Second Widget -->
+                        <div class="col-lg-6">
+                            <div class="card border-0">
+                                <div class="card-header bg-transparent border-0 text-muted">
+                                    <h2>Subscription Shifts</h2>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="chart-container">
+                                        <canvas id="subscriptionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order Details Table -->
+                    <div class="order-details">
+                        <h2>Last 5 Orders</h2>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Order By</th>
+                                        <th>Date</th>
+                                        <th>Requested Date</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        <th>Delivery Boy</th>
+                                        <th>Delivery Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let order of orderData | slice:0:5">
+                                        <td>{{ order.cust_name|titlecase }}</td>
+                                        <td>{{ order.order_date|date }}</td>
+                                        <td>{{ order.requested_delivery_date|date }}</td>
+                                        <td>{{ order.product_name }}</td>
+                                        <td>{{ order.quantity }}&nbsp;{{ order.st_name }}</td>
+                                        <td>Rs.{{ order.price }}</td>
+                                        <td>Rs.{{ order.total_price }}</td>
+                                        <td>{{ order.delivery_boy_name|titlecase }}</td>
+                                        <td>{{ order.delivery_status_name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

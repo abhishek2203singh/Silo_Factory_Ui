@@ -1,0 +1,31 @@
+.card-header {
+    background-color: #008b8b;
+    color: white;
+    padding: 15px;
+  }
+  
+  .card-body {
+    padding: 20px;
+    font-size: 16px;
+  }
+  
+  .form-control-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .text-muted {
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #6c757d;
+  }
+  
+  .font-weight-bold {
+    font-weight: bold;
+  }
+  
+  .card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }

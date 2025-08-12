@@ -1,0 +1,75 @@
+.dashboard {
+  .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .card-title {
+    color: #333;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  .chart-container {
+    width: 100%;
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+
+  // Datatable customization
+  .ngx-datatable {
+    box-shadow: none !important;
+
+    .datatable-header {
+      background-color: #f8f9fa;
+      .datatable-header-cell {
+        font-weight: 600;
+        color: #495057;
+      }
+    }
+
+    .datatable-body-row {
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+  }
+
+  // Summary cards
+  .card-text {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .card {
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+    }
+  }
+}

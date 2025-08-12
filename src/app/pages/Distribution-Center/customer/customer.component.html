@@ -1,0 +1,994 @@
+<div class="row">
+   <div class="col-lg-12 col-12">
+      <div class="clearfix">
+         <ul class="nav nav-tabs custom top">
+            <li rel="customer" class="nav-item">
+               <a data-toggle="tab" href="#customer" class="nav-link active show"><i class="fa fa-user"></i>
+                  Customer</a>
+            </li>
+            <li rel="notes1" class="nav-item">
+               <a data-toggle="tab" href="#notes1" class="nav-link"><i class="fa fa-book"></i> Customer
+                  Subscription
+               </a>
+            </li>
+            <li rel="invoice" class="nav-item">
+               <a data-toggle="tab" href="#invoice" class="nav-link"><i class="fa fa-list"></i> Customer Invoice
+               </a>
+            </li>
+         </ul>
+      </div>
+      <div class="tab-content top">
+         <div class="tab-pane active" id="customer">
+            <div class="modal-content">
+               <div class="clearfix">
+                  <ul class="nav nav-tabs custom top">
+                     <li rel="activecustomer" class="nav-item">
+                        <a data-toggle="tab" href="#activecustomer" class="nav-link active show"><i
+                              class="fa fa-user"></i>
+                           Active Customers
+                        </a>
+                     </li>
+                     <li rel="deactivecustomer" class="nav-item">
+                        <a data-toggle="tab" href="#deactivecustomer" class="nav-link"><i class="fa fa-user"></i>
+                           De-Active Customers
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+               <div class="tab-content top">
+                  <div class="tab-pane active" id="activecustomer">
+                     <div class="input-group mb-2">
+                        <span class="input-group-prepend"><span class="input-group-text"><i
+                                 class="fa fa-search"></i>&nbsp;</span></span>
+                        <input class="form-control" type="text" placeholder="Type to filter the product name..."
+                           (keyup)="updateActCustomerFilter($event)" />
+                     </div>
+                     <ngx-datatable #table class="material fixed-header" [rows]="customerData" [headerHeight]="50"
+                        [footerHeight]="50" [rowHeight]="100" [scrollbarV]="true" [columnMode]="'force'"
+                        [reorderable]="true" [limit]="10" [count]="customerData.length" [style.height.px]="600">
+                        <!-- Serial Number Column -->
+                        <ngx-datatable-column name="Sr No." [width]="20">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Sr No.</span>
+                           </ng-template>
+                           <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                              {{ rowIndex + 1 }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="created_on" [width]="60">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Date</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.created_on|date }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Name Column -->
+                        <ngx-datatable-column name="full_name" [width]="60">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Name</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.full_name }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Phone Column -->
+                        <ngx-datatable-column name="mobile" [width]="60">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Phone</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.mobile }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Address Column -->
+                        <ngx-datatable-column name="address" [width]="60">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Address</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.address }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Amount Column -->
+                        <ngx-datatable-column name="available_balance" [width]="60">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Amount</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.available_balance }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Delivery Boy Column -->
+                        <ngx-datatable-column name="deliveryBoyName" [width]="60">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Delivery Boy</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.deliveryBoyName }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- View Column -->
+                        <ngx-datatable-column name="View" [sortable]="false">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">View</span>
+                           </ng-template>
+                           <ng-template let-row="row" ngx-datatable-cell-template>
+                              <button class="edit btn btn-outline-success w-100p mb-1 mr-25" type="button" title="View"
+                                 (click)="VisitDetails(row.id)">
+                                 <span class="fa fa-eye"></span>
+                              </button>
+                           </ng-template>
+                        </ngx-datatable-column>
+                     </ngx-datatable>
+                  </div>
+                  <div class="tab-pane" id="deactivecustomer">
+                     <div class="input-group mb-2">
+                        <span class="input-group-prepend"><span class="input-group-text"><i
+                                 class="fa fa-search"></i></span></span>
+                        <input class="form-control" type="text" placeholder="Type to filter the product name..."
+                           (keyup)="updateDeActCustomerFilter($event)" />
+                     </div>
+                     <ngx-datatable #table class="material fixed-header" [rows]="deactivatedCustomerData "
+                        [headerHeight]="50" [footerHeight]="50" [rowHeight]="100" [scrollbarV]="true"
+                        [columnMode]="'force'" [reorderable]="true" [limit]="10"
+                        [count]="deactivatedCustomerData.length" [style.height.px]="600">
+                        <!-- Serial Number Column -->
+                        <ngx-datatable-column name="Sr No.">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Sr No.</span>
+                           </ng-template>
+                           <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                              {{ rowIndex + 1 }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="created_on">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Date</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.created_on|date }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Name Column -->
+                        <ngx-datatable-column name="Name">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Name</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.full_name }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Phone Column -->
+                        <ngx-datatable-column name="Phone">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Phone</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.mobile }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Address Column -->
+                        <ngx-datatable-column name="Address">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Address</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.address }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Amount Column -->
+                        <ngx-datatable-column name="Amount">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Amount</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.available_balance | currency }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Delivery Boy Column -->
+                        <ngx-datatable-column name="Delivery Boy">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Delivery Boy</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.deliveryBoyName }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- View Column -->
+                        <ngx-datatable-column name="View" [sortable]="false">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">View</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              <button class="edit btn btn-outline-success w-100p mb-1 mr-25" type="button" title="View"
+                                 (click)="VisitDetails(row.id)">
+                                 <i class="fa fa-eye"></i>
+                              </button>
+                           </ng-template>
+                        </ngx-datatable-column>
+                     </ngx-datatable>
+                  </div>
+                  <div class="tab-pane" id="lowblanc">
+                     <div class="input-group mb-2">
+                        <span class="input-group-prepend"><span class="input-group-text"><i
+                                 class="fa fa-search"></i></span></span>
+                        <input class="form-control" type="text" placeholder="Type to filter the product name..." />
+                     </div>
+                     <ngx-datatable #table class="material fixed-header" [rows]="deactivatedCustomerData "
+                        [headerHeight]="50" [footerHeight]="50" [rowHeight]="100" [scrollbarV]="true"
+                        [columnMode]="'force'" [reorderable]="true" [limit]="10"
+                        [count]="deactivatedCustomerData.length" [style.height.px]="600">
+                        <!-- Serial Number Column -->
+                        <ngx-datatable-column name="Sr No.">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Sr No.</span>
+                           </ng-template>
+                           <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                              {{ rowIndex + 1 }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="created_on">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Date</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.created_on|date }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Name Column -->
+                        <ngx-datatable-column name="Name">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Name</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.full_name }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Phone Column -->
+                        <ngx-datatable-column name="Phone">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Phone</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.mobile }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Address Column -->
+                        <ngx-datatable-column name="Address">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Address</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.address }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Amount Column -->
+                        <ngx-datatable-column name="Amount">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Amount</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.available_balance | currency }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- Delivery Boy Column -->
+                        <ngx-datatable-column name="Delivery Boy">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Delivery Boy</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              {{ row.deliveryBoyName }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <!-- View Column -->
+                        <ngx-datatable-column name="View" [sortable]="false">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">View</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-row="row">
+                              <button class="edit btn btn-outline-success w-100p mb-1 mr-25" type="button" title="View"
+                                 (click)="VisitDetails(row.id)">
+                                 <i class="fa fa-eye"></i>
+                              </button>
+                           </ng-template>
+                        </ngx-datatable-column>
+                     </ngx-datatable>
+                  </div>
+                  <div class="tab-pane" id="stpcussb">
+                     <ngx-datatable #table class="material" [headerHeight]="40" [limit]="10" [columnMode]="'force'"
+                        [footerHeight]="50" [rowHeight]="'auto'" [rows]="rows">
+                        <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="true"
+                           [resizeable]="false">
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Sr No.">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Sr No.</span>
+                           </ng-template>
+                           <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                              {{ rowIndex + 1 }}
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Name">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Name</span>
+                           </ng-template>
+                           <ng-template let-row="row" ngx-datatable-cell-template>
+                              Ram
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Phone">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Phone</span>
+                           </ng-template>
+                           <ng-template let-row="row" ngx-datatable-cell-template>
+                              8888554425
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Address">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Address</span>
+                           </ng-template>
+                           <ng-template let-row="row" ngx-datatable-cell-template>
+                              Sharda Nagar
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Amount">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Amount</span>
+                           </ng-template>
+                           <ng-template let-row="row" ngx-datatable-cell-template>
+                              15000
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Subscription/Date">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Date</span>
+                           </ng-template>
+                           <ng-template let-row="row" ngx-datatable-cell-template>
+                              10/12/2024
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Delivery Boy">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">Delivery Boy</span>
+                           </ng-template>
+                           <ng-template let-row="row" ngx-datatable-cell-template>
+                              Shakuni
+                           </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="View">
+                           <ng-template ngx-datatable-header-template>
+                              <span class="column-header">View</span>
+                           </ng-template>
+                           <ng-template ngx-datatable-cell-template let-value="value">
+                              <button class="edit btn btn-outline-success w-100p mb-1 mr-25" type="button" title="Edit">
+                                 <span class="fa fa-eye"></span>
+                              </button>
+                           </ng-template>
+                        </ngx-datatable-column>
+                     </ngx-datatable>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="tab-pane" id="notes1">
+            <div class="clearfix">
+               <div id="tabs" class="body">
+                  <ul class="nav nav-tabs custom top">
+                     <li rel="add" class="nav-item">
+                        <a data-toggle="tab" href="#add" class="nav-link show active">
+                           <i class="fa fa-list"></i> Add Subscription
+                        </a>
+                     </li>
+                     <li rel="view" class="nav-item">
+                        <a data-toggle="tab" href="#view" class="nav-link">
+                           <i class="fa fa-book"></i> View Customer
+                           Subscription
+                        </a>
+                     </li>
+                  </ul>
+                  <div class="body tab-content shadow-lg p-3 mb-5 bg-white rounded">
+                     <div id="add" class="tab-pane show active">
+                        <div class="card border border-default">
+                           <div class="card-header">
+                              <h5><i class="fa fa-plus"></i><b> Subscription</b>
+                              </h5>
+                           </div>
+                           <form>
+                              <div class="card-body">
+                                 <!-- Only Customer Selection Initially -->
+                                 <div class="row">
+                                    <div class="col-lg-12 form-group text-center">
+                                       <label>
+                                          <h4>Customer List</h4>
+                                       </label>
+                                    </div>
+                                    <div class="col-lg-4 offset-lg-4 form-group">
+                                       <select class="form-control" (change)="onCustomerSelect($event)">
+                                          <option [value]="0" disabled selected>Choose Customer...
+                                          </option>
+                                          <option *ngFor="let name of customerData" [value]="name?.id">
+                                             {{ name?.full_name }}
+                                          </option>
+                                       </select>
+                                    </div>
+                                    <!-- New Button appears only when first table is shown -->
+                                    <div class="col-lg-4 form-group" *ngIf="showSubInfo1">
+                                       <!-- Status Button -->
+                                       <span
+                                          [ngClass]="{'btn-success': sub_status === 'Active', 'btn-danger': sub_status === 'Disabled'}"
+                                          class="btn" disabled>
+                                          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Subscription
+                                          is&nbsp;{{
+                                          sub_status }}
+                                       </span>
+                                       &nbsp;
+                                       <button class="btn btn-i pull-right btn-primary" style="border-radius:20px;"
+                                          (click)="showNewInfo()" type="button">
+                                          <i class="fa fa-plus"></i>
+                                          New
+                                       </button>
+                                       <!-- Pause Button -->
+                                       <button *ngIf="sub_status === 'Active'" class="btn btn-danger"
+                                          (click)="openPauseModal()">
+                                          <i class="fa fa-pause" aria-hidden="true"></i>&nbsp;Pause
+                                          Subscription
+                                       </button>
+                                       <!-- Reactivate Button -->
+                                       <button *ngIf="sub_status === 'Disabled'" class="btn btn-success"
+                                          (click)="reactivateSubscription()">
+                                          <i class="fa fa-play" aria-hidden="true"></i>&nbsp;Resume
+                                          Subscription </button>
+                                    </div>
+                                 </div>
+                                 <!-- Tables appear only after customer selection -->
+                                 <div class="table-responsive mt-3" *ngIf="showSubInfo1 || showSubInfo">
+                                    <!-- Original Table (subinfo1) -->
+                                    <div *ngIf="showSubInfo1">
+                                       <ngx-datatable class="material striped" [rows]="subList1" [columnMode]="'force'"
+                                          [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="5">
+
+                                          <!-- Sr No. Column -->
+                                          <ngx-datatable-column name="Sr No." [sortable]="false" [resizeable]="false">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Sr No.</span>
+                                             </ng-template>
+                                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                                                {{ 5 * (p - 1) + rowIndex + 1 }}
+                                             </ng-template>
+                                          </ngx-datatable-column>
+
+                                          <!-- Name Column -->
+                                          <ngx-datatable-column name="Name">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Name</span>
+                                             </ng-template>
+                                             <ng-template ngx-datatable-cell-template let-row="row">
+                                                {{ row.product_name }}
+                                             </ng-template>
+                                          </ngx-datatable-column>
+
+                                          <!-- User Price Column -->
+                                          <ngx-datatable-column name="User Price" [sortable]="false">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">User Price</span>
+                                             </ng-template>
+                                             <ng-template ngx-datatable-cell-template let-row="row">
+                                                <input name="up" type="number" [(ngModel)]="row.userPrice"
+                                                   [ngModelOptions]="{standalone: true}" class="form-control required"
+                                                   placeholder="User Price" min="0" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+
+                                          <!-- Shift Column -->
+                                          <ngx-datatable-column name="Shift" [sortable]="false">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Shift</span>
+                                             </ng-template>
+                                             <ng-template ngx-datatable-cell-template let-row="row">
+                                                <select name="shift" class="form-control" [(ngModel)]="row.shift"
+                                                   [ngModelOptions]="{standalone: true}">
+                                                   <option [ngValue]="1">Morning</option>
+                                                   <option [ngValue]="2">Evening</option>
+                                                </select>
+                                             </ng-template>
+                                          </ngx-datatable-column>
+
+                                          <!-- Delivery Boy Column -->
+                                          <ngx-datatable-column name="Delivery Boy" [sortable]="false">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Delivery Boy</span>
+                                             </ng-template>
+                                             <ng-template ngx-datatable-cell-template let-row="row">
+                                                <select class="form-control" name="dboy" [(ngModel)]="row.deliveryBoyId"
+                                                   [ngModelOptions]="{standalone: true}">
+                                                   <option *ngFor="let boy of deliveryboy" [ngValue]="boy.id">
+                                                      {{ boy.full_name }}
+                                                   </option>
+                                                </select>
+                                             </ng-template>
+                                          </ngx-datatable-column>
+
+                                          <!-- Quantity Column -->
+                                          <ngx-datatable-column name="Quantity" [sortable]="false">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Quantity</span>
+                                             </ng-template>
+                                             <ng-template ngx-datatable-cell-template let-row="row">
+                                                <input name="qt" type="number" [(ngModel)]="row.quantity"
+                                                   [ngModelOptions]="{standalone: true}" class="form-control" min="0" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+
+                                          <!-- Days Columns -->
+                                          <ng-container *ngFor="let day of days">
+                                             <ngx-datatable-column [name]="day.label">
+                                                <ng-template ngx-datatable-header-template>
+                                                   <span class="column-header">{{day.label}}</span>
+                                                </ng-template>
+                                                <ng-template ngx-datatable-cell-template let-row="row">
+                                                   <input [name]="day.key" type="checkbox" class="fancy-checkbox"
+                                                      [(ngModel)]="row[day.key]" [ngModelOptions]="{standalone: true}"
+                                                      [disabled]="isDaysDisabled(row)"
+                                                      (change)="onDaySelect(row, day.key, $event)" />
+                                                </ng-template>
+                                             </ngx-datatable-column>
+                                          </ng-container>
+                                       </ngx-datatable>
+                                       <!-- Pagination & Update Button -->
+                                       <div class="d-flex justify-content-between align-items-center mt-3">
+                                          <span *ngIf="showSubInfo1">
+                                          </span>
+                                          <button type="button" class="btn btn-primary" (click)="updateSubscription()">
+                                             Update Subscriptions
+                                          </button>
+                                       </div>
+                                    </div>
+                                    <!-- New Table (subinfo) -->
+                                    <div *ngIf="showSubInfo">
+                                       <button type="button" class="btn btn-primary mt-2 mb-2 pt-2"
+                                          style="margin-left:95%" (click)="goback()"><i
+                                             class="fas fa-arrow-left me-2"></i> Back</button>
+                                       <ngx-datatable #table class="material fixed-header" [rows]="newSubscriptions"
+                                          [headerHeight]="50" [footerHeight]="50" [rowHeight]="70" [scrollbarH]="true"
+                                          [scrollbarV]="true" [columnMode]="'force'" [reorderable]="true" [limit]="10"
+                                          [count]="newSubscriptions.length" [style.height.px]="600">
+                                          <ngx-datatable-column name="Sr No.">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Sr No.</span>
+                                             </ng-template>
+                                             <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                {{ rowIndex + 1}}
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Name">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Name</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input type="text" readonly name="pdn" [value]="row.product_name"
+                                                   class="form-control" />
+                                                <input type="hidden" [(ngModel)]="row.productId"
+                                                   [ngModelOptions]="{standalone: true}">
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Shift">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Shift</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <select name="sft" [(ngModel)]="row.shift"
+                                                   [ngModelOptions]="{standalone: true}" class="form-control required"
+                                                   required>
+                                                   <option [value]="0">...choose</option>
+                                                   <option [value]="1">Morning</option>
+                                                   <option [value]="2">Evening</option>
+                                                </select>
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Delivery Boy">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Delivery Boy</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <select name="dbi" [(ngModel)]="row.deliveryBoyId"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   class="form-control required productOptions">
+                                                   <option [value]="0">...Choose</option>
+                                                   <option *ngIf="deliveryboy.length === 0" [value]="null">No
+                                                      delivery
+                                                      boys
+                                                      available</option>
+                                                   <option *ngIf="deliveryboy.length > 0" [value]="deliveryboy[0]?.id"
+                                                      selected>
+                                                      {{
+                                                      deliveryboy[0]?.full_name
+                                                      }}
+                                                   </option>
+                                                   <option *ngFor="let list of deliveryboy | slice:1"
+                                                      [value]="list?.id">
+                                                      {{
+                                                      list?.full_name
+                                                      }}
+                                                   </option>
+                                                </select>
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Quantity">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Quantity</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="qt" type="number" [(ngModel)]="row.quantity"
+                                                   [ngModelOptions]="{standalone: true}" class="form-control" min="0" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="User Price">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">User Price</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="up" [(ngModel)]="row.userPrice"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   class="form-control required validate-name" type="number"
+                                                   placeholder="user price" min="0" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <!-- Delivery-type Column -->
+                                          <ngx-datatable-column name="Delivery-type" [sortable]="false" [width]="250">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Delivery Type</span>
+                                             </ng-template>
+                                             <ng-template ngx-datatable-cell-template let-row="row">
+                                                <select name="Delivery-type" class="form-control"
+                                                   [(ngModel)]="row.Deliverytype" #frequency
+                                                   (change)="setDeliveryPrifrence(frequency.value, row.productId)">
+                                                   <option [value]="0">Choose</option>
+                                                   <option [value]="1">All Days</option>
+                                                   <option [value]="2">Alternate Day</option>
+                                                   <option [value]="3">Specific Day</option>
+                                                </select>
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <!-- Days Columns -->
+                                          <ngx-datatable-column name="Mon">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Mon</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="m" type="checkbox" [(ngModel)]="row.monday"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   [disabled]="isDaysDisabled(row)" class="fancy-checkbox" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Tue">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Tue</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="t" type="checkbox" [(ngModel)]="row.tuesday"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   [disabled]="isDaysDisabled(row)" class="fancy-checkbox" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Wed">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Wed</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="w" type="checkbox" [(ngModel)]="row.wednesday"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   [disabled]="isDaysDisabled(row)" class="fancy-checkbox" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Thu">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Thu</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="th" type="checkbox" [(ngModel)]="row.thursday"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   [disabled]="isDaysDisabled(row)" class="fancy-checkbox" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Fri">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Fri</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="frd" type="checkbox" [(ngModel)]="row.friday"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   [disabled]="isDaysDisabled(row)" class="fancy-checkbox" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Sat">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Sat</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="str" type="checkbox" [(ngModel)]="row.saturday"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   [disabled]="isDaysDisabled(row)" class="fancy-checkbox" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                          <ngx-datatable-column name="Sun">
+                                             <ng-template ngx-datatable-header-template>
+                                                <span class="column-header">Sun</span>
+                                             </ng-template>
+                                             <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <input name="sunday" type="checkbox" [(ngModel)]="row.sunday"
+                                                   [ngModelOptions]="{standalone: true}"
+                                                   [disabled]="isDaysDisabled(row)" class="fancy-checkbox" />
+                                             </ng-template>
+                                          </ngx-datatable-column>
+                                       </ngx-datatable>
+                                       <!-- Add button for subinfo -->
+                                       <div class="text-right mt-3">
+                                          <button type="button" class="btn btn-primary" (click)="addNewSubscription()">
+                                             Add Subscription
+                                          </button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                     <div id="view" class="tab-pane">
+                        <div class="card border border-default">
+                           <div class="card-header">
+                              <h5><i class="fa fa-list"></i><b>
+                                    Subscription List</b>
+                              </h5>
+                           </div>
+                           <div class="card-body">
+                              <div class="table-responsive">
+                                 <div class="input-group mb-2">
+                                    <span class="input-group-prepend"><span class="input-group-text"><i
+                                             class="fa fa-search"></i></span></span>
+                                    <input class="form-control" type="text" placeholder="Search by Name..."
+                                       (keyup)="updateFilter($event)" />
+                                 </div>
+                                 <ngx-datatable #table class="material fixed-header" [rows]="SubscriptionsList"
+                                    [headerHeight]="50" [footerHeight]="50" [rowHeight]="70" [scrollbarH]="true"
+                                    [scrollbarV]="true" [columnMode]="'force'" [reorderable]="true" [limit]="10"
+                                    [count]="SubscriptionsList.length" [style.height.px]="600">
+                                    <ngx-datatable-column name="Sr No.">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Sr No.</span>
+                                       </ng-template>
+                                       <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                          {{ rowIndex + 1}}
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="created_on">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Date</span>
+                                       </ng-template>
+                                       <ng-template ngx-datatable-cell-template let-row="row">
+                                          {{ row.created_on | date}}
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Name">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Customer Name</span>
+                                       </ng-template>
+                                       <ng-template let-row="row" ngx-datatable-cell-template>
+                                          {{row.customer_name}}
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Name">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Product Name</span>
+                                       </ng-template>
+                                       <ng-template let-row="row" ngx-datatable-cell-template>
+                                          {{row.product_name}}
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Shift">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Shift</span>
+                                       </ng-template>
+                                       <ng-template let-row="row" ngx-datatable-cell-template>
+                                          <span *ngIf="row.shift === 1">
+                                             {{ row.shift_name }}
+                                          </span>
+                                          <span *ngIf="row.shift === 2">
+                                             {{ row.shift_name }}
+                                          </span>
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Quantity">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Quantity</span>
+                                       </ng-template>
+                                       <ng-template let-row="row" ngx-datatable-cell-template>
+                                          {{row.quantity}} {{row.sort_unit}}
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Delivery Boy">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Delivery Boy</span>
+                                       </ng-template>
+                                       <ng-template let-row="row" ngx-datatable-cell-template>
+                                          {{row.delivery_boy_name}}
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Delivery Type">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Delivery Type</span>
+                                       </ng-template>
+                                       <ng-template let-row="row" ngx-datatable-cell-template>
+                                          <span>
+                                             {{ getDeliveryType(row) }}
+                                          </span>
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Status">
+                                       <ng-template ngx-datatable-header-template>
+                                          <span class="column-header">Subscription Status</span>
+                                       </ng-template>
+                                       <ng-template let-row="row" ngx-datatable-cell-template>
+                                          <span *ngIf="row.sub_status"
+                                             [ngStyle]="{'color': row.sub_status === 'Disabled' ? 'red' : row.sub_status === 'Active' ? 'green' : 'black'}">
+                                             {{ row.sub_status }}
+                                          </span>
+                                       </ng-template>
+                                    </ngx-datatable-column>
+                                 </ngx-datatable>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="tab-pane" id="invoice">
+            <!-- Invoice Section -->
+            <app-invoice-slider [selectedCustomers]="selectedCustomers"></app-invoice-slider>
+            <div class="card border border-default">
+               <div class="card-header">
+                  <h5><i class="fa fa-list"></i><b>&nbsp;Customer list</b></h5>
+               </div>
+               <div class="card-body">
+                  <div class="table-responsive">
+                     <table class="table table-bordered table-hover c_list" id="custominfo">
+                        <thead class="thead-dark">
+                           <tr>
+                              <th class="text-center">
+                                 <label class="control control-checkbox ml-labelcheck">
+                                    <input type="checkbox" id="checkedAll" (change)="onSelectAllemp()">
+                                    Select All
+                                    <div class="control_indicator"></div>
+                                 </label>
+                              </th>
+                              <th class="text-center">Name</th>
+                              <th class="text-center">Address</th>
+                              <th class="text-center">Phone</th>
+                              <th class="text-center">Available
+                                 Balance
+                              </th>
+                              <th class="text-center">Joining
+                                 Date
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr
+                              *ngFor="let cus of customerData | paginate: { itemsPerPage: 5, currentPage: p }; let i=index">
+                              <td class="text-center">
+                                 <label class="control control-checkbox ml-labelcheck">
+                                    <input type="checkbox" name="hcb" class="checkSingle" [attr.data-index]="i"
+                                       [checked]="selectedCustomers.includes(cus)"
+                                       (change)="handleCheckboxChange(cus, $event, i)">
+                                    <div class="control_indicator"></div>
+                                 </label>
+                              </td>
+                              <td class="text-center">{{cus?.full_name
+                                 || 'N/A'}}
+                              </td>
+                              <td class="text-center">{{cus?.address
+                                 || 'N/A'}}
+                              </td>
+                              <td class="text-center">{{cus?.mobile ||
+                                 'N/A'}}
+                              </td>
+                              <td class="text-center">{{cus?.available_balance
+                                 || 0}}
+                              </td>
+                              <td class="text-center">{{cus?.joining_date|
+                                 date}}
+                              </td>
+                           </tr>
+                           <tr *ngIf="customerData.length === 0">
+                              <td colspan="6" class="text-center">No
+                                 customers found
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <pagination-controls (pageChange)="p = $event" style="float:right;"></pagination-controls>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- <div id="CreateSchedul" tabindex="-1" role="dialog" class="modal fade" style="display: none;" aria-hidden="true">
+    <div role="document" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="CreateSchedulLabel" class="title">Create
+                    Scheduling</h4><button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                    <p aria-hidden="true">×</p>
+                </button>
+            </div>
+            <form novalidate id="cretesd" class="ng-untouched ng-pristine ng-valid">
+                <div class="modal-body"><input type="hidden" name="id" id="id" value>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group"><label for="firstName">Scheduling
+                                    Date</label><input hidden name="userId"
+                                    class="ng-untouched ng-pristine ng-valid"><input name="schduldt" type="date"
+                                    placeholder="First Name"
+                                    class="form-control required validate-name ng-untouched ng-pristine ng-valid"></div>
+                        </div>
+                        <div class="col-lg-6 form-group" style="padding-top: 20px;"><button type="submit"
+                                class="btn btn-primary pull-right">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div> -->
+<div class="modal fade" id="pauseModal" tabindex="-1" role="dialog" aria-labelledby="quantityInfoModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Pause
+               Subscription
+            </h4>
+            <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                <span aria-hidden="true">&times;</span>
+                </button> -->
+         </div>
+         <div class="modal-body">
+            <form [formGroup]="pauseForm" (ngSubmit)="onSubmit()">
+               <div class="form-group">
+                  <label for="startDate">Pause Start Date</label>
+                  <input type="date" class="form-control" id="startDate" formControlName="startDate" [min]="todaydate"
+                     [ngClass]="{'is-invalid': pauseForm.get('startDate')?.invalid && pauseForm.get('startDate')?.touched}">
+                  <div *ngIf="pauseForm.get('startDate')?.invalid && pauseForm.get('startDate')?.touched"
+                     class="invalid-feedback">
+                     Start date is required
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label for="endDate">Pause End Date</label>
+                  <input type="date" class="form-control" id="endDate" formControlName="endDate" [min]="todaydate"
+                     [ngClass]="{'is-invalid': (pauseForm.get('endDate')?.invalid && pauseForm.get('endDate')?.touched) || pauseForm.hasError('dateRange')}">
+                  <div *ngIf="pauseForm.get('endDate')?.invalid && pauseForm.get('endDate')?.touched"
+                     class="invalid-feedback">
+                     End date is required
+                  </div>
+                  <div *ngIf="pauseForm.hasError('dateRange')" class="invalid-feedback d-block">
+                     End date must be after start date
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="pauseAllSubscription()"
+                     [disabled]="pauseForm.invalid">
+                     Submit
+                  </button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>

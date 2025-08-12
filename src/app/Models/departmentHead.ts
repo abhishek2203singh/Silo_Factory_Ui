@@ -1,0 +1,21 @@
+export interface IUserProfile {
+      about_me: string,
+      address: string,
+      adhaar_no: string,
+      available_balance: any,
+      city: string,
+      created_at: string,
+      department_id: number,
+      email: string,
+      facebook_id: number,
+      full_name: string,
+      gender: string,
+      id: number,
+      joining_date: string,
+      mobile: number,
+      online_status: number,
+      pincode: number,
+      profile_photo: string,
+      registration_date: string,
+      salary: string
+}

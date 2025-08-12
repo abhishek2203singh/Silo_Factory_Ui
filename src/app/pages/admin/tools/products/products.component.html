@@ -1,0 +1,328 @@
+<app-info-panels [panels]="infoPanels"></app-info-panels>
+<div class="row">
+    <div class="col-lg-12 ">
+        <div id="accordion-1" class="bg-white" role="tablist" aria-multiselectable="true">
+            <div class="card-header border-0 " role="tab" id="headingOne">
+                <h5 class="mb-0 text-right">
+                    <!-- <a data-toggle="collapse" href="#collapseOne"
+                  [ngClass]="{'collapsed': editId <= 0}"
+                  [attr.aria-expanded]="editId > 0 ? 'true' : 'false'"
+                  aria-controls="collapseOne"> -->
+                    <!-- 
+                  <button *ngIf="!isAccordionExpanded"
+                      class="btn btn-success "
+                      [class.hidden]="isAccordionExpanded">
+                      Create Product
+                  </button> -->
+                    <button type="submit" (click)="toggleAccordion()" [class.hidden]="isAccordionExpanded||editId>0"
+                        class="btn btn-primary create-product-button">
+                        <i class="fa fa-plus"></i>
+                        {{ editId ? 'Update Product' : 'Create Product' }}
+                    </button>
+                    <!-- </a> -->
+                </h5>
+            </div>
+            <div class="card border-0 box-shadow mb-3">
+                <div id="collapseOne" class="collapse" [ngClass]="editId > 0 ? 'show' : ''" data-parent="#accordion-1"
+                    role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-body widget-body">
+                        <form [formGroup]="productForm" (ngSubmit)="editId ? updateProduct() : createProduct()">
+                            <div class="header mt-0 mb-0 transparent border-0 text-black">
+                                <h5 class="mb-0">{{ editId ? 'Update Product' : 'Create Product' }}</h5>
+                                <button (click)="closeCollapse()" type="button" class="icon" title="Click to close">
+                                    <i class="fa fa-close text-danger font-weight-normal"></i>
+                                </button>
+                            </div>
+                            <div class="row">
+                                <!-- Product Name -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="productName">Product Name</label>
+                                        <input type="text" class="form-control" formControlName="productName"
+                                            placeholder="Product Name">
+                                    </div>
+                                </div>
+                                <!-- Product Type -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="productType">Product Type</label>
+                                        <select class="form-control" formControlName="productType">
+                                            <option value="0" disabled>Select Product Type</option>
+                                            <option *ngFor="let item of productTypeList" [value]="item.id">{{ item.name
+                                                }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Unit -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="unitId">Unit</label>
+                                        <select class="form-control" formControlName="unitId">
+                                            <option value="0" disabled>Select Unit</option>
+                                            <option *ngFor="let item of unitData" [value]="item.id">{{ item.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Product Image -->
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label for="productImage">Product Image</label>
+                                        <input type="file" class="form-control" accept="image/*"
+                                            (change)="uploadFile($event)">
+                                    </div>
+                                </div>
+                                <div class="col-1"><img *ngIf="defaultPic" [src]="baseImgUrl + defaultPic"
+                                        alt="Current Product Image" style="max-width: 100px; max-height: 100px;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Status -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" formControlName="status">
+                                            <option [value]="1">Active</option>
+                                            <option [value]="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Raw Product -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="roughProductId">Raw Product</label>
+                                        <select class="form-control" formControlName="roughProductId">
+                                            <option value="0" disabled>Select Raw Product</option>
+                                            <option *ngFor="let product of productData" [value]="product.id">{{
+                                                product.product_name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Base Price -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="basePrice">Base Price</label>
+                                        <input type="number" step="0.01" class="form-control"
+                                            formControlName="basePrice" (input)="updateMrp()">
+                                    </div>
+                                </div>
+                                <!-- GST -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="isGstIncluded"> GST included
+                                            ?</label>
+                                        <div class="input-group">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    formControlName="isGstIncluded" id="hasGstYes" [value]="1">
+                                                <label class="form-check-label" for="hasGstYes">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                    formControlName="isGstIncluded" id="hasGstNo" [value]="0">
+                                                <label class="form-check-label" for="hasGstNo">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- CGST and SGST -->
+                                <ng-container *ngIf="productForm.get('isGstIncluded')?.value">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="cgst">Central GST (CGST)</label>
+                                            <input type="number" step="0.01" class="form-control" formControlName="cgst"
+                                                (input)="updateMrp()">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="sgst">State GST (SGST)</label>
+                                            <input type="number" step="0.01" class="form-control" formControlName="sgst"
+                                                (input)="updateMrp()">
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- MRP Price -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="mrp">MRP Price</label>
+                                        <input type="number" step="0.01" class="form-control" formControlName="mrp"
+                                            placeholder="MRP">
+                                    </div>
+                                </div>
+                                <!-- Delivery Charges -->
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="deliveryCharges">Delivery Charges</label>
+                                        <input type="number" step="0.01" class="form-control"
+                                            formControlName="deliveryCharges" placeholder="Delivery Charges">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <button type="submit" [disabled]="!productForm.valid" class="btn btn-primary">
+                                    {{ editId ? 'Update Product' : 'Create Product' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-lg-12">
+        <button class="print-btn" style="float: right" (click)="printFile()">
+            Print PDF <i class='fas fa-print'></i>
+        </button>
+        <button type="button" class="csv-btn" style="float: right" (click)="exportToCSV()">
+            Export to CSV <i aria-hidden="true" class='fas fa-file-csv'></i>
+        </button>
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Type to filter the product name..."
+                (keyup)="updateFilter($event)" />
+        </div>
+        <div class="custm">
+            <ngx-datatable #table class="material fixed-header" [rows]="productData" [headerHeight]="50"
+                [footerHeight]="50" [rowHeight]="70" [scrollbarH]="true" [scrollbarV]="true" [columnMode]="'force'"
+                [reorderable]="true" [limit]="10" [count]="productData.length" [style.height.px]="600">
+                <!-- Sr. No Column -->
+                <ngx-datatable-column name="srNo" [width]="60">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Sr. No</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row">
+                        {{ rowIndex + 1 }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- product name -->
+                <ngx-datatable-column name="Product Name">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header"> Name</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row.product_name || 'N/A' | titlecase}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- product type -->
+                <ngx-datatable-column name="Product type">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header"> Type</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row.product_type_name || 'N/A' | titlecase}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- product image -->
+                <ngx-datatable-column name="productImage">
+                    <ng-template ngx-datatable-header-template let-row="row">
+                        <span class="column-header"> Image</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <img class="img" [src]="baseImgUrl+row.product_image" height="100px" width="100px" alt>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- uom -->
+                <ngx-datatable-column name="uom">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Unit</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row.unit_name+" ," }} {{row.st_name
+                        |uppercase}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- rough product name -->
+                <ngx-datatable-column name="roughProductName">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Raw Product</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{ row.rough_product_name|titlecase }}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- rough price -->
+                <ngx-datatable-column name="roughPrice">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Base Price</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row.base_price|currency:"INR"}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Cgst -->
+                <ngx-datatable-column name="cgst">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">CGST</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row?.cgst}} %
+                        <span class="font-bold text-info" style="font-size: 12px;">
+                            ({{row.cgstAmount|currency:"INR"}})
+                        </span>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Sgst -->
+                <ngx-datatable-column name="sgst">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">SGST</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row?.sgst}} %
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- mrp -->
+                <ngx-datatable-column name="mrp">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">MRP</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row.mrp|currency:"INR"}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- delivery charges -->
+                <ngx-datatable-column name="mrp">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Del. Charges</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        {{row.delivery_charges|currency:"INR"}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <!--Entry Date-->
+                <ngx-datatable-column name="created_on">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Entry Date</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <span> {{ row.created_on | date}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- Status Column -->
+                <!-- <ngx-datatable-column name="Status" [sortable]="true" [resizeable]="true">
+            <ng-template ngx-datatable-header-template>
+                <span class="column-header">Status</span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngIf="row.status === 1" class="badge-pill badge-success">Active</span>
+                <span *ngIf="row.status === 0" class="badge-pill badge-danger">Deactive</span>
+            </ng-template>
+            </ngx-datatable-column> -->
+                <!-- Action Column -->
+                <ngx-datatable-column name="Action" [sortable]="true" [resizeable]="true">
+                    <ng-template ngx-datatable-header-template>
+                        <span class="column-header">Action</span>
+                    </ng-template>
+                    <ng-template ngx-datatable-cell-template let-row="row">
+                        <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                            (click)="getId(row.id)">
+                            <span class="edit-icon"></span>
+                        </button>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>

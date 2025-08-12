@@ -1,0 +1,407 @@
+<h5 class="mb-0 text-right">
+    <button type="button" class="btn btn-primary mb-1 mr-1" (click)="goBack()"><i class="fas fa-arrow-left me-2"></i>
+        Back</button>
+</h5>
+<div class="row mt-2">
+    <div class="col-lg-12">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header d-flex transparent border-0 text-muted">
+                <h5 class="mb-0"> Add User
+                </h5>
+            </div>
+            <div class="card-header d-flex transparent border-0 text-muted">
+                <form [formGroup]="retailUserForm" (ngSubmit)="isEditUser?updateDetails():onsubmit()">
+                    <div class="row mt-10">
+                        <!-- full name -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputFullName">Full Name</label>
+                                <input type="text" class="form-control" id="inputFullName" formControlName="full_name"
+                                    placeholder="Full Name">
+                                <div *ngIf="retailUserForm.get('full_name')?.invalid && (retailUserForm.get('full_name')?.dirty || retailUserForm.get('full_name')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('full_name')?.errors?.required">Full
+                                        Name is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- mobile no -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputMobile">Mobile</label>
+                                <input type="text" class="form-control" id="inputMobile" formControlName="mobile"
+                                    placeholder="Mobile" [maxLength]="10">
+                                <div *ngIf="retailUserForm.get('mobile')?.invalid && (retailUserForm.get('mobile')?.dirty || retailUserForm.get('mobile')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('mobile')?.errors?.required">
+                                        Mobile number is required.
+                                    </div>
+                                    <div *ngIf="retailUserForm.get('mobile')?.errors?.pattern">
+                                        Enter a valid mobile number.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- email -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputEmail">Email</label>
+                                <input type="email" class="form-control" id="inputEmail" formControlName="email"
+                                    placeholder="Email">
+                                <small
+                                    *ngIf="retailUserForm.get('email')!.touched && retailUserForm.get('email')!.hasError('required')"
+                                    class="text-danger">Email is
+                                    required</small>
+                                <small
+                                    *ngIf="retailUserForm.get('email')!.touched && retailUserForm.get('email')!.hasError('pattern')"
+                                    class="text-danger">Invalid Email.
+                                    digits</small>
+                            </div>
+                        </div>
+                        <!-- password -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputPassword">Password</label>
+                                <input type="password" class="form-control" id="inputPassword"
+                                    formControlName="password" placeholder="Password">
+                                <div *ngIf="retailUserForm.get('password')?.invalid && (retailUserForm.get('password')?.dirty || retailUserForm.get('password')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('password')?.errors?.required">Password
+                                        is required.</div>
+                                    <div *ngIf="retailUserForm.get('password')?.errors?.minlength">Password
+                                        must be at least 6 characters
+                                        long.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- gender -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="gender">Gender
+                                </label>
+                                <select class="form-control" formControlName="gender" id="gender">
+                                    <option value="" disabled selected>Select
+                                        Gender</option>
+                                    <option value="male">Male
+                                    </option>
+                                    <option value="female">Female
+                                    </option>
+
+                                </select>
+                                <div *ngIf="retailUserForm.get('gender')?.invalid && (retailUserForm.get('gender')?.dirty || retailUserForm.get('gender')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('gender')?.errors?.required">Gender
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- address -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputAddress">Address</label>
+                                <input type="text" class="form-control" id="inputAddress" formControlName="address"
+                                    placeholder="Address">
+                                <div *ngIf="retailUserForm.get('address')?.invalid && (retailUserForm.get('address')?.dirty || retailUserForm.get('address')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('address')?.errors?.required">Address
+                                        is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- state -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputState">State</label>
+                                <select #st class="form-control" formControlName="state" (change)="getCities(st?.value)"
+                                    id="inputState">
+                                    <option value disabled selected>Select
+                                        State</option>
+                                    <option *ngFor="let state of stateList" [value]="state?.id">{{state.name}}</option>
+
+                                </select>
+                                <div *ngIf="retailUserForm.get('state')?.invalid && (retailUserForm.get('state')?.dirty || retailUserForm.get('state')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('state')?.errors?.required">State
+                                        is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- city -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputCity">City</label>
+                                <select class="form-control" formControlName="city" id="inputCity">
+                                    <option value disabled selected>Select
+                                        City</option>
+                                    <option *ngFor="let city of cityList" [value]="city?.id">{{city?.name}}</option>
+                                    <!-- Add options dynamically here -->
+                                </select>
+                                <div *ngIf="retailUserForm.get('city')?.invalid && (retailUserForm.get('city')?.dirty || retailUserForm.get('city')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('city')?.errors?.required">City
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- pincode -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputPincode">Pincode</label>
+                                <input type="text" formControlName="pincode" class="form-control" id="inputPincode"
+                                    placeholder="Pincode">
+                                <div *ngIf="retailUserForm.get('pincode')?.invalid && (retailUserForm.get('pincode')?.dirty || retailUserForm.get('pincode')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('pincode')?.errors?.required">Pincode
+                                        is required.</div>
+                                    <div *ngIf="retailUserForm.get('pincode')?.errors?.pattern">Pincode
+                                        must be a 6-digit number.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- facebook page-->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputFullName">Facebook Page</label>
+                                <input type="text" class="form-control" id="facebook_id" formControlName="facebook_id"
+                                    placeholder="Facebook id">
+                                <div *ngIf="retailUserForm.get('facebook_id')?.invalid && (retailUserForm.get('facebook_id')?.dirty || retailUserForm.get('facebook_id')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('facebook_id')?.errors?.required">Facebook
+                                        id is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Website-->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputFullName">Website Name</label>
+                                <input type="text" class="form-control" id="google_id" formControlName="google_id"
+                                    placeholder="Website">
+                                <div *ngIf="retailUserForm.get('google_id')?.invalid && (retailUserForm.get('google_id')?.dirty || retailUserForm.get('google_id')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('google_id')?.errors?.required">Google_id
+                                        name is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- about me -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="inputAboutMe">About Me</label>
+                                <textarea formControlName="about_me" class="form-control" id="inputAboutMe"
+                                    placeholder="About Me"></textarea>
+                            </div>
+                        </div>
+                        <!-- department  -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="department_id">Department
+                                </label>
+                                <select class="form-control" formControlName="department_id" id="inputDepartmentId">
+                                    <option value="0" disabled selected>Select
+                                        Department</option>
+                                    <option value="6">Distribution Center</option>
+                                    <option value="7">Retail Shop</option>
+
+
+                                </select>
+                                <div *ngIf="retailUserForm.get('department_id')?.invalid && (retailUserForm.get('department_id')?.dirty || retailUserForm.get('department_id')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('department_id')?.errors?.required">Department
+                                        is required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- role -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="role_id">Role</label>
+                                <select class="form-control" formControlName="role_id" id="inputRoleId">
+                                    <option value="0" disabled selected>Select Role</option>
+                                    <option value="7">Delivery Boy</option>
+                                    <option value="8">Retail Shop</option>
+                                    <option value="4">Customer</option>
+                                </select>
+                                <div *ngIf="retailUserForm.get('role_id')?.invalid && (retailUserForm.get('role_id')?.dirty || retailUserForm.get('role_id')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('role_id')?.errors?.['required']">Role is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Boy Selection - Only shows for Customer role -->
+                        <div class="col-sm-3" *ngIf="retailUserForm.get('role_id')?.value === '4'">
+                            <div class="form-group">
+                                <label for="delivery_boy_id">Select Delivery Boy</label>
+                                <select class="form-control" formControlName="delivery_boy_id" id="delivery_boy_id">
+                                    <option value="0" disabled selected>Select Delivery Boy</option>
+                                    <option *ngFor="let boy of deliveryBoyList" [value]="boy.id">{{boy.full_name
+                                        }}</option>
+                                </select>
+                                <div *ngIf="retailUserForm.get('delivery_boy_id')?.invalid && (retailUserForm.get('delivery_boy_id')?.dirty || retailUserForm.get('delivery_boy_id')?.touched)"
+                                    class="text-danger">
+                                    <div *ngIf="retailUserForm.get('delivery_boy_id')?.errors?.['required']">Delivery
+                                        Boy is required.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">{{isEditUser?"Update":"Submit"}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-12">
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Search ...." (keyup)="updateFilter($event)" />
+        </div>
+        <ngx-datatable #table class="material fixed-header" [rows]="retailData" [headerHeight]="50" [footerHeight]="50"
+            [rowHeight]="70" [scrollbarH]="true" [scrollbarV]="true" [columnMode]="'force'" [reorderable]="true"
+            [limit]="10" [count]="retailData.length" [style.height.px]="600" id="dtDynamicVerticalScroll">
+            <!-- Sr. No Column -->
+            <ngx-datatable-column name="srNo" [width]="60">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Sr. No</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                    {{ rowIndex + 1 }}
+                </ng-template>
+            </ngx-datatable-column>
+            <!-- Role Name Column -->
+            <ngx-datatable-column name="full_name">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Role</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.role_name |titlecase }}
+                </ng-template>
+            </ngx-datatable-column>
+            <!-- NAME Column -->
+            <ngx-datatable-column name="full_name">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header"> Name</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.full_name |titlecase }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- mobile no -->
+            <ngx-datatable-column name="mobile" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Mobile No.</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.mobile }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Address Column -->
+            <ngx-datatable-column name="address" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Address</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.address }}
+                </ng-template>
+            </ngx-datatable-column>
+            <!-- Pincode Column -->
+            <ngx-datatable-column name="pincode" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Pincode</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.pincode }}
+                </ng-template>
+            </ngx-datatable-column>
+            <!-- State -->
+            <ngx-datatable-column name="state" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">State</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.state_name }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- city -->
+            <ngx-datatable-column name="city" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">City</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.city_name }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- facebook_page -->
+            <ngx-datatable-column name="facebook_page" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Facebook Page</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{row?.facebook_id}}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Website -->
+            <ngx-datatable-column name="website" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Website</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.google_id}}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!--  Date -->
+            <ngx-datatable-column name="date" [sortable]="true" [resizeable]="true">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Date</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row?.created_on | date }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- Action Column -->
+            <ngx-datatable-column name="Action" [sortable]="false" [resizeable]="false">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Action</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template class="flex justify-content" let-row="row">
+                    <button class="edit btn btn-outline-success w-100p mb-1 mr-1" type="button" title="Edit"
+                        (click)="editUser(row?.id)">
+                        <span class="edit-icon"></span>
+                    </button>
+                    <button class="delete btn btn-outline-danger w-100p mb-1 mr-1" type="button" title="Delete"
+                        (click)="deleteUser(row?.id,row?.full_name)">
+                        <i aria-hidden="true" class="fa fa-trash"></i>
+                    </button>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>

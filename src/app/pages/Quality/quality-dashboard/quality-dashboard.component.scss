@@ -1,0 +1,126 @@
+.edit:hover {
+  background: #4f9e4f;
+}
+.edit span {
+  display: inline-block;
+  float: left;
+}
+.edit .edit-icon {
+  height: 25px;
+  position: relative;
+  width: 25px;
+}
+.edit .edit-icon:before {
+  border: 2px solid #79db79;
+  border-radius: 3px;
+  content: "";
+  display: inline-block;
+  height: 50%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  transform: translate(-50%, -50%);
+}
+.edit .edit-icon:after {
+  background: #79db79;
+  border: 2px #fff solid;
+  border-bottom-left-radius: 5px 15px;
+  border-bottom-right-radius: 5px 15px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  box-shadow: 0 0 0 2px #79db79;
+  content: "";
+  display: inline-block;
+  height: 55%;
+  position: absolute;
+  top: 7%;
+  left: 45%;
+  width: 6px;
+  transform: translate(0, 0) rotate(45deg);
+  transform-origin: 50% 75%;
+  transition: background 0.4s, box-shadow 0.4s;
+}
+.edit:hover span:after {
+  background: #4f9e4f;
+  box-shadow: 0 0 0 2px #4f9e4f;
+  animation: wiggle 0.25s 3 linear;
+}
+
+@keyframes wiggle {
+  0% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+  25% {
+    transform: translate(0, 0) rotate(25deg);
+  }
+  50% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+  75% {
+    transform: translate(0, 0) rotate(65deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+}
+.edit {
+  margin-right: 10px; /* Adjust the margin as needed */
+}
+
+.edit,
+.view,
+.delete {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+}
+.form-control {
+  line-height: normal !important;
+}
+
+.custm {
+  overflow-x: auto;
+}
+ngx-datatable .datatable-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+ngx-datatable.material {
+  // width: 3000px; /* or a width greater than the container to enable scrolling */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.datatable-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+:host ::ng-deep .ngx-datatable {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+  .datatable-header {
+    border-bottom: 2px solid #ddd;
+    background-color: #f8f9fa;
+  }
+
+  .column-header {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .datatable-body-row {
+    border-bottom: 1px solid #eee;
+  }
+
+  .datatable-row-even {
+    background-color: #fbfbfb;
+  }
+}

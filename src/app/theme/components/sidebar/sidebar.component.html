@@ -1,0 +1,8 @@
+<div class="sidebar-outer">
+  @if (settings.theme.sidebarIsFixed) {
+  <a class="logo d-flex align-items-center" routerLink="/" (click)="closeSubMenus()">
+    <span class="start">start</span><span class="ng">NG</span>
+  </a>
+  }
+  <app-vertical-menu [menuItems]="menuItems"></app-vertical-menu>
+</div>

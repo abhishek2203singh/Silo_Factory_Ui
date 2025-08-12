@@ -1,0 +1,214 @@
+<!-- <app-info-panels [panels]="infoPanels"></app-info-panels> -->
+<!-- <app-info-panels></app-info-panels> -->
+<div class="header">
+    <h2>Dairy Packing Process</h2>
+    <!-- <div>
+       <button class="btn-primary">Start New Packing</button>
+       <button class="btn-secondary">Refresh</button>
+       </div> -->
+    <button class="btn btn-primary" (click)="goBack()">
+        <i class="fas fa-arrow-left "></i> Back
+    </button>
+</div>
+<div class="stats-container">
+    <div class="stat-card">
+        <span>Total Products</span>
+        <span class="stat-value">{{ totalProducts }}</span>
+    </div>
+    <div class="stat-card">
+        <span>In Progress</span>
+        <span class="stat-value">{{ InProgress }}</span>
+    </div>
+    <div class="stat-card">
+        <span>Finished</span>
+        <span class="stat-value">{{ Finished }}</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div widget class="card border-0 box-shadow">
+            <div class="card-header d-flex transparent border-0 text-muted">
+                <h5 class="mb-0">{{'Add Form'
+                    }}
+                </h5>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="PackingForm" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="productId">Name of Product</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="productId" formControlName="productId"
+                                        (change)="unitByProdId($event)">
+                                        <option [value]="0" disabled selected>Choose...</option>
+                                        <option *ngFor="let product of namesList" [value]="product.id">
+                                            {{ product.product_name }}
+                                        </option>
+                                    </select>
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="packingMaterialId">Packing Material</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="packingMaterialId"
+                                        formControlName="packingMaterialId">
+                                        <option [value]="0">Choose...</option>
+                                        <option *ngFor="let product of List" [value]="product.id">
+                                            {{ product.product_name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="packingSizeId">Packaging
+                                    Size</label>
+                                <div class="input-group">
+                                    <select class="form-control" id="packingSizeId" formControlName="packingSizeId">
+                                        <option [value]="0" disabled>Choose...</option>
+                                        <option *ngFor="let pl of packingList" [value]="pl.id">{{ pl.weight
+                                            }} {{ pl.st_name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="totalPackings">Total Packing</label>
+                                <input type="number" class="form-control" id="totalPackings"
+                                    formControlName="totalPackings" placeholder="Enter Product Packing">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="totalQantity">Total Packing Quantity</label>
+                                <input type="number" class="form-control" id="totalQantity"
+                                    formControlName="totalQantity" placeholder="Enter Product Quantity">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-primary">{{"Submit"}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <h3>Active Packing Operations</h3>
+        <!-- <div class="filters">
+          <input type="text" placeholder="Search by product or batch..." />
+          <select>
+              <option>All Status</option>
+              <option>Pending</option>
+              <option>In Progress</option>
+              <option>Completed</option>
+          </select>
+          </div> -->
+        <div class="input-group mb-2">
+            <span class="input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></span>
+            <input class="form-control" type="text" placeholder="Search by Name..." (keyup)="updateFilter($event)" />
+        </div>
+        <ngx-datatable #table class="material striped" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50"
+            [rowHeight]="'auto'" [limit]="10" [rows]="Packingdata">
+            <!-- Column: Serial Number -->
+            <ngx-datatable-column name="srNo" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Sr. No</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex">
+                    {{ rowIndex + 1 }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Product Name" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Product Name</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row.product_name}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Packing Material" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Packing Material</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row.packing_material }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="weight" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Packaging Size</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row.weight}}{{row.st_name}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Total Packing" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Total Packing</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row.total_packings }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Total Product Packed" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Total Product Packed</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row.total_product_packed }}{{row.product_u_stname}}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Start Time" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Start Time</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row.start_time | date:'dd-MM-yyyy, hh:mm:ss a' }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Finish Time" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Finish Time</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    {{ row.finish_time | date:'dd-MM-yyyy, hh:mm:ss a' }}
+                </ng-template>
+            </ngx-datatable-column>
+            <!-- Status Column -->
+            <ngx-datatable-column name="Status" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Status</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <span *ngIf="row.is_finished === true" class="badge-pill badge-success">Finished</span>
+                    <span *ngIf="row.is_finished === false" class=" badge-pill badge-warning">In Progress</span>
+                </ng-template>
+            </ngx-datatable-column>
+            <!-- Action Column -->
+            <ngx-datatable-column name="Action" [flexGrow]="1">
+                <ng-template ngx-datatable-header-template>
+                    <span class="column-header">Action</span>
+                </ng-template>
+                <ng-template ngx-datatable-cell-template let-row="row">
+                    <ng-container *ngIf="row.is_finished === false">
+                        <button class="edit btn btn-outline-warning w-100p mb-1 mr-1" type="button" title="Finish"
+                            (click)="confirmFinish(row.id)">
+                            <i aria-hidden="true" class="fa fa-check-circle-o" style="font-size: xx-large"></i>
+                        </button>
+                    </ng-container>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>

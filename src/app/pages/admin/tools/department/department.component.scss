@@ -1,0 +1,40 @@
+/* Add these styles to your CSS */
+.row-flip-container {
+  position: relative;
+  perspective: 1000px;
+}
+
+.row-flipper {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.row-flipper.flipped {
+  transform: rotateX(180deg);
+}
+
+.row-front,
+.row-back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+}
+
+.row-front {
+  z-index: 2;
+  transform: rotateX(0deg);
+}
+
+.row-back {
+  transform: rotateX(180deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Add this to ensure proper spacing when row is flipped */
+.spacer-row {
+  visibility: hidden;
+}

@@ -1,0 +1,67 @@
+:host ::ng-deep {
+  .ngx-datatable {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .datatable-scroll {
+    display: inline-block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    margin-bottom: 0 !important;
+  }
+
+  .datatable-body {
+    overflow-x: visible !important;
+    min-width: 100% !important;
+    white-space: nowrap !important;
+    display: block !important;
+  }
+
+  .datatable-row-wrapper {
+    display: inline-block !important;
+    // width: 2100px !important;
+  }
+
+  .datatable-header {
+    // width: 2100px !important;
+    position: sticky !important;
+    top: 0;
+    z-index: 100;
+    background: white;
+  }
+
+  .datatable-footer {
+    width: 100% !important;
+    position: sticky !important;
+    bottom: 0;
+    background: white;
+    z-index: 100;
+  }
+}
+
+.centered-text {
+  text-align: center;
+}
+
+.modal-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
+.modal-dialog.modal-lg {
+  max-width: 1000px;
+}
+
+.mt-20px {
+  margin-top: 20px !important;
+}
+
+#CreateSchedulLabel {
+  text-align: center;
+  width: 100%;
+}
